@@ -15,7 +15,7 @@ You can open this folder with your IDE and start development. To install project
 
 * PHP \(**>=7.0**\)
 * Apache \(>=**2.4**\)
-* MySQL \(>=**5.6**\) or MariaDB \(>=**5.6**\)
+* MySQL \(>=**5.6**\) or MariaDB
 
 *Note: Install php modules for work with MySQL, command line\(CLI\), mcrypt, etc.*
 
