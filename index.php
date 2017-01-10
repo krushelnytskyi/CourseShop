@@ -1,16 +1,8 @@
-<!doctype html>
-<html>
-<head>
-    <title>Shop Project</title>
-    <style>
-        *: {
-            font-family: Arial, sans-serif;
-        }
-    </style>
-</head>
-<body>
-    <h3>
-        <?php echo 'The application is not finished yet.' ?>
-    </h3>
-</body>
-</html>
+<?php
+
+define('APP_ROOT', __DIR__);
+
+include_once 'System/autoloader.php';
+
+$dispatcher = new \System\Dispatcher();
+$dispatcher->dispatch();

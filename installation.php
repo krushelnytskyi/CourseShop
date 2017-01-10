@@ -39,6 +39,14 @@ class Install
     }
 
     /**
+     * @step
+     */
+    public function installDatabase()
+    {
+        // TODO: Sql file -> restore -> check
+    }
+
+    /**
      * @param string|bool $message Abort message
      * @return void
      */
