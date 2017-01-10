@@ -24,7 +24,7 @@ If all required software installed - execute php script `installation.php` from 
 *Note: Check your environment by `.ini` files in `config` folder in a root of the project*
 
 ```bash
-> php installation.sh
+> php installation.php
 ```
 
 If installation process completed successfully - configure your virtual host to serve application.
