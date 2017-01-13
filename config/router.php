@@ -2,10 +2,14 @@
 
 return [
     'urls' => [
-        'users/login' => [
+        'users' => [
             'controller' => 'MVC\Controller\Users',
-            'action'     => 'loginElseAction'
-        ]
+            'action'     => 'login'
+        ],
+        'users2' => [
+            'controller' => 'MVC\Controller\Users',
+            'action'     => 'login'
+        ],
     ],
     'patterns' => [
         '^api\/.+\/(.+)' => [

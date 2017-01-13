@@ -43,7 +43,29 @@ class Install
      */
     public function installDatabase()
     {
-        // TODO: Sql file -> restore -> check
+        $database = include 'config/database.php';
+        $mysqli = new mysqli(
+            $database['host'],
+            $database['username'],
+            $database['password']
+        );
+
+        if ($mysqli->connect_errno !== 0) {
+            $this->abort($mysqli->connect_errno);
+        } else {
+            echo 'Connection to MySQL established' . PHP_EOL;
+            if ($mysqli->select_db($database['database']) === false) {
+                if ($mysqli->query('CREATE DATABASE'.' '.$database['database']) === true) {
+                    echo 'Database created' . PHP_EOL;
+                } else {
+                    $this->abort('Database can not be created');
+                }
+            } else {
+                echo 'Database already created' . PHP_EOL;
+            }
+        }
+
+        $mysqli->close();
     }
 
     /**
@@ -54,7 +76,7 @@ class Install
     {
         echo 'Aborting installation. ';
 
-        if (false === $message) {
+        if (false !== $message) {
             echo 'Message: ' . $message;
         }
 
