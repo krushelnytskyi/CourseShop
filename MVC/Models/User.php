@@ -3,9 +3,9 @@
 namespace MVC\Models;
 
 /**
- * Class Users
+ * Class User
  * @package MVC\Models
  */
-class Users
+class User
 {
 }

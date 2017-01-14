@@ -16,11 +16,16 @@ abstract class Controller
     {
         $file = APP_ROOT . '/MVC/View/' . $path . '.phtml';
 
+        ob_start();
+
         if (file_exists($file) === true) {
             include_once $file;
         } else {
             include_once APP_ROOT . '/MVC/View/errors/404.phtml';
         }
+
+        $content = ob_get_clean();
+        include APP_ROOT . 'MVC/Layout/main.phtml';
     }
 
     /**
