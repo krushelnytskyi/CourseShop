@@ -6,9 +6,9 @@ return [
             'controller' => 'MVC\Controller\Users',
             'action'     => 'login'
         ],
-        'users2' => [
+        'logout' => [
             'controller' => 'MVC\Controller\Users',
-            'action'     => 'login'
+            'action'     => 'logout'
         ],
     ],
     'patterns' => [

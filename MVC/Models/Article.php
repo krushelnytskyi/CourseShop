@@ -17,5 +17,6 @@ class Article
      * @var int
      */
     private $id;
+ 
 
 }

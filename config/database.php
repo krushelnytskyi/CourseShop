@@ -5,5 +5,5 @@ return [
     'username' => 'root',
     'password' => '',
     'database' => 'course_shop',
-    'charset'  => 'UTF-8'
+    'charset'  => 'utf8'
 ];

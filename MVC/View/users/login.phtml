@@ -1,19 +1,33 @@
-<div class="row">
-
-    <div class="col-md-6 offset-3">
-        <form action="/users/login" method="post">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" name="email" class="form-control" id="email">
+<?php
+use System\Session;
+$logged = Session::get('logged');
+if ($logged):?>
+    <h3> Hello <?echo Session::get('email').PHP_EOL;?> </h3>
+    <a href="/logout">Logout</a>
+<?php else: ?>
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            <div class="card text-center" style="margin: 2%">
+                <h3 class="card-header">
+                    Log In
+                </h3>
+                <div class="card-block">
+                    <form action="/users/login" method="post">
+                        <div class="form-group">
+                            <label for="email" class="col-form-label">Email:</label>
+                            <input type="email" name="email" class="form-control" id="email" autofocus required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-form-label">Password:</label>
+                            <input type="password" name="password" class="form-control"  id="password" required>
+                        </div>
+                        <br/>
+                        <div class="text-right">
+                            <button class="btn btn-primary">Log In</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" class="form-control" id="password">
-            </div>
-            <div class="text-right">
-                <button class="btn btn-success">Log in</button>
-            </div>
-        </form>
+        </div>
     </div>
-
-</div>
+<?php endif; ?>
