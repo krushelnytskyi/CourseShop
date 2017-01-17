@@ -23,11 +23,11 @@ class Config
     public static function get($name, $key, $default = null)
     {
 
-        if (isset(self::$cache[$name]) === false) {
-            static::$cache = include_once APP_ROOT . '/config/' . $name . '.php';
+        if (isset(static::$cache[$name]) === false) {
+            static::$cache[$name] = include_once APP_ROOT . '/config/' . $name . '.php';
         }
 
-        $values = static::$cache;
+        $values = static::$cache[$name];
 
         $key = (array)$key;
 
