@@ -10,6 +10,18 @@ return [
             'controller' => 'MVC\Controller\Users',
             'action'     => 'login'
         ],
+        '' => [
+            'controller' => 'MVC\Controller\Pages',
+            'action'     => 'home'
+        ],
+        'article' => [
+            'controller' => 'MVC\Controller\Pages',
+            'action'     => 'article'
+        ],
+        'article-add' => [
+            'controller' => 'MVC\Controller\Pages',
+            'action'     => 'articleAdd'
+        ],
     ],
     'patterns' => [
         '^api\/.+\/(.+)' => [
