@@ -2,6 +2,8 @@
 
 namespace MVC\Controller;
 
+use System\Config;
+use System\Database\Connection;
 use System\MVC\Controller\Controller;
 
 /**
@@ -16,26 +18,27 @@ class Users extends Controller
      */
     public function loginAction()
     {
-
-
         $this->view('users/login');
     }
 
+    /**
+     * Register action
+     */
     public function registerAction()
     {
-        $database = include 'config/database.php';
-        $login = $_POST[register_username];
-        $email = $_POST[register_email];
-        $password = $_POST[register_password];
-        $repeat_password = $_POST[register_repeat_password];
-        if ($_POST['register_gender']==="male")
-        {
+        $database = Config::get('database');
+        $login = $_POST['register_username'];
+        $email = $_POST['register_email'];
+        $password = $_POST['register_password'];
+
+        $repeatPassword = $_POST['register_repeat_password'];
+
+        if ($_POST['register_gender'] === 'male') {
             $gender = 0;
-        }
-        else if($_POST['register_gender'] ==="female")
-        {
+        } else if($_POST['register_gender'] === 'female') {
             $gender = 1;
         }
+
         $mysqli = new \mysqli(
             $database['host'],
             $database['username'],
@@ -43,8 +46,8 @@ class Users extends Controller
             $database['database']
         );
 
-        if(isset($_POST['register']) && $password ===$repeat_password ) {
-            $sql = "INSERT INTO Users (login, email, password, gender)
+        if (isset($_POST['register']) && $password === $repeatPassword) {
+            $sql = "INSERT INTO users (login, email, password, gender)
             VALUES ('$login', '$email', '$password', $gender)";
 
             if ($mysqli->query($sql)) {
@@ -57,8 +60,12 @@ class Users extends Controller
             echo '<script> alert("Паролі не співпадають!"); </script>';
         }
 
-
         $this->view('users/register');
+    }
+
+    public function testAction()
+    {
+        $statement = Connection::getInstance();
     }
 
 }

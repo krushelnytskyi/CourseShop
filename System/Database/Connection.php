@@ -1,0 +1,66 @@
+<?php
+
+namespace System\Database;
+
+use System\Config;
+use System\Database\Statement\Insert;
+use System\Database\Statement\Select;
+use System\Pattern\Singleton;
+
+/**
+ * Class Connection
+ * @package System\Database
+ * @method static Connection getInstance()
+ */
+class Connection
+{
+    use Singleton;
+
+    /**
+     * @var \PDO
+     */
+    private $link;
+
+    public function __construct()
+    {
+        $config = Config::get('database');
+
+        $dsn = sprintf(
+            'mysql:host=%s;port=%s;database=%s;',
+            $config['host'],
+            $config['port'],
+            $config['database']
+        );
+
+        $this->link = new \PDO($dsn, $config['username'], $config['password']);
+    }
+
+    /**
+     * @return \PDO
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    public function select()
+    {
+        throw new Exception();
+
+        return new Select();
+    }
+
+    public function insert()
+    {
+        return new Insert();
+    }
+
+    public function delete()
+    {
+    }
+
+    public function update()
+    {
+    }
+
+}

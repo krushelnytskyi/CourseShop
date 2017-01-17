@@ -21,6 +21,10 @@ class Dispatcher
         $controller = null;
         $action = null;
 
+        $urlParts = explode('/', $url);
+        $controller = $urlParts[0];
+        $action = $urlParts[1];
+
         foreach (Config::get('router', 'urls') as $currentUrl => $rule) {
             if ($url === $currentUrl) {
                 $controller = $rule['controller'];
@@ -28,26 +32,18 @@ class Dispatcher
             }
         }
 
-        if (null === $controller || null === $action) {
-            foreach (Config::get('router', 'patterns') as $pattern => $rule) {
-                if (preg_match("/$pattern/", $url)) {
-                    foreach ($rule as $key => &$value) {
-                        $value = preg_replace("/$pattern/", $value, $url);
-                    }
-                    $controller = $rule['controller'];
-                    $action = $rule['action'];
-                    break;
+        foreach (Config::get('router', 'patterns') as $pattern => $rule) {
+            if (preg_match("/$pattern/", $url)) {
+                foreach ($rule as $key => &$value) {
+                    $value = preg_replace("/$pattern/", $value, $url);
                 }
+                $controller = $rule['controller'];
+                $action = $rule['action'];
+                break;
             }
         }
 
-        if (null === $controller || null === $action) {
-            $urlParts = explode('/', $url);
-            $controller = $urlParts[0];
-            $action = $urlParts[1];
-        }
-
-        if (strpos('MVC\/', $controller) === 0) {
+        if (strpos('MVC\\', $controller) !== 0) {
             $controller = 'MVC\Controller\\' . ucfirst($controller);
         }
 

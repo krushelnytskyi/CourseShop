@@ -20,7 +20,7 @@ class Config
      * @param null $default
      * @return array|string|int|bool|float|null
      */
-    public static function get($name, $key, $default = null)
+    public static function get($name, $key = [], $default = null)
     {
         if (isset(static::$cache[$name]) === false) {
             static::$cache[$name] = include_once APP_ROOT . '/config/' . $name . '.php';
