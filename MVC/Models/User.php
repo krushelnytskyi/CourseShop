@@ -5,21 +5,27 @@ namespace MVC\Models;
 /**
  * Class User
  * @package MVC\Models
- * @table(Users)
+ * @table(users)
  */
 class User
 {
 
-    const USER_GRADE_BANNED = -2;
-    const USER_GRADE_ONLYREAD = -1;
-    const USER_GRADE_REGULAR = 0;
-    const USER_GRADE_VIP = 1;
+    /**
+     * User statuses
+     */
+    const USER_GRADE_BANNED    = -2;
+    const USER_GRADE_ONLYREAD  = -1;
+    const USER_GRADE_REGULAR   = 0;
+    const USER_GRADE_VIP       = 1;
     const USER_GRADE_MODERATOR = 2;
-    const USER_GRADE_ADMIN = 3;
+    const USER_GRADE_ADMIN     = 3;
 
-    const GENDER_MALE = 2;
+    /**
+     * Genders
+     */
+    const GENDER_MALE   = 2;
     const GENDER_FEMALE = 1;
-    const GENDER_UNSET = 0;
+    const GENDER_UNSET  = 0;
 
     /**
      * Unique key for User
@@ -27,23 +33,23 @@ class User
      * @columnType(INT(11) NOT NULL AUTO_INCREMENT)
      * @var int
      */
-    private $Id;
+    private $id;
 
     /**
      * User login
      *
      * @columnType(VARCHAR(32) NOT NULL)
-     * @var String
+     * @var string
      */
-    private $login;
+    private $name;
 
     /**
      * Information about user
      *
      * @columnType(TEXT)
-     * @var String
+     * @var string
      */
-    private $aboutUser;
+    private $about;
 
     /**
      * User gender
@@ -55,7 +61,8 @@ class User
 
     /**
      * User rating.
-     * User rating = +2 for each like on his articles, +1 for each like on his comment
+     * User rating = +2 for each like on his articles,
+     * +1 for each like on his comment
      *
      * @columnType(INT(11) NOT NULL)
      * @var int
@@ -64,7 +71,13 @@ class User
 
     /**
      * User grade,
-     * -2 = banned, -1 = onlyRead, 0 = regular, 1 = vip, 2=moderator, 3=superModerator
+     *
+     * -2 = banned,
+     * -1 = onlyRead,
+     *  0 = regular,
+     *  1 = vip,
+     *  2 = moderator,
+     *  3 = superModerator
      *
      * @columnType(TINYINT(1) NOT NULL)
      * @var int
@@ -74,7 +87,7 @@ class User
     /**
      * User email
      *
-     * @columnType(VARCHAR(64) NOT NULL)
+     * @columnType(VARCHAR(127) NOT NULL)
      * @var int
      */
     private $email;
@@ -83,15 +96,32 @@ class User
      * User password
      *
      * @columnType(VARCHAR(32) NOT NULL)
-     * @var String
+     * @var string
      */
-    private $pass;
+    private $password;
 
     /**
      * Last login
      *
      * @columnType(TIMESTAMP)
-     * @var int
+     * @var \DateTime
      */
     private $lastLogin;
+
+    /**
+     * @param $password
+     * @return bool|string
+     */
+    public static function encodePassword($password)
+    {
+        $hash = password_hash(
+            $password,
+            PASSWORD_BCRYPT,
+            [
+                'salt' => sha1($password)
+            ]
+        );
+
+        return $hash;
+    }
 }

@@ -11,8 +11,20 @@ namespace System;
 
 class Database
 {
+
+    /**
+     * @var \mysqli|null
+     */
     private $link = null;
+
+    /**
+     * @var null
+     */
     static $inst = null;
+
+    /**
+     * @var int
+     */
     public static $counter = 0;
 
     /**

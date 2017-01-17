@@ -8,10 +8,8 @@ namespace MVC\Models;
  * @package MVC\Models
  * @table(Comments)
  */
-
 class Comment
 {
-
 
     /**
      * Unique key for comment
@@ -25,17 +23,21 @@ class Comment
      * Unique key for article
      *
      * @columnType(INT(11) NOT NULL)
-     * @var int
+     * @foreignModel(MVC\Models\Article)
+     * @foreignField(id)
+     * @var Article
      */
-    private $articleId;
+    private $article;
     /**
      *
      * Unique key for User
      *
      * @columnType(INT(11) NOT NULL)
-     * @var int
+     * @foreignModel(MVC\Models\User)
+     * @foreignField(id)
+     * @var User
      */
-    private $autorId;
+    private $user;
 
     /**
      * Count of likes
@@ -65,25 +67,28 @@ class Comment
      * Date of creation
      *
      * @columnType(TIMESTAMP)
-     * @var String
+     * @var \DateTime
      */
     private $created;
 
     /**
-     * Parent Id - id of parent article, or parent comment, or something else...
+     * Parent Id - id of parent article, or parent comment,
+     * or something else...
      *
      * @columnType(INT(11) NOT NULL)
-     * @var int
+     * @foreignModel(MVC\Models\Article,MVC\Models\Comment)
+     * @foreignField(id)
+     * @var Article|Comment
      */
-    private $ParentId;
+    private $parent;
 
     /**
      * Type of parent
      *
-     * @columnType(TINYINT(1))
-     * @var String
+     * @columnType(VARCHAR(127))
+     *
+     * @var string
      */
-    private $ParetnType;
-
+    private $parentType;
 
 }

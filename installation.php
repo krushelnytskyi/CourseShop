@@ -3,6 +3,7 @@
 // Allow execute this file only from command line
 // Example: > php installation.php
 if (php_sapi_name() === 'cli') {
+    include 'System/autoloader.php';
     $installer = new Install;
     $installer->run();
 }

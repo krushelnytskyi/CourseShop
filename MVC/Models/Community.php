@@ -1,14 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Администратор
- * Date: 17.01.2017
- * Time: 1:07
- */
 
 namespace MVC\Models;
 
-
+/**
+ * Class Community
+ * @package MVC\Models
+ * @table(communities)
+ */
 class Community
 {
 
@@ -24,9 +22,11 @@ class Community
      * Creator id
      *
      * @columnType(INT(11) NOT NULL)
-     * @var int
+     * @foreignModel(MVC\Models\User)
+     * @foreignField(id)
+     * @var User
      */
-    private $creatorId;
+    private $user;
 
     /**
      * Name of community
@@ -40,16 +40,18 @@ class Community
      * community description and rules
      *
      * @columnType(TEXT)
-     * @var String
+     * @var string
      */
     private $about;
 
     /**
-     * option, which enables or disables moderation publications before attachment to the community
+     * Option, which enables or disables
+     * moderation publications
+     * before attachment to the community
      *
      * @columnType(TINYINT(1))
      * @var boolean
      */
-    private $isSecured;
+    private $secured;
 
 }
