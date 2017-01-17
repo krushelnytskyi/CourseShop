@@ -6,7 +6,8 @@ namespace System;
  * Class Database
  * @package System
  */
-class Database
+
+class Databas
 {
 
 
