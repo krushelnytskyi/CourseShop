@@ -24,10 +24,10 @@ class Config
     {
 
         if (isset(self::$cache[$name]) === false) {
-            static::$cache = include_once APP_ROOT . '/config/' . $name . '.php';
+            static::$cache[$name] = include_once APP_ROOT . '/config/' . $name . '.php';
         }
 
-        $values = static::$cache;
+        $values = static::$cache[$name];
 
         $key = (array)$key;
 
