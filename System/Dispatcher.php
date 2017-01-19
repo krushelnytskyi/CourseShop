@@ -6,6 +6,13 @@ namespace System;
  * Class Dispatcher
  * @package System
  */
+
+
+    /**
+     * Main dispatcher control class
+     * @return void
+     */
+
 class Dispatcher
 {
 
@@ -13,16 +20,12 @@ class Dispatcher
      * Main dispatcher control class
      * @return void
      */
-
     public function dispatch()
     {
         $url = trim($_SERVER['REQUEST_URI'], '/');
-
-        $controller = null;
-        $action = null;
-
         $urlParts = explode('/', $url);
-        $controller = $urlParts[0];
+
+        $controller = 'MVC\Controller\\' . ucfirst($urlParts[0]);
         $action = $urlParts[1];
 
         foreach (Config::get('router', 'urls') as $currentUrl => $rule) {
@@ -32,20 +35,13 @@ class Dispatcher
             }
         }
 
-        foreach (Config::get('router', 'patterns') as $pattern => $rule) {
-            if (preg_match("/$pattern/", $url)) {
-                foreach ($rule as $key => &$value) {
-                    $value = preg_replace("/$pattern/", $value, $url);
+        foreach (Config::get('router', 'patterns') as $patterns => $rule) {
+            if (preg_match("/$patterns/", $url)) {
+                $controller = preg_replace("/$patterns/", $rule['controller'], $url);
+                $action = preg_replace("/$patterns/", $rule['action'], $url);
                 }
-                $controller = $rule['controller'];
-                $action = $rule['action'];
-                break;
-            }
-        }
 
-        if (strpos('MVC\\', $controller) !== 0) {
-            $controller = 'MVC\Controller\\' . ucfirst($controller);
-        }
+            }
 
         $action = $action . 'Action';
 
