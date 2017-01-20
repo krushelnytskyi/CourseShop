@@ -65,7 +65,26 @@ class Users extends Controller
 
     public function testAction()
     {
-        $statement = Connection::getInstance();
+        /*
+        * Example
+        $select = [
+            'id',
+            'title',
+            'date'
+        ];
+        var_dump(
+            $statement = Connection::getInstance()->select()->
+            selectColumns($select)->
+            from('user')->
+            where()->
+                compare('id', '17', '=')->
+                conditionOr()->
+                between('id', 1, 9)->
+            closeCondition()->
+            orderBy('id')->
+            execute()
+        );
+        */
     }
 
 }

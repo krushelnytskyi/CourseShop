@@ -43,10 +43,11 @@ class Connection
         return $this->link;
     }
 
+    /**
+     * @return Select
+     */
     public function select()
     {
-        throw new Exception();
-
         return new Select();
     }
 
