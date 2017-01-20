@@ -23,7 +23,7 @@ class Config
     public static function get($name, $key = [], $default = null)
     {
         if (isset(static::$cache[$name]) === false) {
-            static::$cache[$name] = include_once APP_ROOT . '/config/' . $name . '.php';
+            static::$cache[$name] = include APP_ROOT . '/config/' . $name . '.php';
         }
 
         $values = static::$cache[$name];

@@ -45,7 +45,7 @@ class Install
     public function installDatabase()
     {
         $database = include 'config/database.php';
-        $mysqli = new mysqli(
+        $mysqli = new \mysqli(
             $database['host'],
             $database['username'],
             $database['password']

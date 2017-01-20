@@ -2,62 +2,70 @@
 
 namespace System\Database\Statement;
 
+use System\Database\Connection;
 use System\Database\Statement;
 
+/**
+ * Class Insert
+ * @package System\Database\Statement
+ */
 class Insert extends Statement
 {
 
     /**
      * @var array
      */
-    protected $values = array();
+    protected $columns = [];
 
     /**
      * @var array
      */
-    protected $variables = array();
+    protected $values = [];
 
 
     /**
      * @param   array   $values  values list
-     * @param   ...
      * @return  $this
      */
     public function values(array $values)
     {
-        if ( ! is_array($this->values))
-        {
-            throw new Exception('INSERT INTO ... SELECT statements cannot be combined with INSERT INTO ... VALUES');
-        }
-        $this->variables = array_values($values);
+        $this->columns = array_keys($values);
         $this->values = array_values($values);
 
         return $this;
     }
 
-
     /**
      * @return bool
      */
-
     public function execute()
     {
-        $sql = "INSERT INTO " . $this->table;
-        $fields = array();
-        $values = array();
-        foreach ($this->variables as $field => $value) {
-            $fields[] = $field;
-            $values[] = "'" . $value . "'";
-        }
-        $fields = ' (' . implode(', ', $fields) . ')';
-        $values = '(' . implode(', ', $values) . ')';
+        $sql = 'INSERT INTO ' . $this->table;
+
+        $this->columns = array_map(
+            function ($column) {
+                return '`' . $column . '`';
+            },
+            $this->columns
+        );
+
+        $this->values = array_map(
+            function ($value) {
+                return '\'' . $value . '\'';
+            },
+            $this->values
+        );
+
+        $fields = ' (' . implode(', ', $this->columns) . ')';
+        $values = '(' . implode(', ', $this->values) . ')';
 
         $sql .= $fields . ' VALUES ' . $values;
 
-        $result = $this->connection->getLink()->query($sql);
+        $result = Connection::getInstance()->getLink()->prepare($sql)->execute();
 
-        return (false === $result) ? false : $this->connection->getLink()->insert_id;
+        return (false === $result) ? false : Connection::getInstance()->getLink()->insert_id;
     }
+
 }
 
 
