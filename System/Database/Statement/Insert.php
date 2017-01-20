@@ -37,7 +37,6 @@ class Insert extends Statement
 
 
     /**
-     * @param array $variables
      * @return bool
      */
 
