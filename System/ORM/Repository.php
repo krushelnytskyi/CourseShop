@@ -3,13 +3,63 @@
 namespace System\ORM;
 
 use System\Database\Connection;
+use System\Pattern\Singleton;
 
 /**
  * Class Repository
  * @package System\ORM
+ *
+ * @method static Repository getInstance()
  */
 class Repository
 {
+
+    use Singleton;
+
+    /**
+     * @var Connection
+     */
+    protected $connection;
+
+    /**
+     * @var \ReflectionClass
+     */
+    protected $reflection;
+
+    /**
+     * Repository constructor.
+     */
+    public function __construct()
+    {
+        $this->connection = Connection::getInstance();
+    }
+
+    /**
+     * @param $className
+     * @return $this
+     */
+    public function model($className)
+    {
+        $this->reflection = new \ReflectionClass($className);
+        return $this;
+    }
+
+    /**
+     * @param array $criteria
+     * @param $limit
+     * @return array
+     */
+    public function findBy(array $criteria, $limit = 0)
+    {
+    }
+
+    /**
+     * @param $model
+     * @return object
+     */
+    public function save($model)
+    {
+    }
 
     /**
      * @param string

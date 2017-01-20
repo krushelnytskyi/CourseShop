@@ -2,9 +2,12 @@
 
 namespace MVC\Controller;
 
+use MVC\Models\Tag;
+use MVC\Models\User;
 use System\Config;
 use System\Database\Connection;
 use System\MVC\Controller\Controller;
+use System\ORM\Repository;
 
 /**
  * Class Users
@@ -61,30 +64,6 @@ class Users extends Controller
         }
 
         $this->view('users/register');
-    }
-
-    public function testAction()
-    {
-        /*
-        * Example
-        $select = [
-            'id',
-            'title',
-            'date'
-        ];
-        var_dump(
-            $statement = Connection::getInstance()->select()->
-            selectColumns($select)->
-            from('user')->
-            where()->
-                compare('id', '17', '=')->
-                conditionOr()->
-                between('id', 1, 9)->
-            closeCondition()->
-            orderBy('id')->
-            execute()
-        );
-        */
     }
 
 }

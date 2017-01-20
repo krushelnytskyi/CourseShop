@@ -5,6 +5,7 @@ namespace System\Database;
 use System\Config;
 use System\Database\Statement\Insert;
 use System\Database\Statement\Select;
+use System\Database\Statement\Update;
 use System\Pattern\Singleton;
 
 /**
@@ -26,7 +27,7 @@ class Connection
         $config = Config::get('database');
 
         $dsn = sprintf(
-            'mysql:host=%s;port=%s;database=%s;',
+            'mysql:host=%s;port=%s;dbname=%s;',
             $config['host'],
             $config['port'],
             $config['database']

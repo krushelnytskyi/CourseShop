@@ -16,7 +16,7 @@ class Select extends Statement
     /**
      * @var string
      */
-    protected $selected;
+    protected $selected = '*';
 
     /**
      * @var string
@@ -42,15 +42,21 @@ class Select extends Statement
     }
 
     /**
-     * @param string $selected
+     * @param array $selected
      * @return $this
      */
-    public function selectColumns($selected = '*')
+    public function columns(array $selected)
     {
-        if (false === empty($selected)) {
-            $this->selected = (is_array($selected) === true) ? implode(',', $selected) : $selected;
-        }
+        $this->selected = implode(',', $selected);
         return $this;
+    }
+
+    /**
+     * @param string $field
+     */
+    public function count($field = '*')
+    {
+        $this->selected = 'COUNT(' . $field . ')';
     }
 
     /**
@@ -126,7 +132,8 @@ class Select extends Statement
             $this->limit
         );
 
-        $result = $connection->query($sql);
+        $result = $connection->prepare($sql);
+        $result->execute();
         $rowsArray = [];
 
         if (false !== $result) {

@@ -77,7 +77,7 @@ class Update extends Statement
     }
 
     /**
-     * @return rowCount 
+     * @return int
      */
     public function execute()
     {
