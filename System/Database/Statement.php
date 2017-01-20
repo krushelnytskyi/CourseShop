@@ -14,7 +14,7 @@ abstract class Statement
      * @param $table
      * @return $this
      */
-    public function from($table)
+    public function table($table)
     {
         $this->table = $table;
         return $this;

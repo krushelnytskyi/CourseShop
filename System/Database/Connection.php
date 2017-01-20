@@ -5,6 +5,7 @@ namespace System\Database;
 use System\Config;
 use System\Database\Statement\Insert;
 use System\Database\Statement\Select;
+use System\Database\Statement\Update;
 use System\Pattern\Singleton;
 
 /**
@@ -23,7 +24,7 @@ class Connection
 
     public function __construct()
     {
-        $config = Config::get('database');
+       /*        $config = Config::get('database');
 
         $dsn = sprintf(
             'mysql:host=%s;port=%s;database=%s;',
@@ -32,7 +33,16 @@ class Connection
             $config['database']
         );
 
-        $this->link = new \PDO($dsn, $config['username'], $config['password']);
+        $this->link = new \PDO($dsn, $config['username'], $config['password']);  */
+
+        $servername = Config::get('database','host');
+        $dbname = Config::get('database','database');
+        $username = Config::get('database','username');
+        $password = Config::get('database','password');
+
+        $this->link = new \PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      
+        $this->link->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
     /**
@@ -45,7 +55,6 @@ class Connection
 
     public function select()
     {
-        throw new Exception();
 
         return new Select();
     }
@@ -61,6 +70,7 @@ class Connection
 
     public function update()
     {
+        return new Update();
     }
 
 }

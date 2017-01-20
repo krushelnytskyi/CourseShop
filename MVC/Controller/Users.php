@@ -65,7 +65,17 @@ class Users extends Controller
 
     public function testAction()
     {
-        $statement = Connection::getInstance();
+       $values = [
+                        'email' => 'test@email.com111'
+                    ];
+
+                        $statement = Connection::getInstance()->
+                        update()->
+                        table('user')->
+                        setValues($values)->
+                        where()->compare('id','2','=')->
+                        closeCondition()->execute();
+
     }
 
 }
