@@ -70,6 +70,15 @@ class Install
     }
 
     /**
+     * @step
+     */
+    public function installModels()
+    {        
+        $repository = new \System\ORM\Repository();
+        $repository->installModels();
+    }
+
+    /**
      * @param string|bool $message Abort message
      * @return void
      */

@@ -4,12 +4,14 @@
 namespace MVC\Models;
 
 /**
- * Class User
+ * Class Comment
  * @package MVC\Models
- * @table(Comments)
+ * @table(comments)
  */
 class Comment
 {
+    const PARENT_TYPE_ARTICLE = 0;
+    const PARENT_TYPE_COMMENT = 1;
 
     /**
      * Unique key for comment
@@ -22,17 +24,16 @@ class Comment
     /**
      * Unique key for article
      *
-     * @columnType(INT(11) NOT NULL)
+     * @columnType(INT(11) UNSIGNED NOT NULL)
      * @foreignModel(MVC\Models\Article)
      * @foreignField(id)
      * @var Article
      */
     private $article;
     /**
-     *
      * Unique key for User
      *
-     * @columnType(INT(11) NOT NULL)
+     * @columnType(INT(11) UNSIGNED NOT NULL)
      * @foreignModel(MVC\Models\User)
      * @foreignField(id)
      * @var User
@@ -42,7 +43,7 @@ class Comment
     /**
      * Count of likes
      *
-     * @columnType(INT(11))
+     * @columnType(INT(11) UNSIGNED)
      * @var int
      */
     private $likes;
@@ -50,7 +51,7 @@ class Comment
     /**
      * Count of dislikes
      *
-     * @columnType(INT(11))
+     * @columnType(INT(11) UNSIGNED)
      * @var int
      */
     private $dislikes;
@@ -58,7 +59,7 @@ class Comment
     /**
      * Body of article
      *
-     * @columnType(TEXT)
+     * @columnType(TEXT NOT NULL)
      * @var String
      */
     private $body;
@@ -66,7 +67,7 @@ class Comment
     /**
      * Date of creation
      *
-     * @columnType(TIMESTAMP)
+     * @columnType(TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
      * @var \DateTime
      */
     private $created;
@@ -75,7 +76,7 @@ class Comment
      * Parent Id - id of parent article, or parent comment,
      * or something else...
      *
-     * @columnType(INT(11) NOT NULL)
+     * @columnType(INT(11) UNSIGNED NOT NULL)
      * @foreignModel(MVC\Models\Article,MVC\Models\Comment)
      * @foreignField(id)
      * @var Article|Comment
@@ -85,9 +86,10 @@ class Comment
     /**
      * Type of parent
      *
-     * @columnType(VARCHAR(127))
-     *
-     * @var string
+     * @columnType(TINYINT(1) UNSIGNED NOT NULL)
+     * @foreignModel(MVC\Models\Article,MVC\Models\Comment)
+     * @foreignField(id)
+     * @var int
      */
     private $parentType;
 
