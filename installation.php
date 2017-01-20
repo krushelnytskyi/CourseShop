@@ -70,6 +70,16 @@ class Install
     }
 
     /**
+     * @step
+     */
+    public function installModels()
+    {
+        //does't work from cli, it can't find class, but from browser work perfectly
+        //$repository = new System\ORM\Repository();
+        //$repository->installModels();
+    }
+
+    /**
      * @param string|bool $message Abort message
      * @return void
      */

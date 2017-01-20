@@ -13,7 +13,7 @@ class Community
     /**
      * Unique key for Community
      *
-     * @columnType(INT(11) NOT NULL AUTO_INCREMENT)
+     * @columnType(INT(11) UNSIGNED NOT NULL AUTO_INCREMENT KEY)
      * @var int
      */
     private $id;
@@ -21,7 +21,7 @@ class Community
     /**
      * Creator id
      *
-     * @columnType(INT(11) NOT NULL)
+     * @columnType(INT(11) UNSIGNED NOT NULL)
      * @foreignModel(MVC\Models\User)
      * @foreignField(id)
      * @var User
@@ -31,7 +31,7 @@ class Community
     /**
      * Name of community
      *
-     * @columnType(VARCHAR(200))
+     * @columnType(VARCHAR(400))
      * @var String
      */
     private $name;

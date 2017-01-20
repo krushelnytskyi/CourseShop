@@ -11,10 +11,10 @@ class User
 {
 
     /**
-     * User statuses
+     * User grade
      */
     const USER_GRADE_BANNED    = -2;
-    const USER_GRADE_ONLYREAD  = -1;
+    const USER_GRADE_READONLY  = -1;
     const USER_GRADE_REGULAR   = 0;
     const USER_GRADE_VIP       = 1;
     const USER_GRADE_MODERATOR = 2;
@@ -30,7 +30,7 @@ class User
     /**
      * Unique key for User
      *
-     * @columnType(INT(11) NOT NULL AUTO_INCREMENT)
+     * @columnType(INT(11) UNSIGNED NOT NULL AUTO_INCREMENT KEY)
      * @var int
      */
     private $id;
@@ -54,7 +54,7 @@ class User
     /**
      * User gender
      *
-     * @columnType(INT(11))
+     * @columnType(INT(11) UNSIGNED)
      * @var int
      */
     private $gender;
@@ -79,10 +79,19 @@ class User
      *  2 = moderator,
      *  3 = superModerator
      *
-     * @columnType(TINYINT(1) NOT NULL)
+     * @columnType(TINYINT(1)  NOT NULL)
      * @var int
      */
     private $grade;
+
+    /**
+     * Date when user grade will be returned to 0
+     * if unset = forever ban or readonly
+     *
+     * @columnType(TIMESTAMP)
+     * @var \DateTime
+     */
+    private $unbanDate;
 
     /**
      * User email
@@ -109,9 +118,18 @@ class User
     private $lastLogin;
 
     /**
+     * Settings in serialized array
+     *
+     * @columnType(VARCHAR(1023))
+     * @var array
+     */
+    private $settings = [];
+
+    /**
      * @param $password
      * @return bool|string
      */
+
     public static function encodePassword($password)
     {
         $hash = password_hash(

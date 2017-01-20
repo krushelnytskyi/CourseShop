@@ -13,7 +13,7 @@ class Article
     /**
      * Unique key for Article
      *
-     * @columnType(INT(11) NOT NULL AUTO_INCREMENT)
+     * @columnType(INT(11) UNSIGNED NOT NULL AUTO_INCREMENT KEY)
      * @var int
      */
     private $id;
@@ -34,7 +34,6 @@ class Article
      * @columnType(INT(11))
      * @foreignModel(MVC\Models\Community)
      * @foreignField(id)
-     *
      * @var int
      */
     private $community;
@@ -50,7 +49,7 @@ class Article
     /**
      * Title of article
      *
-     * @columnType(VARCHAR(200) NOT NULL)
+     * @columnType(VARCHAR(400) NOT NULL)
      * @var String
      */
     private $title;
@@ -66,7 +65,7 @@ class Article
     /**
      * List of tags id, in database it will be saved in serialized form
      *
-     * @columnType(VARCHAR(1023) NOT NULL)
+     * @columnType(VARCHAR(1023))
      * @var String
      */
     private $tags = [];
@@ -108,7 +107,7 @@ class Article
     /**
      * Date of creation
      *
-     * @column(TIMESTAMP NOT NULL DEFAULT CURRENT TIMESTAMP)
+     * @columnType(TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
      * @var \DateTime
      */
     private $created;
@@ -116,7 +115,7 @@ class Article
     /**
      * Date of last update
      *
-     * @column(TIMESTAMP)
+     * @columnType(TIMESTAMP)
      * @var \DateTime
      */
     private $updated;
