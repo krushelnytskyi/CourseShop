@@ -115,7 +115,7 @@ class Article
     /**
      * Date of last update
      *
-     * @columnType(TIMESTAMP)
+     * @columnType(TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
      * @var \DateTime
      */
     private $updated;
