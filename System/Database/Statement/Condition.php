@@ -1,24 +1,31 @@
 <?php
+
 namespace System\Database\Statement;
+
 /**
  * Class Condition
  * @package System\Database\Statement
  */
 class Condition
 {
+
     const comparisonOperator = ['=', '<', '>', '<=', '>=', '!='];
+
     /**
      * @var Object
      */
     protected $operationDB;
+
     /**
      * @var string
      */
     protected $condition;
+
     /**
      * @var bool
      */
     private $blocked = false;
+
     /**
      * Condition constructor.
      * @param $instance
@@ -27,6 +34,7 @@ class Condition
     {
         $this->operationDB = $instance;
     }
+
     /**
      * @param $nameColumn
      * @param $value
@@ -38,6 +46,7 @@ class Condition
         if (in_array($comparisonOperator, static::comparisonOperator) === false) {
             return null;
         }
+
         if (false === $this->blocked) {
             $this->condition .= sprintf(
                 '%s %s %s',
@@ -47,8 +56,10 @@ class Condition
             );
             $this->blocked = true;
         }
+
         return $this;
     }
+
     /**
      * @return $this
      */
@@ -60,6 +71,7 @@ class Condition
         }
         return $this;
     }
+
     /**
      * @return $this
      */
@@ -71,6 +83,7 @@ class Condition
         }
         return $this;
     }
+
     /**
      * Select rows that have values in the specified field
      *
@@ -85,6 +98,7 @@ class Condition
         }
         return $this;
     }
+
     /**
      * Select rows that don`t have value in the specified field
      *
@@ -99,6 +113,7 @@ class Condition
         }
         return $this;
     }
+
     /**
      * Select rows between specified values
      *
@@ -120,6 +135,7 @@ class Condition
         }
         return $this;
     }
+
     /**
      * Select rows that match the specified values
      *
@@ -130,7 +146,9 @@ class Condition
     public function in($nameColumn, $valueArray)
     {
         if (false === $this->blocked) {
+
             $this->condition .= $nameColumn . ' IN (';
+
             if (is_array($valueArray) === true) {
                 $this->condition .= implode(',', $valueArray);
             } else {
@@ -141,6 +159,7 @@ class Condition
         }
         return $this;
     }
+
     /**
      * Select rows other than those specified values
      *
@@ -152,6 +171,7 @@ class Condition
     {
         if (false === $this->blocked) {
             $this->condition .= $nameColumn . ' NOT IN (';
+
             if (is_array($valueArray) === true) {
                 $this->condition .= implode(',', $valueArray);
             } else {
@@ -162,6 +182,7 @@ class Condition
         }
         return $this;
     }
+
     /**
      * Select rows that match the pattern
      *
@@ -177,6 +198,7 @@ class Condition
         }
         return $this;
     }
+
     /**
      * Select rows that don`t match the pattern
      *
@@ -192,6 +214,7 @@ class Condition
         }
         return $this;
     }
+
     /**
      * @return Object
      */
