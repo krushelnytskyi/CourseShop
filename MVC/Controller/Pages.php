@@ -26,7 +26,7 @@ class Pages extends Controller
 
     public function articleAddAction()
     {
-        $this->view('pages/articleAdd');
+        $this->view('article/add');
     }
 
 }
