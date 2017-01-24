@@ -65,11 +65,12 @@ class Repository
      * @return int
      */
     public function save($model)
-    {
+    {       
         $cachedModel = $this->getCachedModel(get_class($model));
         if (isset($cachedModel)) {
             if ($cachedModel->getPrimaryKeyField() !== null) {
 
+                //I just didn't have enought time. I goint to finisf this method to friday.
                 //Check unique fields and update
 
             } else {
