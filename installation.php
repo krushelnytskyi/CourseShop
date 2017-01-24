@@ -73,9 +73,9 @@ class Install
      * @step
      */
     public function installModels()
-    {        
-        $repository = new \System\ORM\Repository();
-        $repository->installModels();
+    {
+        $modelsInstaller = new \System\ORM\ModelsInstaller();
+        $modelsInstaller->installModels();
     }
 
     /**

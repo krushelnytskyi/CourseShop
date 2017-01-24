@@ -7,7 +7,7 @@ use MVC\Models\User;
 use System\Config;
 use System\Database\Connection;
 use System\MVC\Controller\Controller;
-use System\ORM\Repository;
+use System\ORM\ModelsInstaller;
 
 /**
  * Class Users

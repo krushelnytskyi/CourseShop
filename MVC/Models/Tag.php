@@ -21,9 +21,47 @@ class Tag
     /**
      * Tag value
      *
-     * @columnType(VARCHAR(32) NOT NULL)
+     * @columnType(VARCHAR(32) NOT NULL UNIQUE)
      * @var string
      */
     private $value;
+
+    /**
+     * Tag constructor.
+     * @param int|null $id
+     * @param string $value
+     */
+
+    public function __construct($id, $value)
+    {
+        $this->id = $id;
+        $this->value = $value;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
+    /**
+     * @param string $value
+     * @return $this
+     */
+    public function setValue(string $value)
+    {
+        $this->value = $value;
+        return $this;
+    }
 
 }

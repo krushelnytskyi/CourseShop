@@ -35,10 +35,12 @@ class Select extends Statement
 
     /**
      * @param string $condition
+     * @return $this
      */
     public function setCondition($condition)
     {
         $this->condition = $condition;
+        return $this;
     }
 
     /**
@@ -136,6 +138,7 @@ class Select extends Statement
         $result->execute();
         $rowsArray = [];
 
+
         if (false !== $result) {
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $rowsArray[] = $row;
@@ -143,5 +146,7 @@ class Select extends Statement
         }
         return $rowsArray;
     }
+
+
 
 }

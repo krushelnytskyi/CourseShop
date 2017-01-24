@@ -43,5 +43,72 @@ class CommunityInsiders
      */
     private $permissionLevel;
 
+    /**
+     * @return Community
+     */
+    public function getId(): Community
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPermissionLevel(): int
+    {
+        return $this->permissionLevel;
+    }
+
+    /**
+     * @param Community $id
+     * @return $this
+     */
+    public function setId(Community $id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @param int $permissionLevel
+     * @return $this
+     */
+    public function setPermissionLevel(int $permissionLevel)
+    {
+        $this->permissionLevel = $permissionLevel;
+        return $this;
+    }
+
+    /**
+     * CommunityInsiders constructor.
+     * @param int|null $id
+     * @param User $user
+     * @param int $permissionLevel
+     */
+    public function __construct($id, $user, $permissionLevel)
+    {
+        $this->id = $id;
+        $this->user = $user;
+        $this->permissionLevel = $permissionLevel;
+    }
+
 
 }
