@@ -138,7 +138,6 @@ class Select extends Statement
         $result->execute();
         $rowsArray = [];
 
-
         if (false !== $result) {
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $rowsArray[] = $row;
