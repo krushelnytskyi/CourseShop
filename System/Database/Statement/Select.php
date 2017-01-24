@@ -147,6 +147,4 @@ class Select extends Statement
         return $rowsArray;
     }
 
-
-
 }
