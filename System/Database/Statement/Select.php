@@ -35,10 +35,12 @@ class Select extends Statement
 
     /**
      * @param string $condition
+     * @return $this
      */
     public function setCondition($condition)
     {
         $this->condition = $condition;
+        return $this;
     }
 
     /**

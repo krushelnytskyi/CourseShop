@@ -36,12 +36,12 @@ class User
     private $id;
 
     /**
-     * User login
+     * Users nickname for login
      *
-     * @columnType(VARCHAR(32) NOT NULL)
+     * @columnType(VARCHAR(32) NOT NULL UNIQUE)
      * @var string
      */
-    private $name;
+    private $nickname;
 
     /**
      * Information about user
@@ -54,7 +54,7 @@ class User
     /**
      * User gender
      *
-     * @columnType(INT(11) UNSIGNED)
+     * @columnType(TINYINT(1) UNSIGNED)
      * @var int
      */
     private $gender;
@@ -64,7 +64,7 @@ class User
      * User rating = +2 for each like on his articles,
      * +1 for each like on his comment
      *
-     * @columnType(INT(11) NOT NULL)
+     * @columnType(INT(11) NOT NULL DEFAULT 0)
      * @var int
      */
     private $rating;
@@ -79,7 +79,7 @@ class User
      *  2 = moderator,
      *  3 = superModerator
      *
-     * @columnType(TINYINT(1)  NOT NULL)
+     * @columnType(TINYINT(1) NOT NULL DEFAULT 0)
      * @var int
      */
     private $grade;
@@ -96,7 +96,7 @@ class User
     /**
      * User email
      *
-     * @columnType(VARCHAR(127) NOT NULL)
+     * @columnType(VARCHAR(127) NOT NULL UNIQUE)
      * @var int
      */
     private $email;
@@ -126,10 +126,227 @@ class User
     private $settings = [];
 
     /**
+     * User constructor.
+     * @param int|null $id
+     * @param string $nickname
+     * @param string $about
+     * @param int $gender
+     * @param int $rating
+     * @param int $grade
+     * @param \DateTime $unbanDate
+     * @param int $email
+     * @param string $password
+     * @param \DateTime $lastLogin
+     * @param array $settings
+     */
+    public function __construct($id, $nickname, $about, $gender, $rating, $grade, \DateTime $unbanDate, $email, $password, \DateTime $lastLogin, array $settings)
+    {
+        $this->id = $id;
+        $this->nickname = $nickname;
+        $this->about = $about;
+        $this->gender = $gender;
+        $this->rating = $rating;
+        $this->grade = $grade;
+        $this->unbanDate = $unbanDate;
+        $this->email = $email;
+        $this->password = $password;
+        $this->lastLogin = $lastLogin;
+        $this->settings = $settings;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNickname(): string
+    {
+        return $this->nickname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAbout(): string
+    {
+        return $this->about;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGender(): int
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRating(): int
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGrade(): int
+    {
+        return $this->grade;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUnbanDate(): \DateTime
+    {
+        return $this->unbanDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEmail(): int
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastLogin(): \DateTime
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSettings(): array
+    {
+        return $this->settings;
+    }
+
+    /**
+     * @param string $about
+     * @return $this
+     */
+    public function setAbout(string $about)
+    {
+        $this->about = $about;
+        return $this;
+    }
+
+    /**
+     * @param int $gender
+     * @return $this
+     */
+    public function setGender(int $gender)
+    {
+        $this->gender = $gender;
+        return $this;
+    }
+
+    /**
+     * @param int $rating
+     * @return $this
+     */
+    public function setRating(int $rating)
+    {
+        $this->rating = $rating;
+        return $this;
+    }
+
+    /**
+     * @param int $grade
+     * @return $this
+     */
+    public function setGrade(int $grade)
+    {
+        $this->grade = $grade;
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $unbanDate
+     * @return $this
+     */
+    public function setUnbanDate(\DateTime $unbanDate)
+    {
+        $this->unbanDate = $unbanDate;
+        return $this;
+    }
+
+    /**
+     * @param int $email
+     * @return $this
+     */
+    public function setEmail(int $email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @param string $password
+     * @return $this
+     */
+    public function setPassword(string $password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $lastLogin
+     * @return $this
+     */
+    public function setLastLogin(\DateTime $lastLogin)
+    {
+        $this->lastLogin = $lastLogin;
+        return $this;
+    }
+
+    /**
+     * @param array $settings
+     * @return $this
+     */
+    public function setSettings(array $settings)
+    {
+        $this->settings = $settings;
+        return $this;
+    }
+
+    /**
+     * @param string $nickname
+     * @return $this
+     */
+    public function setNickname(string $nickname)
+    {
+        $this->nickname = $nickname;
+        return $this;
+    }
+
+
+    /**
      * @param $password
      * @return bool|string
      */
-
     public static function encodePassword($password)
     {
         $hash = password_hash(
@@ -142,4 +359,8 @@ class User
 
         return $hash;
     }
+
+
+
+
 }

@@ -23,8 +23,37 @@ class TagsInArticle
      * key for tag
      *
      * @columnType(INT(11) UNSIGNED NOT NULL)
+     * @foreignModel(MVC\Models\Tag)
+     * @foreignField(id)
      * @var Tag
      */
     private $tag;
+
+    /**
+     * TagsInArticle constructor.
+     * @param Article $article
+     * @param Tag $tag
+     */
+    public function __construct(Article $article, Tag $tag)
+    {
+        $this->article = $article;
+        $this->tag = $tag;
+    }
+
+    /**
+     * @return Article
+     */
+    public function getArticle(): Article
+    {
+        return $this->article;
+    }
+
+    /**
+     * @return Tag
+     */
+    public function getTag(): Tag
+    {
+        return $this->tag;
+    }
 
 }

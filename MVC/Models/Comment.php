@@ -22,15 +22,6 @@ class Comment
     private $id;
 
     /**
-     * Unique key for article
-     *
-     * @columnType(INT(11) UNSIGNED NOT NULL)
-     * @foreignModel(MVC\Models\Article)
-     * @foreignField(id)
-     * @var Article
-     */
-    private $article;
-    /**
      * Unique key for User
      *
      * @columnType(INT(11) UNSIGNED NOT NULL)
@@ -77,6 +68,7 @@ class Comment
      * or something else...
      *
      * @columnType(INT(11) UNSIGNED NOT NULL)
+     * @selector(parentType)
      * @foreignModel(MVC\Models\Article,MVC\Models\Comment)
      * @foreignField(id)
      * @var Article|Comment
@@ -87,10 +79,179 @@ class Comment
      * Type of parent
      *
      * @columnType(TINYINT(1) UNSIGNED NOT NULL)
-     * @foreignModel(MVC\Models\Article,MVC\Models\Comment)
-     * @foreignField(id)
      * @var int
      */
     private $parentType;
+
+    /**
+     * Comment constructor.
+     * @param int $id
+     * @param Article $article
+     * @param User $user
+     * @param int $likes
+     * @param int $dislikes
+     * @param String $body
+     * @param \DateTime $created
+     * @param Article|Comment $parent
+     * @param $parentType
+     */
+    public function __construct($id, Article $article, User $user, $likes, $dislikes, $body, \DateTime $created, $parent, $parentType)
+    {
+        $this->id = $id;
+        $this->article = $article;
+        $this->user = $user;
+        $this->likes = $likes;
+        $this->dislikes = $dislikes;
+        $this->body = $body;
+        $this->created = $created;
+        $this->parent = $parent;
+        $this->parentType = $parentType;
+    }
+
+    /**
+     * @param Article $article
+     * @return $this
+     */
+    public function setArticle(Article $article)
+    {
+        $this->article = $article;
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @param int $likes
+     * @return $this
+     */
+    public function setLikes(int $likes)
+    {
+        $this->likes = $likes;
+        return $this;
+    }
+
+    /**
+     * @param int $dislikes
+     * @return $this
+     */
+    public function setDislikes(int $dislikes)
+    {
+        $this->dislikes = $dislikes;
+        return $this;
+    }
+
+    /**
+     * @param String $body
+     * @return $this
+     */
+    public function setBody(String $body)
+    {
+        $this->body = $body;
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $created
+     * @return $this
+     */
+    public function setCreated(\DateTime $created)
+    {
+        $this->created = $created;
+        return $this;
+    }
+
+    /**
+     * @param Article|Comment $parent
+     * @return $this
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * @param mixed $parentType
+     * @return $this
+     */
+    public function setParentType($parentType)
+    {
+        $this->parentType = $parentType;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDislikes(): int
+    {
+        return $this->dislikes;
+    }
+
+    /**
+     * @return String
+     */
+    public function getBody(): String
+    {
+        return $this->body;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated(): \DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return Article|Comment
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @return int
+     */
+    public function getParentType(): int
+    {
+        return $this->parentType;
+    }
+
+
 
 }

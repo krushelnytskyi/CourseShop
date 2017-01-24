@@ -120,4 +120,228 @@ class Article
      */
     private $updated;
 
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @param int $community
+     * @return $this
+     */
+    public function setCommunity($community)
+    {
+        $this->community = $community;
+        return $this;
+    }
+
+    /**
+     * @param bool $isModerated
+     * @return $this
+     */
+    public function setIsModerated($isModerated)
+    {
+        $this->isModerated = $isModerated;
+        return $this;
+    }
+
+    /**
+     * @param String $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @param String $body
+     * @return $this
+     */
+    public function setBody($body)
+    {
+        $this->body = $body;
+        return $this;
+    }
+
+    /**
+     * @param String $tags
+     * @return $this
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+        return $this;
+    }
+
+    /**
+     * @param float $rating
+     * @return $this
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+        return $this;
+    }
+
+    /**
+     * @param int $likes
+     * @return $this
+     */
+    public function setLikes($likes)
+    {
+        $this->likes = $likes;
+        return $this;
+    }
+
+    /**
+     * @param int $dislikes
+     * @return $this
+     */
+    public function setDislikes($dislikes)
+    {
+        $this->dislikes = $dislikes;
+        return $this;
+    }
+
+    /**
+     * @param int $views
+     * @return $this
+     */
+    public function setViews($views)
+    {
+        $this->views = $views;
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $created
+     * @return $this
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $updated
+     * @return $this
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCommunity()
+    {
+        return $this->community;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isModerated()
+    {
+        return $this->isModerated;
+    }
+
+    /**
+     * @return String
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return String
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * @return String
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDislikes()
+    {
+        return $this->dislikes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
 }

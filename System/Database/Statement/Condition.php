@@ -24,7 +24,7 @@ class Condition
     /**
      * @var bool
      */
-    private $blocked = false;
+    protected $blocked = false;
 
     /**
      * Condition constructor.
