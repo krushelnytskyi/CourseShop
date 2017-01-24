@@ -3,8 +3,8 @@
 namespace System\ORM;
 
 
-use System\Database\Statement\IndpndtConditions;
-use System\Pattern\Singleton;
+use System\Database\Statement\Condition;
+use System\Database\Statement\Select;
 use System\Database\Connection;
 
 
@@ -16,31 +16,41 @@ use System\Database\Connection;
  */
 class Repository
 {
-
-    use Singleton;
+    /**
+     * @var \ReflectionClass
+     */
+    protected $reflection;
 
     /**
-     * @var Connection
+     * @var string
      */
-    protected $connection;
+    protected $storage;
 
     /**
-     * @var CashedModel[]
+     * @var array
      */
-    protected $cache = [];
-
-    /**
-     * @var string conditions
-     */
-    protected $conditions;
+    protected $columns = [];
 
     /**
      * Repository constructor.
+     * @param $modelClass
      */
-    public function __construct()
+    public function __construct($modelClass)
     {
-        $this->connection = Connection::getInstance();
-        $this->cacheModels();
+        $this->reflection = new \ReflectionClass($modelClass);
+
+        $docComment = $this->reflection->getDocComment();
+
+        if (preg_match('/@table\((.+)\)/', $docComment, $matches) === 1) {
+            $this->storage = $matches[1];
+        }
+
+        foreach ($this->reflection->getProperties() as $property) {
+            if (preg_match('/@columnType\((.*)\)/', $property->getDocComment(), $tempResult)) {
+                $this->columns[] = $property->getName();
+            }
+        }
+
     }
 
     /**
@@ -65,32 +75,27 @@ class Repository
      * @return int
      */
     public function save($model)
-    {       
-        $cachedModel = $this->getCachedModel(get_class($model));
-        if (isset($cachedModel)) {
-            if ($cachedModel->getPrimaryKeyField() !== null) {
+    {
+        $statement = Connection::getInstance()
+            ->insert()
+            ->from($this->storage);
 
-                //I just didn't have enought time. I goint to finisf this method to friday.
-                //Check unique fields and update
+        $values = [];
 
-            } else {
+        foreach ($this->columns as $column) {
+            $property = $this->reflection->getProperty($column);
+            $property->setAccessible(true);
 
-                //Check unique fields and insert
-
+            $value = $property->getValue($model);
+            if ($value !== null) {
+                $values[$property->getName()] = $value;
             }
+
+            $property->setAccessible(false);
         }
 
-        return 0;
+        return $statement->values($values)->execute();
 
-    }
-
-    /**
-     * @param $class
-     * @return CashedModel
-     */
-    public function getCachedModel($class)
-    {
-        return $this->cache[$class];
     }
 
     /**
@@ -107,104 +112,45 @@ class Repository
      * @param int $limit
      * @return array
      */
-    public function findBy($model, $conditions = null, $limit = null)
+    public function findBy($criteria = [], $limit = null, $offset = null, $order = null)
     {
         $models = [];
-        $cashedModel = $this->getCachedModel($model);
 
-        if ($conditions !== null) {
-            $this->conditions = $conditions;
+        $statement = Connection::getInstance()
+            ->select()
+            ->from($this->storage);
+
+        if ($limit !== null) {
+            $statement->limit($limit);
         }
 
-        if ($cashedModel !== null) {
-            $select = $this->connection->select()->from($this->getCachedModel($model)->getTableName())->setCondition($this->conditions);
+        if (empty($criteria) === false) {
+             /** @var Condition $condition */
+            $condition = $statement->where();
 
-            if ($limit !== null) {
-                $select->limit($limit);
+            foreach ($criteria as $field => $value) {
+                $condition->conditionAnd()->compare($field, $value, '=');
             }
-            $rows = $select->execute();
-            $reflectionClass = new \ReflectionClass($model);
-            foreach ($rows as $row) {
 
-                foreach ($row as $field => $value) {
-
-                    //recursive filling parameters by foreign objects
-
-                    if (isset($cashedModel->getForeignFields()[$field])) {
-
-                        if (isset($cashedModel->getModelSelectors()[$field])) {             // --===<<<3
-                            $selectorValue = $cashedModel->getModelSelectors()[$field];
-                            $foreignModels = explode(',', $cashedModel->getForeignModels()[$field])[$selectorValue];
-                        } else {
-                            $foreignModels = $cashedModel->getForeignModels()[$field];
-                        }
-
-                        $condition = new IndpndtConditions();
-                        $condition->compare($cashedModel->getForeignFields()[$field], $value, '=')->closeCondition();
-                        $row[$field] = $this->findBy($foreignModels, $condition)[0];
-                    }
-                }
-
-                $models[] = $reflectionClass->newInstanceArgs($row);
-            }
+            /** @var Select $statement */
+            $statement = $condition->closeCondition();
         }
+
+        $rows = $statement->execute();
+
+        foreach ($rows as $row) {
+            $model = $this->reflection->newInstance();
+
+            foreach ($this->columns as $column) {
+                $reflectionProperty = $this->reflection->getProperty($column);
+                $reflectionProperty->setAccessible(true);
+                $reflectionProperty->setValue($model, $row[$column]);
+                $reflectionProperty->setAccessible(false);
+            }
+
+            $models[] = $model;
+        }
+
         return $models;
-    }
-
-    /**
-     * ...
-     */
-    protected function cacheModels()
-    {
-        foreach ($this->getModels() as $class) {
-            $reflectionClass = new \ReflectionClass($class);
-            $table = null;
-            $primaryKeyField = null;
-            $fields = [];
-            $uniqueFields = [];
-            $modelSelectors = [];
-            $foreignModels = [];
-            $foreignFields = [];
-            $tempResult = [];
-            $tempResult2 = [];
-            preg_match('/@table\((.*)\)/', $reflectionClass->getDocComment(), $tempResult);
-            if (isset($tempResult[1])) {
-                $table = $tempResult[1];
-                foreach ($reflectionClass->getProperties() as $property) {
-                    if (preg_match('/@columnType\((.*)\)/', $property->getDocComment(), $tempResult)) {
-                        $fields[] = $property->getName();
-
-                        if (preg_match('/AUTO_INCREMENT/', $tempResult[1])) {
-
-                            $primaryKeyField = $property->getName();
-                        }
-                        if (preg_match('/UNIQUE/', $tempResult[1])) {
-                            $uniqueFields[] = $property->getName();
-                        }
-                        if (preg_match('/@selector\((.*)\)/', $property->getDocComment(), $tempResult)) {     // --==<<3
-                            $modelSelectors[$property->getName()] = $tempResult[1];
-                        }
-                        if (preg_match('/@foreignModel\((.*)\)/', $property->getDocComment(), $tempResult) and
-                            preg_match('/@foreignField\((.*)\)/', $property->getDocComment(), $tempResult2)){
-
-                            $foreignModels[$property->getName()] = [$tempResult[1]];
-                            $foreignFields[$property->getName()] = [$tempResult2[1]];
-                        }
-                    }
-                }
-            }
-
-            $this->cache[$class] = new CashedModel($table, $class, $primaryKeyField, $fields, $uniqueFields, $modelSelectors, $foreignFields, $foreignModels);
-        }
-    }
-
-    /**
-     * @param string $conditions
-     * @return $this
-     */
-    public function setConditions($conditions)
-    {
-        $this->conditions = $conditions;
-        return $this;
     }
 }

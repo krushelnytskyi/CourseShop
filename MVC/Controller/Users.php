@@ -5,9 +5,9 @@ namespace MVC\Controller;
 use MVC\Models\Tag;
 use MVC\Models\User;
 use System\Config;
-use System\Database\Connection;
 use System\MVC\Controller\Controller;
 use System\ORM\Repository;
+use System\View;
 
 /**
  * Class Users
@@ -21,7 +21,10 @@ class Users extends Controller
      */
     public function loginAction()
     {
-        $this->view('users/login');
+        $view = new View('users/login');
+        $view->assign('email', 'test email');
+
+        return $view;
     }
 
     /**
@@ -29,41 +32,37 @@ class Users extends Controller
      */
     public function registerAction()
     {
-        $database = Config::get('database');
         $login = $_POST['register_username'];
         $email = $_POST['register_email'];
         $password = $_POST['register_password'];
 
-        $repeatPassword = $_POST['register_repeat_password'];
-
-        if ($_POST['register_gender'] === 'male') {
-            $gender = 0;
-        } else if($_POST['register_gender'] === 'female') {
-            $gender = 1;
-        }
-
-        $mysqli = new \mysqli(
-            $database['host'],
-            $database['username'],
-            $database['password'],
-            $database['database']
+        $repo = new Repository(User::class);
+        $users = $repo->findBy(
+            [
+                'email'    => $email,
+                'password' => $password
+            ]
         );
 
-        if (isset($_POST['register']) && $password === $repeatPassword) {
-            $sql = "INSERT INTO users (login, email, password, gender)
-            VALUES ('$login', '$email', '$password', $gender)";
+        if (empty($users) === true) {
+            $user = new User();
+            $user->setEmail($email);
+            // ...
 
-            if ($mysqli->query($sql)) {
-                echo '<script> alert("Your account created successfully"); </script>';
-            } else
-                echo '<script> alert("Error"); </script>';
-
-        }
-        else {
-            echo '<script> alert("Паролі не співпадають!"); </script>';
+            $repo->save($user);
         }
 
         $this->view('users/register');
+    }
+
+
+    public function testAction()
+    {
+        $tag = new Tag();
+        $tag->setValue('from ORM');
+
+        $repo = new Repository(Tag::class);
+        echo $repo->save($tag);
     }
 
 }

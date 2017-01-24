@@ -9,7 +9,7 @@
                 <form action="/users/login" method="post">
                     <div class="form-group">
                         <label for="login_email" class="col-form-label">Email:</label>
-                        <input type="email" name="login_email" class="form-control" autofocus required>
+                        <input type="email" name="login_email" class="form-control" autofocus required value="<?= $this->email ?>">
                     </div>
                     <div class="form-group">
                         <label for="login_password" class="col-form-label">Password:</label>

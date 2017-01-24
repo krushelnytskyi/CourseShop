@@ -63,7 +63,7 @@ class Insert extends Statement
 
         $result = Connection::getInstance()->getLink()->prepare($sql)->execute();
 
-        return (false === $result) ? false : Connection::getInstance()->getLink()->insert_id;
+        return (false === $result) ? false : Connection::getInstance()->getLink()->lastInsertId();
     }
 
 }

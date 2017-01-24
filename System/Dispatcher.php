@@ -22,6 +22,8 @@ class Dispatcher
      */
     public function dispatch()
     {
+        session_start();
+
         $url = trim($_SERVER['REQUEST_URI'], '/');
         $urlParts = explode('/', $url);
 
@@ -47,7 +49,11 @@ class Dispatcher
 
         if (class_exists($controller) && method_exists($controller, $action)) {
             $controller = new $controller();
-            $controller->$action();
+            $view = $controller->$action();
+
+            if ($view instanceof View) {
+                echo $view->getBody();
+            }
         } else {
             ob_start();
             include_once APP_ROOT . '/MVC/View/errors/404.phtml';

@@ -27,18 +27,6 @@ class Tag
     private $value;
 
     /**
-     * Tag constructor.
-     * @param int|null $id
-     * @param string $value
-     */
-
-    public function __construct($id, $value)
-    {
-        $this->id = $id;
-        $this->value = $value;
-    }
-
-    /**
      * @return int
      */
     public function getId(): int

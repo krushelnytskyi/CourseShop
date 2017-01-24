@@ -241,7 +241,11 @@ class Comment
      */
     public function getParent()
     {
-        return $this->parent;
+        if ($this->getParentType() === static::PARENT_TYPE_ARTICLE) {
+            return new Article();
+        } else {
+            return new Comment();
+        }
     }
 
     /**
