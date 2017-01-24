@@ -57,9 +57,14 @@ class Connection
         return new Insert();
     }
 
+    /**
+     * @return Delete
+     */
     public function delete()
     {
+        return new Delete();
     }
+
 
     public function update()
     {
