@@ -5,7 +5,7 @@ namespace MVC\Models;
 /**
  * Class Subscriptions
  * @package MVC\Models
- * @table(subscriptions)
+ * @table(Subscriptions)
  */
 class Subscriptions
 {
@@ -73,21 +73,6 @@ class Subscriptions
      * @var Article|Tag|User
      */
     private $contentId;
-
-    /**
-     * Subscriptions constructor.
-     * @param User $user
-     * @param $positive
-     * @param $subscriptionType
-     * @param $id
-     */
-    public function __construct(User $user, $positive, $subscriptionType, $id)
-    {
-        $this->user = $user;
-        $this->positive = $positive;
-        $this->subscriptionType = $subscriptionType;
-        $this->contentId = $id;
-    }
 
     /**
      * @return User

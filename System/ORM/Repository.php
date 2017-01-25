@@ -99,17 +99,40 @@ class Repository
     }
 
     /**
-     * Usage:
-     * $repository = \System\ORM\Repository::getInstance();
-     * $condition = new \System\Database\Statement\IndpndtConditions();
-     * $condition = $condition->compare('id',10,'<')->closeCondition();
-     * $repository->findBy(\MVC\Models\Tag::class,$condition,5);
-     *
-     * Also, this class supports the old condition class
-     *
-     * @param class
-     * @param string $conditions
-     * @param int $limit
+     * @param $model
+     * @return int
+     */
+    public function delete($model)
+    {
+
+        $statement = Connection::getInstance()
+            ->delete()
+            ->from($this->storage);
+
+
+        $where = '';
+
+        foreach ($this->columns as $column) {
+            $property = $this->reflection->getProperty($column);
+            $property->setAccessible(true);
+
+            $value = $property->getValue($model);
+            if ($value !== null) {
+                $where .=  $property->getName().'=\''.$value.'\' ';
+            }
+
+            $property->setAccessible(false);
+        }
+
+        return $statement->where('WHERE '.$where)->execute();
+
+    }
+
+    /**
+     * @param array $criteria
+     * @param null $limit
+     * @param null $offset
+     * @param null $order
      * @return array
      */
     public function findBy($criteria = [], $limit = null, $offset = null, $order = null)

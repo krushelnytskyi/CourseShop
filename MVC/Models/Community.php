@@ -5,7 +5,7 @@ namespace MVC\Models;
 /**
  * Class Community
  * @package MVC\Models
- * @table(communities)
+ * @table(Communities)
  */
 class Community
 {
@@ -53,23 +53,6 @@ class Community
      * @var boolean
      */
     private $secured;
-
-    /**
-     * Community constructor.
-     * @param int $id
-     * @param User $user
-     * @param String $name
-     * @param string $about
-     * @param bool $secured
-     */
-    public function __construct($id, User $user, $name, $about, $secured)
-    {
-        $this->id = $id;
-        $this->user = $user;
-        $this->name = $name;
-        $this->about = $about;
-        $this->secured = $secured;
-    }
 
     /**
      * @param User $user

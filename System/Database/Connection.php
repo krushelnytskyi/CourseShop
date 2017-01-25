@@ -3,6 +3,7 @@
 namespace System\Database;
 
 use System\Config;
+use System\Database\Statement\Delete;
 use System\Database\Statement\Insert;
 use System\Database\Statement\Select;
 use System\Database\Statement\Update;

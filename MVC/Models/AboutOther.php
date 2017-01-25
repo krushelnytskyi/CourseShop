@@ -6,7 +6,7 @@ namespace MVC\Models;
 /**
  * Class Comment
  * @package MVC\Models
- * @table(aboutOther)
+ * @table(About_other)
  * record anonymous records about other users
  */
 class AboutOther
@@ -39,19 +39,6 @@ class AboutOther
      * @var String
      */
     private $value;
-
-    /**
-     * AboutOther constructor.
-     * @param User $user
-     * @param User $targetUser
-     * @param String $value
-     */
-    public function __construct(User $user, User $targetUser, $value)
-    {
-        $this->user = $user;
-        $this->targetUser = $targetUser;
-        $this->value = $value;
-    }
 
     /**
      * @param User $user

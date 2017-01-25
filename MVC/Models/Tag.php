@@ -6,7 +6,7 @@ namespace MVC\Models;
 /**
  * Class Tag
  * @package MVC\Models
- * @table(tags)
+ * @table(Tags)
  */
 class Tag
 {

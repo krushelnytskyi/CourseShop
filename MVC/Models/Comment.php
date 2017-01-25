@@ -6,7 +6,7 @@ namespace MVC\Models;
 /**
  * Class Comment
  * @package MVC\Models
- * @table(comments)
+ * @table(Comments)
  */
 class Comment
 {
@@ -82,31 +82,6 @@ class Comment
      * @var int
      */
     private $parentType;
-
-    /**
-     * Comment constructor.
-     * @param int $id
-     * @param Article $article
-     * @param User $user
-     * @param int $likes
-     * @param int $dislikes
-     * @param String $body
-     * @param \DateTime $created
-     * @param Article|Comment $parent
-     * @param $parentType
-     */
-    public function __construct($id, Article $article, User $user, $likes, $dislikes, $body, \DateTime $created, $parent, $parentType)
-    {
-        $this->id = $id;
-        $this->article = $article;
-        $this->user = $user;
-        $this->likes = $likes;
-        $this->dislikes = $dislikes;
-        $this->body = $body;
-        $this->created = $created;
-        $this->parent = $parent;
-        $this->parentType = $parentType;
-    }
 
     /**
      * @param Article $article
