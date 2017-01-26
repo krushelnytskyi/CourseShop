@@ -4,9 +4,11 @@ namespace MVC\Controller;
 
 use MVC\Models\Tag;
 use MVC\Models\User;
-use System\Config;
+use System\Form;
 use System\MVC\Controller\Controller;
 use System\ORM\Repository;
+use System\Validators\Email;
+use System\Validators\Strings;
 use System\View;
 
 /**
@@ -32,27 +34,60 @@ class Users extends Controller
      */
     public function registerAction()
     {
-        $login = $_POST['register_username'];
-        $email = $_POST['register_email'];
-        $password = $_POST['register_password'];
+        $view = new View('users/register');
 
-        $repo = new Repository(User::class);
-        $users = $repo->findBy(
+        if (empty($_POST)) {
+            return $view;
+        }
+
+        $form = new Form(
+            $_POST,
             [
-                'email'    => $email,
-                'password' => $password
+                'register_username' => [
+                    new Strings(),
+                ],
+                'register_email' => [
+                    new Email(),
+                ],
+                'register_password' => [
+                    new Strings(),
+                ],
+                'register_repeat_password' => [
+                    new Strings(),
+                ],
             ]
         );
 
-        if (empty($users) === true) {
-            $user = new User();
-            $user->setEmail($email);
-            // ...
+        if (false === $form->execute()) {
+            $view->assign('errors', $form->getErrors());
 
-            $repo->save($user);
+            return $view;
         }
 
-        $this->view('users/register');
+
+        $repository = new Repository(User::class);
+
+        $user = $repository->findBy(
+            [
+                'email'    => $form->getFieldValue('register_email'),
+                'password' => User::encodePassword($form->getFieldValue('register_password'))
+            ]
+        );
+
+        if (empty($user) === true) {
+            $user = new User();
+            $user->setNickname($form->getFieldValue('register_username'));
+            $user->setEmail($form->getFieldValue('register_email'));
+            $user->setPassword(User::encodePassword($form->getFieldValue('register_password')));
+            $repository->save($user);
+
+        }
+
+
+        $view->assign('success', true);
+
+        return $view;
+
     }
 
 
