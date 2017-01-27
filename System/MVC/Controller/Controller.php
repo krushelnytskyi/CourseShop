@@ -1,6 +1,7 @@
 <?php
 
 namespace System\MVC\Controller;
+use System\Dispatcher;
 
 /**
  * Class Controller
@@ -35,6 +36,12 @@ abstract class Controller
     {
         header('Content-Type: application/json');
         echo json_encode($data);
+        exit(0);
+    }
+
+    public function forward($url)
+    {
+        Dispatcher::getInstance()->dispatch($url);
         exit(0);
     }
 

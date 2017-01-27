@@ -2,29 +2,33 @@
 
 namespace System;
 
+use System\Pattern\Singleton;
+
+
 /**
  * Class Dispatcher
  * @package System
+ *
+ * @method static Dispatcher getInstance()
  */
-
-
-    /**
-     * Main dispatcher control class
-     * @return void
-     */
-
 class Dispatcher
 {
 
+    use Singleton;
+
     /**
      * Main dispatcher control class
-     * @return void
+     *
+     * @param bool $url
      */
-    public function dispatch()
+    public function dispatch($url = false)
     {
         session_start();
 
-        $url = trim($_SERVER['REQUEST_URI'], '/');
+        if ($url === false) {
+            $url = trim($_SERVER['REQUEST_URI'], '/');
+        }
+
         $urlParts = explode('/', $url);
 
         $controller = 'MVC\Controller\\' . ucfirst($urlParts[0]);

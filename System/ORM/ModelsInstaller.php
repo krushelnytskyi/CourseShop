@@ -2,7 +2,6 @@
 
 namespace System\ORM;
 
-
 use System\Database\Connection;
 
 class ModelsInstaller
@@ -14,7 +13,7 @@ class ModelsInstaller
      */
     public function installModels()
     {
-        foreach (Repository::getInstance()->getModels() as $model) {
+        foreach ($this->getModels() as $model) {
             $this->installModel($model);
         }
     }
@@ -47,6 +46,23 @@ class ModelsInstaller
         } else {
             echo $modelClass . ' class does\'t exist.' . PHP_EOL;
         }
+    }
+
+    /**
+     * @param string
+     * @return array string mo
+     */
+    public function getModels($directory = 'MVC/Models')
+    {
+        $classes = [];
+
+        foreach (array_diff(scandir(APP_ROOT . $directory), array('..', '.')) as $file) {
+            $class = str_replace('/', '\\', $directory) . '\\' . str_replace('.php', '', $file);
+            if (class_exists($class)) {
+                $classes[] = $class;
+            }
+        }
+        return $classes;
     }
 
 }

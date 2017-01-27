@@ -54,23 +54,6 @@ class Repository
     }
 
     /**
-     * @param string
-     * @return array string mo
-     */
-    public function getModels($directory = 'MVC/Models')
-    {
-        $classes = [];
-
-        foreach (array_diff(scandir(APP_ROOT . $directory), array('..', '.')) as $file) {
-            $class = str_replace('/', '\\', $directory) . '\\' . str_replace('.php', '', $file);
-            if (class_exists($class)) {
-                $classes[] = $class;
-            }
-        }
-        return $classes;
-    }
-
-    /**
      * @param $model
      * @return int
      */
@@ -176,4 +159,15 @@ class Repository
 
         return $models;
     }
+
+    /**
+     * @param array $criteria
+     * @return object|null
+     */
+    public function findOneBy(array $criteria)
+    {
+        $models = $this->findBy($criteria, 1);
+        return (isset($models[0]) === true) ? $models[0] : null;
+    }
+
 }

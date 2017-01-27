@@ -2,8 +2,8 @@
 
 namespace MVC\Controller;
 
-use MVC\Models\Tag;
 use MVC\Models\User;
+use System\Auth\UserSession;
 use System\Form;
 use System\MVC\Controller\Controller;
 use System\ORM\Repository;
@@ -24,7 +24,38 @@ class Users extends Controller
     public function loginAction()
     {
         $view = new View('users/login');
-        $view->assign('email', 'test email');
+
+        $form = new Form(
+            $_POST,
+            [
+                'email' => [
+                    new Email(),
+                ],
+                'password' => [
+                    new Strings(),
+                ]
+            ]
+        );
+
+        if ($form->execute() === false) {
+            $view->assign('errors', $form->getErrors());
+            return $view;
+        }
+
+        $repository = new Repository(User::class);
+
+        /** @var User $user */
+        $user = $repository->findOneBy(
+            [
+                'email'    => $form->getFieldValue('email'),
+                'password' => User::encodePassword($form->getFieldValue('password'))
+            ]
+        );
+
+        if ($user !== null) {
+            UserSession::getInstance()->setIdentity($user->getId());
+            $this->forward('');
+        }
 
         return $view;
     }
@@ -43,16 +74,16 @@ class Users extends Controller
         $form = new Form(
             $_POST,
             [
-                'register_username' => [
+                'username' => [
                     new Strings(),
                 ],
-                'register_email' => [
+                'email' => [
                     new Email(),
                 ],
-                'register_password' => [
+                'password' => [
                     new Strings(),
                 ],
-                'register_repeat_password' => [
+                'repeat_password' => [
                     new Strings(),
                 ],
             ]
@@ -64,41 +95,35 @@ class Users extends Controller
             return $view;
         }
 
-
         $repository = new Repository(User::class);
 
-        $user = $repository->findBy(
+        $user = $repository->findOneBy(
             [
-                'email'    => $form->getFieldValue('register_email'),
-                'password' => User::encodePassword($form->getFieldValue('register_password'))
+                'email'    => $form->getFieldValue('email'),
             ]
         );
 
-        if (empty($user) === true) {
+        if ($user === null) {
             $user = new User();
-            $user->setNickname($form->getFieldValue('register_username'));
-            $user->setEmail($form->getFieldValue('register_email'));
-            $user->setPassword(User::encodePassword($form->getFieldValue('register_password')));
+            $user->setNickname($form->getFieldValue('username'));
+            $user->setEmail($form->getFieldValue('email'));
+            $user->setPassword(User::encodePassword($form->getFieldValue('password')));
             $repository->save($user);
-
+            $this->forward('users/login');
         }
-
 
         $view->assign('success', true);
 
         return $view;
-
     }
 
-
-    public function testAction()
+    /**
+     * Logout action
+     */
+    public function logoutAction()
     {
-        $tag = new Tag();
-        $tag->setValue('Дичь');
-
-        $repo = new Repository(Tag::class);
-        echo $repo->delete($tag);
-
+        UserSession::getInstance()->clearIdentity();
+        $this->forward('users/login');
     }
 
 }

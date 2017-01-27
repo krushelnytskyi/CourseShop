@@ -46,7 +46,8 @@ class Session
      */
     public function hasIdentity()
     {
-        return isset($_SESSION[static::IDENTITY]);
+        return isset($_SESSION[static::IDENTITY])
+            && $_SESSION[static::IDENTITY];
     }
 
     /**

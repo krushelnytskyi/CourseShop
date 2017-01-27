@@ -104,7 +104,7 @@ class User
     /**
      * User password
      *
-     * @columnType(VARCHAR(32) NOT NULL)
+     * @columnType(VARCHAR(72) NOT NULL)
      * @var string
      */
     private $password;
@@ -123,36 +123,7 @@ class User
      * @columnType(VARCHAR(1023))
      * @var array
      */
-    private $settings = [];
-
-    /**
-     * User constructor.
-     * @param int|null $id
-     * @param string $nickname
-     * @param string $about
-     * @param int $gender
-     * @param int $rating
-     * @param int $grade
-     * @param \DateTime $unbanDate
-     * @param int $email
-     * @param string $password
-     * @param \DateTime $lastLogin
-     * @param array $settings
-     */
-    public function __construct($id, $nickname, $about, $gender, $rating, $grade, \DateTime $unbanDate, $email, $password, \DateTime $lastLogin, array $settings)
-    {
-        $this->id = $id;
-        $this->nickname = $nickname;
-        $this->about = $about;
-        $this->gender = $gender;
-        $this->rating = $rating;
-        $this->grade = $grade;
-        $this->unbanDate = $unbanDate;
-        $this->email = $email;
-        $this->password = $password;
-        $this->lastLogin = $lastLogin;
-        $this->settings = $settings;
-    }
+    private $settings;
 
     /**
      * @return int
@@ -293,10 +264,10 @@ class User
     }
 
     /**
-     * @param int $email
+     * @param string $email
      * @return $this
      */
-    public function setEmail(int $email)
+    public function setEmail(string $email)
     {
         $this->email = $email;
         return $this;

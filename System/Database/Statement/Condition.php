@@ -49,7 +49,7 @@ class Condition
 
         if (false === $this->blocked) {
             $this->condition .= sprintf(
-                '%s %s %s',
+                '`%s` %s \'%s\'',
                 $nameColumn,
                 $comparisonOperator,
                 $value
@@ -150,9 +150,9 @@ class Condition
             $this->condition .= $nameColumn . ' IN (';
 
             if (is_array($valueArray) === true) {
-                $this->condition .= implode(',', $valueArray);
+                $this->condition .= '\'' . implode('\',\'', $valueArray) . '\'';
             } else {
-                $this->condition .= $valueArray;
+                $this->condition .= '\'' . $valueArray . '\'';
             }
             $this->condition .= ')';
             $this->blocked = true;
