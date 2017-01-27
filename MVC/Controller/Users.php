@@ -94,10 +94,11 @@ class Users extends Controller
     public function testAction()
     {
         $tag = new Tag();
-        $tag->setValue('from ORM');
+        $tag->setValue('Дичь');
 
         $repo = new Repository(Tag::class);
-        echo $repo->save($tag);
+        echo $repo->delete($tag);
+
     }
 
 }

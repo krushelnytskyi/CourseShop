@@ -5,7 +5,7 @@ namespace MVC\Models;
 /**
  * Class Notifications
  * @package MVC\Models
- * @table(notifications)
+ * @table(Notifications)
  * this model is very raw and needs to be improved!
  */
 class Notifications
@@ -43,21 +43,6 @@ class Notifications
      * @var \DateTime
      */
     private $created;
-
-    /**
-     * Notifications constructor.
-     * @param User $user
-     * @param String $value
-     * @param bool $isRead
-     * @param \DateTime $created
-     */
-    public function __construct(User $user, $value, $isRead, \DateTime $created)
-    {
-        $this->user = $user;
-        $this->value = $value;
-        $this->isRead = $isRead;
-        $this->created = $created;
-    }
 
     /**
      * @param User $user

@@ -2,6 +2,7 @@
 
 namespace System\Database\Statement;
 
+use System\Database\Connection;
 use System\Database\Statement;
 
 class Delete extends Statement
@@ -73,7 +74,7 @@ class Delete extends Statement
             $sql .= ' ' . $this->limit;
         }
 
-        $result = $this->connection->getLink()->query($sql);
+        $result = Connection::getInstance()->getLink()->prepare($sql)->execute();
 
         if ($result !== false) {
             return true;

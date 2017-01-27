@@ -5,7 +5,7 @@ namespace MVC\Models;
 /**
  * Class Opinions
  * @package MVC\Models
- * @table(opinions)
+ * @table(Opinions)
  * This table for saving likes and dislikes
  */
 class Opinions
@@ -60,23 +60,6 @@ class Opinions
      * @var int
      */
     private $opinion;
-
-    /**
-     * Opinions constructor.
-     * @param User $user
-     * @param \DateTime $date
-     * @param Article|Comment $contentId
-     * @param int $contentType
-     * @param int $opinion
-     */
-    public function __construct(User $user, \DateTime $date, $contentId, $contentType, $opinion)
-    {
-        $this->user = $user;
-        $this->date = $date;
-        $this->contentId = $contentId;
-        $this->contentType = $contentType;
-        $this->opinion = $opinion;
-    }
 
     /**
      * @param User $user

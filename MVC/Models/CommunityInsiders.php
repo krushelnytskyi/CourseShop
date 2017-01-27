@@ -6,7 +6,7 @@ namespace MVC\Models;
 /**
  * Class CommunityInsiders
  * @package MVC\Models
- * @table(communityInsiders)
+ * @table(Community_insiders)
  * In this table save only users with custom permissions!
  */
 class CommunityInsiders
@@ -97,18 +97,6 @@ class CommunityInsiders
         return $this;
     }
 
-    /**
-     * CommunityInsiders constructor.
-     * @param int|null $id
-     * @param User $user
-     * @param int $permissionLevel
-     */
-    public function __construct($id, $user, $permissionLevel)
-    {
-        $this->id = $id;
-        $this->user = $user;
-        $this->permissionLevel = $permissionLevel;
-    }
 
 
 }

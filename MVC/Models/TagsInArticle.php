@@ -5,7 +5,7 @@ namespace MVC\Models;
 /**
  * Class Tag
  * @package MVC\Models
- * @table(tagsInArticle)
+ * @table(Tags_In_Article)
  */
 class TagsInArticle
 {
@@ -29,16 +29,6 @@ class TagsInArticle
      */
     private $tag;
 
-    /**
-     * TagsInArticle constructor.
-     * @param Article $article
-     * @param Tag $tag
-     */
-    public function __construct(Article $article, Tag $tag)
-    {
-        $this->article = $article;
-        $this->tag = $tag;
-    }
 
     /**
      * @return Article
