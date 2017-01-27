@@ -1,26 +1,65 @@
-<nav class="navbar navbar-toggleable-md navbar-light ">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="#">Project Name</a>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Home </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="#">Disabled</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-3" type="text" placeholder="Search">
-            <button type="submit" class="btn btn-secondary">Go</button>
-        </form>
+<!-- sidebar -->
+<div class="col-lg-4 ">
+    <div class="sidebar bg-primary">
+        SIDEBAR INFO
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Log In</a></li>
+                <li><a href="#tabs-2">Register</a></li>
+            </ul>
+            <div id="tabs-1">
+                <form action="/users/login" method="post">
+                    <div class="form-group">
+                        <label for="login_email" class="col-form-label">Email:</label>
+                        <input type="email" name="login_email" class="form-control" autofocus required value="<?= $this->email ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="login_password" class="col-form-label">Password:</label>
+                        <input type="password" name="login_password" class="form-control" required>
+                    </div>
+                    <br/>
+                    <div class="text-right">
+                        <button class="btn btn-primary">Log In</button>
+                    </div>
+                </form>
+            </div>
+            <div id="tabs-2">
+                <form action="/users/register" method="post">
+                    <div class="form-group">
+                        <label for="register_username" class="col-form-label">Username:</label>
+                        <input type="text" name="register_username" class="form-control" autofocus required>
+                    </div>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="register_gender" value="male"> Male
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="register_gender" value="female"> Female
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register_email" class="col-form-label">Email:</label>
+                        <input type="email" name="register_email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register_password" class="col-form-label">Password:</label>
+                        <input type="password" name="register_password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register_repeat_password" class="col-form-label">Repeat Password:</label>
+                        <input type="password" name="register_repeat_password" class="form-control" required>
+                    </div>
+                    <br/>
+                    <div class="text-right">
+                        <button class="btn btn-success" name = "register">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</nav>
+</div>
+<!-- end sidebar -->
