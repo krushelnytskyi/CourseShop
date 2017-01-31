@@ -32,7 +32,7 @@ class Users extends Controller
                     new Email(),
                 ],
                 'password' => [
-                    new Strings(),
+                    new Strings(1,6),
                 ]
             ]
         );
@@ -75,16 +75,16 @@ class Users extends Controller
             $_POST,
             [
                 'username' => [
-                    new Strings(),
+                    new Strings(8,64),
                 ],
                 'email' => [
                     new Email(),
                 ],
                 'password' => [
-                    new Strings(),
+                    new Strings(1,6),
                 ],
                 'repeat_password' => [
-                    new Strings(),
+                    new Strings(1,6),
                 ],
             ]
         );
