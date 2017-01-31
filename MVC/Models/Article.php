@@ -1,13 +1,15 @@
 <?php
 
-
 namespace MVC\Models;
+
+use System\ORM\Model;
+
 /**
  * Class Article
  * @package MVC\Models
  * @table(articles)
  */
-class Article
+class Article extends Model
 {
 
     /**

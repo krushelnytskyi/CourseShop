@@ -2,6 +2,7 @@
 
 namespace MVC\Controller;
 
+use MVC\Models\Article;
 use MVC\Models\User;
 use System\Auth\UserSession;
 use System\Form;
@@ -126,4 +127,33 @@ class Users extends Controller
         $this->forward('users/login');
     }
 
+    /**
+     * User Settings action
+     */
+    public function settingsAction()
+    {
+    }
+
+    /**
+     * User profile action
+     */
+    public function profileAction()
+    {
+        $url = trim($_SERVER['REQUEST_URI'], '/');
+        list(,$id) = explode('/', $url);
+        $repo = new Repository(User::class);
+        $user = $repo->findOneBy(['id' => $id]);
+
+        if ($user === null) {
+            return new View('errors/404');
+        } else {
+            $view = new View('users/profile');
+            $view->assign('user', $user);
+            return $view;
+        }
+    }
+
+    public function testAction()
+    {
+    }
 }

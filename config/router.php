@@ -27,6 +27,14 @@ return [
         '^api\/.+\/(.+)' => [
             'controller' => 'MVC\Controller\Api\Users',
             'action'     => '$1'
+        ],
+        'users\/[0-9]+' => [
+            'controller' => \MVC\Controller\Users::class,
+            'action'     => 'profile'
+        ],
+        'articles\/[0-9]+' => [
+            'controller' => \MVC\Controller\Pages::class,
+            'action'     => 'article'
         ]
     ],
     'defaults' => [

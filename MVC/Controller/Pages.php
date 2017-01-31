@@ -35,8 +35,14 @@ class Pages extends Controller
         return $view;
     }
 
+    public function editAction()
+    {
+    }
+
     public function articleAction()
     {
+//        articles/1
+
         $this->view('pages/article');
     }
 
@@ -52,32 +58,29 @@ class Pages extends Controller
         }
 
         $form = new Form(
-            $_POST
-              //TO DO implement validation attribute
+            $_POST,
+            [
+                'title' => [],
+                'body' => [],
+                'tags' => [],
+            ]
         );
 
         if ($form->execute() === false){
             $view->assign('errors',$form->getErrors());
-            return $view;
-        }
+        } else {
+            $repository = new Repository(Article::class);
 
-        $repository = new Repository(Article::class);
-
-        $article = $repository->findOneBy(
-            [
-                'title' => $form->getFieldValue('Title')
-            ]
-        );
-
-        if ($article === null){
             $article = new Article();
             $article->setUser(Session::getInstance()->getIdentity());
-            $article->setTitle($form->getFieldValue('Title'));
-            $article->setBody($form->getFieldValue('Text'));
-            $article->setTags($form->getFieldValue('Tags'));
+            $article->setTitle($form->getFieldValue('title'));
+            $article->setBody($form->getFieldValue('body'));
+            $article->setTags($form->getFieldValue('tags'));
+            $article->setRating(0);
             $repository->save($article);
             $this->forward('pages/home');
         }
+
         return $view;
 
     }

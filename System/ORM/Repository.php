@@ -146,7 +146,9 @@ class Repository
         $rows = $statement->execute();
 
         foreach ($rows as $row) {
+            /** @var Model $model */
             $model = $this->reflection->newInstance();
+            $model->setNew(false);
 
             foreach ($this->columns as $column) {
                 $reflectionProperty = $this->reflection->getProperty($column);
