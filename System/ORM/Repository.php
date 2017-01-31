@@ -12,7 +12,6 @@ use System\Database\Connection;
  * Class Repository
  * @package System\ORM
  *
- * @method static Repository getInstance()
  */
 class Repository
 {
@@ -92,7 +91,6 @@ class Repository
             ->delete()
             ->from($this->storage);
 
-
         $where = '';
 
         foreach ($this->columns as $column) {
@@ -101,12 +99,12 @@ class Repository
 
             $value = $property->getValue($model);
             if ($value !== null) {
-                $where .=  $property->getName().'=\''.$value.'\' ';
+                $where .=  $property->getName().'=\''.$value.'\' AND ';
             }
 
             $property->setAccessible(false);
         }
-
+        $where = trim($where,' AND ');
         return $statement->where('WHERE '.$where)->execute();
 
     }
