@@ -3,6 +3,7 @@
 namespace MVC\Controller;
 
 use System\MVC\Controller\Controller;
+use System\View;
 
 /**
  * Class Pages
@@ -16,17 +17,25 @@ class Pages extends Controller
      */
     public function homeAction()
     {
-        $this->view('pages/home');
+        $view = new View('pages/home');
+        return $view;
     }
 
     public function articleAction()
     {
-        $this->view('pages/article');
+        $view = new View('pages/article');
+        return $view;
     }
 
     public function articleAddAction()
     {
-        $this->view('pages/articleAdd');
+        $view = new View('pages/articleAdd');
+        return $view;
     }
 
+    public function communityCreateAction()
+    {
+        $view = new View('pages/communityCreate');
+        return $view;
+    }
 }

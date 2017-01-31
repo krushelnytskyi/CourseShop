@@ -18,10 +18,11 @@
 </div>
 <div class="container content">
     <div class="row">
+        <?php $view = new \System\View(); ?>
         <?php if (\System\Auth\Session::getInstance()->hasIdentity() === true ): ?>
-        <?php include 'menu/user.phtml'; ?>
+        <?php $view->layout('menu/user'); ?>
         <?php else : ?>
-        <?php include 'menu/guest.phtml'; ?>
+        <?php $view->layout('menu/guest'); ?>
         <?php endif; ?>
 
         <?= $content; ?>

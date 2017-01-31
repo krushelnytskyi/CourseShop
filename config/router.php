@@ -22,6 +22,10 @@ return [
             'controller' => 'MVC\Controller\Pages',
             'action'     => 'articleAdd'
         ],
+        'community-create' => [
+            'controller' => 'MVC\Controller\Pages',
+            'action'     => 'communityCreate'
+        ],
     ],
     'patterns' => [
         '^api\/.+\/(.+)' => [
