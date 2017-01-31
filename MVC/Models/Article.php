@@ -5,7 +5,7 @@ namespace MVC\Models;
 /**
  * Class Article
  * @package MVC\Models
- * @table(Articles)
+ * @table(articles)
  */
 class Article
 {
