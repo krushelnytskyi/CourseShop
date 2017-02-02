@@ -85,4 +85,10 @@ class Pages extends Controller
 
     }
 
+    public function communityCreateAction()
+    {
+        $view = new View('pages/communityCreate');
+        return $view;
+    }
+
 }

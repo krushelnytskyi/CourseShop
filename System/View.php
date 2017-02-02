@@ -33,7 +33,6 @@ class View
 
     public function layout($name)
     {
-        include_once APP_ROOT . 'MVC/Layout/' . $name . '.phtml';
     }
 
     public function getBody()
