@@ -26,7 +26,8 @@ class Pages extends Controller
     {
         $view = new View('pages/home');
         
-        $repository = new Repository(Article::class);
+        $repository = Repository::getInstance();
+        $repository->useModel(Article::class);
         
         $articles = $repository->findBy();
 
@@ -69,7 +70,8 @@ class Pages extends Controller
         if ($form->execute() === false){
             $view->assign('errors',$form->getErrors());
         } else {
-            $repository = new Repository(Article::class);
+            $repository = Repository::getInstance();
+            $repository->useModel(Article::class);
 
             $article = new Article();
             $article->setUser(Session::getInstance()->getIdentity());

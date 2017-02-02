@@ -2,14 +2,15 @@
 
 namespace MVC\Models;
 
+use \System\ORM\Model;
 
 /**
  * Class Comment
  * @package MVC\Models
- * @table(About_other)
+ * @table(about_other)
  * record anonymous records about other users
  */
-class AboutOther
+class AboutOther extends Model
 {
 
     /**
@@ -25,6 +26,7 @@ class AboutOther
     /**
      * Key for user, about which there is a record
      *
+     * @columnName(target_user)
      * @columnType(INT(11) UNSIGNED NOT NULL)
      * @foreignModel(MVC\Models\User)
      * @foreignField(id)

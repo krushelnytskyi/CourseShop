@@ -3,13 +3,15 @@
 
 namespace MVC\Models;
 
+use \System\ORM\Model;
+
 /**
  * Class CommunityInsiders
  * @package MVC\Models
- * @table(Community_insiders)
+ * @table(community_insiders)
  * In this table save only users with custom permissions!
  */
-class CommunityInsiders
+class CommunityInsiders extends Model
 {
     const PERMISSION_LEVEL_TRUSTWORTHY = 1; //can attach articles to community without moderating
     const PERMISSION_LEVEL_MODERATOR   = 2; //can attach or detach article from community

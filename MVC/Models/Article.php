@@ -43,6 +43,7 @@ class Article extends Model
     /**
      * Is confirmed for target community?
      *
+     * @columnName(is_moderated)
      * @columnType(TINYINT(1))
      * @var boolean
      */

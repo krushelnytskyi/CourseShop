@@ -2,13 +2,15 @@
 
 namespace MVC\Models;
 
+use \System\ORM\Model;
+
 /**
  * Class Opinions
  * @package MVC\Models
- * @table(Opinions)
+ * @table(opinions)
  * This table for saving likes and dislikes
  */
-class Opinions
+class Opinions extends Model
 {
     const CONTENT_TYPE_ARTICLE = 0;
     const CONTENT_TYPE_COMMENT = 1;

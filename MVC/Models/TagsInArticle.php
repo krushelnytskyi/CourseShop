@@ -2,12 +2,14 @@
 
 namespace MVC\Models;
 
+use \System\ORM\Model;
+
 /**
  * Class Tag
  * @package MVC\Models
- * @table(Tags_In_Article)
+ * @table(tags_in_article)
  */
-class TagsInArticle
+class TagsInArticle extends Model
 {
     /**
      * key for Article

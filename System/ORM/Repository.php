@@ -4,8 +4,10 @@ namespace System\ORM;
 
 
 use System\Database\Statement\Condition;
+use System\Database\Statement\IndpndtConditions;
 use System\Database\Statement\Select;
 use System\Database\Connection;
+use System\Pattern\Singleton;
 
 
 /**
@@ -16,6 +18,10 @@ use System\Database\Connection;
  */
 class Repository
 {
+    use Singleton;
+
+
+
     /**
      * @var \ReflectionClass
      */
@@ -32,10 +38,9 @@ class Repository
     protected $columns = [];
 
     /**
-     * Repository constructor.
      * @param $modelClass
      */
-    public function __construct($modelClass)
+    public function useModel($modelClass)
     {
         $this->reflection = new \ReflectionClass($modelClass);
 
@@ -93,7 +98,7 @@ class Repository
             ->delete()
             ->from($this->storage);
         
-        $where = '';
+        $where = new IndpndtConditions();
 
         foreach ($this->columns as $column) {
             $property = $this->reflection->getProperty($column);
@@ -101,24 +106,25 @@ class Repository
 
             $value = $property->getValue($model);
             if ($value !== null) {
-                $where .=  $property->getName().'=\''.$value.'\' ';
+                $where->conditionAnd();
+                $where->compare($property->getName(),$value,'=');
             }
 
             $property->setAccessible(false);
         }
 
-        return $statement->where('WHERE '.$where)->execute();
+        return $statement->where($where->closeCondition())->execute();
 
     }
 
     /**
      * @param array $criteria
-     * @param null $limit
-     * @param null $offset
-     * @param null $order
+     * @param int|null $limit
+     * @param int|null $offset
+     * @param string|null $order
      * @return array
      */
-    public function findBy($criteria = [], $limit = null, $offset = null, $order = null)
+    public function findBy($criteria = [], $limit = null, $offset = 0, $order = null)
     {
         $models = [];
 
@@ -128,7 +134,10 @@ class Repository
         
 
         if ($limit !== null) {
-            $statement->limit($limit);
+            $statement->limitFrom($offset,$limit);
+        }
+        if ($order !== null) {
+            $statement->orderBy($order);
         }
 
         if (empty($criteria) === false) {
@@ -162,7 +171,7 @@ class Repository
 
         return $models;
     }
-
+    
     /**
      * @param array $criteria
      * @return object|null

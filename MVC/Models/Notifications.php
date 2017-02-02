@@ -2,13 +2,15 @@
 
 namespace MVC\Models;
 
+use \System\ORM\Model;
+
 /**
  * Class Notifications
  * @package MVC\Models
- * @table(Notifications)
+ * @table(notifications)
  * this model is very raw and needs to be improved!
  */
-class Notifications
+class Notifications extends Model
 {
     /**
      * Key for user, who has saved private information about other user

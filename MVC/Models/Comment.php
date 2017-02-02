@@ -3,12 +3,14 @@
 
 namespace MVC\Models;
 
+use \System\ORM\Model;
+
 /**
  * Class Comment
  * @package MVC\Models
- * @table(Comments)
+ * @table(comments)
  */
-class Comment
+class Comment extends Model
 {
     const PARENT_TYPE_ARTICLE = 0;
     const PARENT_TYPE_COMMENT = 1;
@@ -78,6 +80,7 @@ class Comment
     /**
      * Type of parent
      *
+     * @columnName(parent_type)
      * @columnType(TINYINT(1) UNSIGNED NOT NULL)
      * @var int
      */
