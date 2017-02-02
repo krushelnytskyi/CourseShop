@@ -62,7 +62,7 @@ class Repository
         $statement = Connection::getInstance()
             ->insert()
             ->from($this->storage);
-
+        
         $values = [];
 
         foreach ($this->columns as $column) {
@@ -70,6 +70,7 @@ class Repository
             $property->setAccessible(true);
 
             $value = $property->getValue($model);
+            
             if ($value !== null) {
                 $values[$property->getName()] = $value;
             }
@@ -91,8 +92,7 @@ class Repository
         $statement = Connection::getInstance()
             ->delete()
             ->from($this->storage);
-
-
+        
         $where = '';
 
         foreach ($this->columns as $column) {
@@ -125,6 +125,7 @@ class Repository
         $statement = Connection::getInstance()
             ->select()
             ->from($this->storage);
+        
 
         if ($limit !== null) {
             $statement->limit($limit);
@@ -145,7 +146,9 @@ class Repository
         $rows = $statement->execute();
 
         foreach ($rows as $row) {
+            /** @var Model $model */
             $model = $this->reflection->newInstance();
+            $model->setNew(false);
 
             foreach ($this->columns as $column) {
                 $reflectionProperty = $this->reflection->getProperty($column);

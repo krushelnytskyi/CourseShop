@@ -2,12 +2,14 @@
 
 namespace MVC\Models;
 
+use System\ORM\Model;
+
 /**
  * Class User
  * @package MVC\Models
  * @table(users)
  */
-class User
+class User extends Model
 {
 
     /**

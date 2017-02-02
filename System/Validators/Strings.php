@@ -8,6 +8,26 @@ namespace System\Validators;
  */
 class Strings extends Validator
 {
+    /**
+     * @var
+     */
+    protected $min;
+
+    /**
+     * @var
+     */
+    protected $max;
+
+    /**
+     * Strings constructor.
+     * @param $min
+     * @param $max
+     */
+    public function __construct($min, $max)
+    {
+        $this->min = $min;
+        $this->max = $max;
+    }
 
     /**
      * @param $value
@@ -17,8 +37,8 @@ class Strings extends Validator
     {
         $string = mb_strlen($value);
 
-        if ($string < 8 || $string > 64) {
-            $this->message = 'Must be between 8 and 64 chars';
+        if ($string < $this->min || $string > $this->max) {
+            $this->message = 'Incorrect length of characters';
             return false;
         }
 

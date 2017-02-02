@@ -21,8 +21,7 @@ class Insert extends Statement
      * @var array
      */
     protected $values = [];
-
-
+    
     /**
      * @param   array   $values  values list
      * @return  $this
@@ -31,7 +30,7 @@ class Insert extends Statement
     {
         $this->columns = array_keys($values);
         $this->values = array_values($values);
-
+        
         return $this;
     }
 
