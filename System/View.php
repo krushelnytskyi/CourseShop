@@ -13,6 +13,7 @@ class View
      * @var string
      */
     protected $view;
+    protected $layout;
 
     /**
      * @var array
@@ -31,8 +32,14 @@ class View
         $this->view = APP_ROOT . 'MVC/View/' . $name . '.phtml';
     }
 
+
     public function layout($name)
     {
+        $layout = Config::get('app', 'default_layout');
+
+        if ($layout !== null) {
+            return include APP_ROOT . 'MVC/Layout/' . $layout . '.phtml';
+        }
     }
 
     public function getBody()
