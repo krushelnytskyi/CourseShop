@@ -31,9 +31,17 @@ return [
             'action'     => 'article'
         ],
         'community-create' => [
-            'controller' => 'MVC\Controller\Pages',
+            'controller' => \MVC\Controller\Pages::class,
             'action'     => 'communityCreate'
         ],
+        'users/json-register' => [
+            'controller' => \MVC\Controller\Users::class,
+            'action'     => 'jsonRegister'
+        ],
+        'users/json-login' => [
+            'controller' => \MVC\Controller\Users::class,
+            'action'     => 'jsonLogin'
+        ]
     ],
     'patterns' => [
         '^api\/.+\/(.+)' => [

@@ -22,7 +22,8 @@ class Admin extends Controller
      */
     public function usersAction()
     {
-        $repository = new Repository(User::class);
+        $repository = Repository::getInstance();
+        $repository->useModel(User::class);
         $users = $repository->findBy();
         $view = new View('admin/users');
         $view->assign('users', $users);

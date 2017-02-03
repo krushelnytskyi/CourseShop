@@ -67,11 +67,17 @@ class Users extends Controller
      */
     public function registerAction()
     {
-        $view = new View('pages/home');
+        return new View('pages/home');
+    }
 
-        if (empty($_POST)) {
-            return $view;
-        }
+    public function jsonLoginAction()
+    {
+
+    }
+
+    public function jsonRegisterAction()
+    {
+        $result = [];
 
         $form = new Form(
             $_POST,
@@ -92,32 +98,44 @@ class Users extends Controller
         );
 
         if (false === $form->execute()) {
-            $view->assign('errors', $form->getErrors());
+            $result = [
+                'messages' => $form->getErrors()
+            ];
+        } else {
+            $repository = Repository::getInstance();
+            $repository->useModel(User::class);
 
-            return $view;
+            $user = $repository->findOneBy(
+                [
+                    'email'    => $form->getFieldValue('email'),
+                ]
+            );
+
+            if ($user === null) {
+                $user = new User();
+                $user->setNickname($form->getFieldValue('username'));
+                $user->setEmail($form->getFieldValue('email'));
+                $user->setPassword(User::encodePassword($form->getFieldValue('password')));
+
+                if (($id = $repository->save($user)) !== false) {
+                    UserSession::getInstance()->setIdentity($id);
+
+                    $result = [
+                        'redirect' => '/'
+                    ];
+                } else {
+                    $result = [
+                        'message' => 'Something gone wrong'
+                    ];
+                }
+            } else {
+                $result = [
+                    'message' => 'User exists'
+                ];
+            }
         }
 
-        $repository = Repository::getInstance();
-        $repository->useModel(User::class);
-
-        $user = $repository->findOneBy(
-            [
-                'email'    => $form->getFieldValue('email'),
-            ]
-        );
-
-        if ($user === null) {
-            $user = new User();
-            $user->setNickname($form->getFieldValue('username'));
-            $user->setEmail($form->getFieldValue('email'));
-            $user->setPassword(User::encodePassword($form->getFieldValue('password')));
-            $repository->save($user);
-            $this->forward('users/login');
-        }
-
-        $view->assign('success', true);
-
-        return $view;
+        $this->json($result);
     }
 
     /**
