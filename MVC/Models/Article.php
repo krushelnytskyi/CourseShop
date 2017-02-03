@@ -86,7 +86,7 @@ class Article extends Model
     /**
      * Count of likes
      *
-     * @columnType(INT(11))
+     * @columnType(INT(11) DEFAULT 0)
      * @var int
      */
     private $likes;
