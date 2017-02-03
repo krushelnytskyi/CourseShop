@@ -87,4 +87,20 @@ class Pages extends Controller
 
     }
 
+    public function articleById()
+    {
+        $url = trim($_SERVER['REQUEST_URI'], '/');
+        list(,$id) = explode('/', $url);
+        $repo = new Repository(Article::class);
+        $article = $repo->findOneBy(['id' => $id]);
+
+        if ($article === null){
+            return new View('errors/404');
+        } else {
+            $view = new View('pages/article');
+            $view->assign('article', $article);
+            return $view;
+        }
+    }
+
 }
