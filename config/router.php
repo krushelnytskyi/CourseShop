@@ -22,6 +22,14 @@ return [
             'controller' => 'MVC\Controller\Pages',
             'action'     => 'articleAdd'
         ],
+        'admin/users' => [
+            'controller' => 'MVC\Controller\Admin',
+            'action'     => 'users'
+        ],
+        'admin/article' => [
+            'controller' => 'MVC\Controller\Admin',
+            'action'     => 'article'
+        ],
     ],
     'patterns' => [
         '^api\/.+\/(.+)' => [
