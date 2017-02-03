@@ -2,12 +2,14 @@
 
 namespace MVC\Models;
 
+use \System\ORM\Model;
+
 /**
- * Class Subscriptions
+ * Class SubscriptionOnTag
  * @package MVC\Models
- * @table(subscriptions)
+ * @table(subscriptions_on_tag)
  */
-class UserSubscription
+class SubscriptionTag extends Model
 {
 
     /**
@@ -32,7 +34,7 @@ class UserSubscription
      * @var int
      * @columnType(INT(11) NOT NULL)
      */
-    private $user;
+    private $tag;
 
     /**
      * @return int
@@ -61,33 +63,39 @@ class UserSubscription
     /**
      * @return int
      */
-    public function getUser()
+    public function getTag()
     {
-        return $this->user;
+        return $this->tag;
     }
 
     /**
      * @param bool $positive
+     * @return $this
      */
     public function setPositive(bool $positive)
     {
         $this->positive = $positive;
+        return $this;
     }
 
     /**
      * @param int $subscriber
+     * @return $this
      */
     public function setSubscriber(int $subscriber)
     {
         $this->subscriber = $subscriber;
+        return $this;
     }
 
     /**
-     * @param int $user
+     * @param int $tag
+     * @return $this
      */
-    public function setUser(int $user)
+    public function setTag(int $tag)
     {
-        $this->user = $user;
+        $this->tag = $tag;
+        return $this;
     }
 
 }

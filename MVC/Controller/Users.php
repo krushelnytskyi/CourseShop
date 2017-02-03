@@ -3,6 +3,7 @@
 namespace MVC\Controller;
 
 use MVC\Models\Article;
+use MVC\Models\Tag;
 use MVC\Models\User;
 use System\Auth\UserSession;
 use System\Form;
@@ -43,7 +44,8 @@ class Users extends Controller
             return $view;
         }
 
-        $repository = new Repository(User::class);
+        $repository = Repository::getInstance();
+        $repository->useModel(User::class);
 
         /** @var User $user */
         $user = $repository->findOneBy(
@@ -96,7 +98,8 @@ class Users extends Controller
             return $view;
         }
 
-        $repository = new Repository(User::class);
+        $repository = Repository::getInstance();
+        $repository->useModel(User::class);
 
         $user = $repository->findOneBy(
             [
@@ -141,7 +144,8 @@ class Users extends Controller
     {
         $url = trim($_SERVER['REQUEST_URI'], '/');
         list(,$id) = explode('/', $url);
-        $repo = new Repository(User::class);
+        $repo = Repository::getInstance();
+        $repo->useModel(User::class);
         $user = $repo->findOneBy(['id' => $id]);
 
         if ($user === null) {
@@ -155,5 +159,9 @@ class Users extends Controller
 
     public function testAction()
     {
+        $repo = Repository::getInstance();
+        $repo->useModel(Tag::class);
+
+        var_dump($repo->findBy([],2,2,'id'));
     }
 }

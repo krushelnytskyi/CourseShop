@@ -2,12 +2,15 @@
 
 namespace MVC\Models;
 
+
+use \System\ORM\Model;
+
 /**
  * Class Community
  * @package MVC\Models
- * @table(Communities)
+ * @table(communities)
  */
-class Community
+class Community extends Model
 {
 
     /**

@@ -43,6 +43,7 @@ class Article extends Model
     /**
      * Is confirmed for target community?
      *
+     * @columnName(is_moderated)
      * @columnType(TINYINT(1))
      * @var boolean
      */
@@ -85,7 +86,7 @@ class Article extends Model
     /**
      * Count of likes
      *
-     * @columnType(INT(11))
+     * @columnType(INT(11) DEFAULT 0)
      * @var int
      */
     private $likes;

@@ -102,7 +102,7 @@ class Select extends Statement
     {
         if (true === empty($this->limit)) {
             $this->limit = sprintf(
-                'LIMIT %s, $s',
+                'LIMIT %s, %s',
                 $from,
                 $numberRecords
             );

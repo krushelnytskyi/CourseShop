@@ -3,12 +3,14 @@
 
 namespace MVC\Models;
 
+use \System\ORM\Model;
+
 /**
  * Class Tag
  * @package MVC\Models
- * @table(Tags)
+ * @table(tags)
  */
-class Tag
+class Tag extends Model
 {
     /**
      * Unique key for tag
