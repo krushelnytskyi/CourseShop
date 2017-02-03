@@ -25,7 +25,7 @@ class Users extends Controller
      */
     public function loginAction()
     {
-        $view = new View('users/login');
+        $view = new View('pages/home');
 
         $form = new Form(
             $_POST,
@@ -59,7 +59,6 @@ class Users extends Controller
             UserSession::getInstance()->setIdentity($user->getId());
             $this->forward('');
         }
-
         return $view;
     }
 
@@ -68,7 +67,7 @@ class Users extends Controller
      */
     public function registerAction()
     {
-        $view = new View('users/register');
+        $view = new View('pages/home');
 
         if (empty($_POST)) {
             return $view;

@@ -19,9 +19,9 @@
 <div class="container content">
     <div class="row">
         <?php if (\System\Auth\Session::getInstance()->hasIdentity() === true ): ?>
-        <?php include 'menu/user.phtml'; ?>
+            <?php include 'menu/user.phtml'; ?>
         <?php else : ?>
-        <?php include 'menu/guest.phtml'; ?>
+            <?php include 'menu/guest.phtml'; ?>
         <?php endif; ?>
 
         <?= $content; ?>

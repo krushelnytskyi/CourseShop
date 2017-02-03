@@ -30,6 +30,10 @@ return [
             'controller' => 'MVC\Controller\Admin',
             'action'     => 'article'
         ],
+        'community-create' => [
+            'controller' => 'MVC\Controller\Pages',
+            'action'     => 'communityCreate'
+        ],
     ],
     'patterns' => [
         '^api\/.+\/(.+)' => [
