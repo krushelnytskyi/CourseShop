@@ -14,8 +14,7 @@ class UserSession extends Session
             $id = parent::getIdentity();
 
             $repo = Repository::getInstance();
-            $repo->useModel(User::class);
-            return $repo->findOneBy(
+            return $repo->findOneBy(User::class,
                 [
                     'id' => $id
                 ]

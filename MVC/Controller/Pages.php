@@ -27,9 +27,8 @@ class Pages extends Controller
         $view = new View('pages/home');
         
         $repository = Repository::getInstance();
-        $repository->useModel(Article::class);
         
-        $articles = $repository->findBy();
+        $articles = $repository->findBy(Article::class);
 
         $view->assign('articles',$articles);
 
@@ -71,7 +70,6 @@ class Pages extends Controller
             $view->assign('errors',$form->getErrors());
         } else {
             $repository = Repository::getInstance();
-            $repository->useModel(Article::class);
 
             $article = new Article();
             $article->setUser(Session::getInstance()->getIdentity());
@@ -91,8 +89,8 @@ class Pages extends Controller
     {
         $url = trim($_SERVER['REQUEST_URI'], '/');
         list(,$id) = explode('/', $url);
-        $repo = new Repository(Article::class);
-        $article = $repo->findOneBy(['id' => $id]);
+        $repo = Repository::getInstance();
+        $article = $repo->findOneBy(Article::class,['id' => $id]);
 
         if ($article === null){
             return new View('errors/404');

@@ -50,6 +50,8 @@ class Opinions extends Model
     /**
      * Type of content
      *
+     *
+     * @columnName(content_type)
      * @columnType(TINYINT(1) UNSIGNED NOT NULL)
      * @var int
      */

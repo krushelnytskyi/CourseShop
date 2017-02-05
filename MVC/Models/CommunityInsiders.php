@@ -40,6 +40,7 @@ class CommunityInsiders extends Model
     /**
      * permission level
      *
+     * @columnName(permission_level)
      * @columnType(TINYINT(1) UNSIGNED NOT NULL)
      * @var int
      */
