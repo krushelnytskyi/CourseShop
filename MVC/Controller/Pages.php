@@ -3,6 +3,7 @@
 namespace MVC\Controller;
 
 use MVC\Models\Article;
+use MVC\Models\Community;
 use MVC\Models\User;
 use System\Auth\Session;
 use System\Auth\UserSession;
@@ -105,8 +106,69 @@ class Pages extends Controller
 
     public function communityCreateAction()
     {
-        $view = new View('pages/communityCreate');
-        return $view;
+        if (Session::getInstance()->hasIdentity()) {
+            return new View('pages/communityCreate');
+        } else {
+            return new View('errors/undefined_user');
+        }
+
+    }
+
+    public function jsonCommunityCreateAction()
+    {
+        $result = [];
+
+        $form = new Form(
+            $_POST,
+            [
+                'name' => [
+                    new Strings(2,64),
+                ],
+                'about' => [
+                    new Strings(0,300),
+                ]
+            ]
+        );
+        $secured = isset($_POST['secured']) ? true : false;
+
+        if (false === $form->execute()) {
+            $result = [
+                'messages' => $form->getErrors()
+            ];
+        } else {
+            $repository = Repository::getInstance();
+            $repository->useModel(Community::class);
+
+            $community = $repository->findOneBy(
+                [
+                    'name'    => $form->getFieldValue('name'),
+                ]
+            );
+
+            if ($community === null) {
+                $community = new Community();
+                $community->setName($form->getFieldValue('name'));
+                $community->setUser(Session::getInstance()->getIdentity());
+                $community->setAbout(addslashes($form->getFieldValue('about')));
+                $community->setSecured($secured);
+
+                if (($id = $repository->save($community)) !== false) {
+                    $result = [
+                        'redirect' => '/'
+                    ];
+                } else {
+                    $result = [
+                        'message' => 'Something gone wrong'
+                    ];
+                }
+            } else {
+                $result = [
+                    'message' => 'Community exists'
+                ];
+            }
+        }
+
+        $this->json($result);
     }
 
 }

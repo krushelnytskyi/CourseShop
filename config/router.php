@@ -34,6 +34,10 @@ return [
             'controller' => \MVC\Controller\Pages::class,
             'action'     => 'communityCreate'
         ],
+        'pages/json-community-create' => [
+            'controller' => \MVC\Controller\Pages::class,
+            'action'     => 'jsonCommunityCreate'
+        ],
         'users/json-register' => [
             'controller' => \MVC\Controller\Users::class,
             'action'     => 'jsonRegister'
