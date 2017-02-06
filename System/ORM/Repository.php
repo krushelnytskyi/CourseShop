@@ -2,6 +2,7 @@
 
 namespace System\ORM;
 
+use System\Database\Statement\Condition;
 use System\Database\Statement\IndpndtConditions;
 use System\Database\Connection;
 use System\Pattern\Singleton;
@@ -147,7 +148,7 @@ class Repository
             $statement->orderBy($order);
         }
         if (empty($criteria) === false) {
-            $condition = Connection::getInstance()->select()->where();
+            $condition = new Condition($statement);
             foreach ($criteria as $field => $value) {
                 $condition->conditionAnd()->compare($field, $value, '=');
             }
@@ -169,7 +170,7 @@ class Repository
                         $foreignModel = $cachedModel['foreignModels'][$propName];
                     }
                     $foreignField = $cachedModel['foreignFields'][$propName];
-                    $value = $this->findOneBy($foreignModel,[$foreignField=>$value]);
+                    $value = $this->findOneBy($foreignModel,[$foreignField => $value]);
                 }
                 $reflectionProperty->setValue($model, $value );
                 $reflectionProperty->setAccessible(false);

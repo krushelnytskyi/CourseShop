@@ -175,8 +175,7 @@ class Users extends Controller
     public function testAction()
     {
 
-        $repo = Repository::getInstance();
-       var_dump($repo->findBy(Notifications::class));
+
     }
 
 }
