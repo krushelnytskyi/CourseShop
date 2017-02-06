@@ -2,20 +2,20 @@
     <div class="col-lg-8 mw">
       <div class="article">
         <h2>Add new article</h2>
-        <form action="/pages/articleAdd" method="post">
+        <form id="theForm" action="/pages/articleAdd" method="post">
         <div class="form-group">
           <label for="exampleInputEmail1">Title</label>
           <input type="text" name="title" class="form-control" placeholder="Enter title" required>
         </div>
         <div class="form-group">
           <label for="exampleTextarea">Article</label>
-          <textarea class="form-control" name="body" rows="15"></textarea>
+		  <textarea id="textarea-1" name="editable1"></textarea>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Tags</label>
           <input type="text" name="tags" class="form-control" placeholder="Enter tags" required>
         </div>
         <button type="submit" class="btn btn-primary">Publish</button>
-      </form>           
+      </form>
       </div>    
     </div>
