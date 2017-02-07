@@ -1,21 +1,23 @@
-    <!-- content arrticle -->
-    <div class="col-lg-8 mw">
-      <div class="article">
+<div class="col-lg-8 mw">
+    <div class="article">
         <h2>Add new article</h2>
-        <form action="/pages/articleAdd" method="post">
-        <div class="form-group">
-          <label for="exampleInputEmail1">Title</label>
-          <input type="text" name="title" class="form-control" placeholder="Enter title" required>
-        </div>
-        <div class="form-group">
-          <label for="exampleTextarea">Article</label>
-          <textarea class="form-control" name="body" rows="15"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Tags</label>
-          <input type="text" name="tags" class="form-control" placeholder="Enter tags" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Publish</button>
-      </form>           
-      </div>    
+        <form action="/pages/json-add" method="post" class="ajax">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" class="form-control" placeholder="Enter title" >
+                <span class="error-messages"></span>
+            </div>
+            <div class="form-group">
+                <label for="body">Article</label>
+                <textarea class="form-control" name="body" rows="15"></textarea>
+                <span class="error-messages"></span>
+            </div>
+            <div class="form-group">
+                <label for="tags">Tags</label>
+                <input type="text" name="tags" class="form-control" placeholder="Enter tags">
+                <span class="error-messages"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Publish</button>
+        </form>
     </div>
+</div>
