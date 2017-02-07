@@ -3,6 +3,7 @@
 namespace MVC\Controller;
 
 use MVC\Models\Article;
+use MVC\Models\Community;
 use MVC\Models\User;
 use System\Auth\Session;
 use System\Auth\UserSession;
@@ -95,57 +96,64 @@ class Pages extends Controller
 
     public function communityCreateAction()
     {
-        $view = new View('pages/communityCreate');
-        return $view;
+        if (Session::getInstance()->hasIdentity()) {
+            return new View('pages/communityCreate');
+        } else {
+            return new View('errors/undefined_user');
+        }
+
     }
 
-    /**
-     * Article Add action
-     */
-    public function jsonArticleAddAction()
+    public function jsonCommunityCreateAction()
     {
         $result = [];
-        if(Session::getInstance()->hasIdentity() == false){
-            $result = [
-                'messages' => 'User not register'
-            ];
-        }
 
         $form = new Form(
             $_POST,
             [
-                'title' => [
-                    new Strings(3,255),
+                'name' => [
+                    new Strings(2,64),
                 ],
-                'body' => [
-                    new Strings(3,1000),
-                ],
-                'tags' => [
-                    new Strings(3,255),
-                ],
+                'about' => [
+                    new Strings(0,300),
+                ]
             ]
         );
+        $secured = isset($_POST['secured']) ? true : false;
 
-        if ($form->execute() === false){
-
+        if (false === $form->execute()) {
             $result = [
                 'messages' => $form->getErrors()
             ];
         } else {
-            $article = new Article();
-            $article->setUser(UserSession::getInstance()->getIdentity());
-            $article->setTitle($form->getFieldValue('title'));
-            $article->setBody($form->getFieldValue('body'));
-            $article->setTags($form->getFieldValue('tags'));
-            $article->setRating(0);
+            $repository = Repository::getInstance();
+            $repository->useModel(Community::class);
 
-            if (Repository::getInstance()->save($article) !== false) {
-                $result = [
-                    'redirect' => '/'
-                ];
+            $community = $repository->findOneBy(
+                [
+                    'name'    => $form->getFieldValue('name'),
+                ]
+            );
+
+            if ($community === null) {
+                $community = new Community();
+                $community->setName($form->getFieldValue('name'));
+                $community->setUser(Session::getInstance()->getIdentity());
+                $community->setAbout(addslashes($form->getFieldValue('about')));
+                $community->setSecured($secured);
+
+                if (($id = $repository->save($community)) !== false) {
+                    $result = [
+                        'redirect' => '/'
+                    ];
+                } else {
+                    $result = [
+                        'message' => 'Something gone wrong'
+                    ];
+                }
             } else {
                 $result = [
-                    'messages' => 'Something gone wrong'
+                    'message' => 'Community exists'
                 ];
             }
         }
