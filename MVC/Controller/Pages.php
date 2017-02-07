@@ -49,42 +49,7 @@ class Pages extends Controller
 
     public function articleAddAction()
     {
-        $view = new View('pages/articleAdd');
-        if(Session::getInstance()->hasIdentity() === false){
-            $view->assign('error','User not register');
-        }
-
-        if (empty($_POST)) {
-            return $view;
-        }
-
-        $form = new Form(
-            $_POST,
-            [
-                'title' => [],
-                'body' => [],
-                'tags' => [],
-            ]
-        );
-
-        if ($form->execute() === false){
-            $view->assign('errors',$form->getErrors());
-        } else {
-            $repository = Repository::getInstance();
-            $repository->useModel(Article::class);
-
-            $article = new Article();
-            $article->setUser(Session::getInstance()->getIdentity());
-            $article->setTitle($form->getFieldValue('title'));
-            $article->setBody($form->getFieldValue('body'));
-            $article->setTags($form->getFieldValue('tags'));
-            $article->setRating(0);
-            $repository->save($article);
-            $this->forward('pages/home');
-        }
-
-        return $view;
-
+        return new View('pages/articleAdd');
     }
 
     public function articleById()
@@ -107,6 +72,63 @@ class Pages extends Controller
     {
         $view = new View('pages/communityCreate');
         return $view;
+    }
+
+    /**
+     * Article Add action
+     */
+    public function jsonArticleAddAction()
+    {
+        $result = [];
+        if(Session::getInstance()->hasIdentity() == false){
+            $result = [
+                'messages' => 'User not register'
+            ];
+        }
+
+        $form = new Form(
+            $_POST,
+            [
+                'title' => [
+                    new Strings(3,255),
+                ],
+                'body' => [
+                    new Strings(3,1000),
+                ],
+                'tags' => [
+                    new Strings(3,255),
+                ],
+            ]
+        );
+
+        if ($form->execute() === false){
+
+            $result = [
+                'messages' => $form->getErrors()
+            ];
+        } else {
+            $repository = Repository::getInstance();
+            $repository->useModel(Article::class);
+
+            $article = new Article();
+            $article->setUser(Session::getInstance()->getIdentity());
+            $article->setTitle($form->getFieldValue('title'));
+            $article->setBody($form->getFieldValue('body'));
+            $article->setTags($form->getFieldValue('tags'));
+            $article->setRating(0);
+
+            if ($repository->save($article) !== false) {
+                $result = [
+                    'redirect' => '/'
+                ];
+            } else {
+                $result = [
+                    'messages' => 'Something gone wrong'
+                ];
+            }
+        }
+
+        $this->json($result);
     }
 
 }
