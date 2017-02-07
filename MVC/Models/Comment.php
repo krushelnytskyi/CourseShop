@@ -70,7 +70,7 @@ class Comment extends Model
      * or something else...
      *
      * @columnType(INT(11) UNSIGNED NOT NULL)
-     * @selector(parentType)
+     * @selector(parent_type)
      * @foreignModel(MVC\Models\Article,MVC\Models\Comment)
      * @foreignField(id)
      * @var Article|Comment

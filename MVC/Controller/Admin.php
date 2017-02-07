@@ -23,8 +23,7 @@ class Admin extends Controller
     public function usersAction()
     {
         $repository = Repository::getInstance();
-        $repository->useModel(User::class);
-        $users = $repository->findBy();
+        $users = $repository->findBy(User::class);
         $view = new View('admin/users');
         $view->assign('users', $users);
         return $view;
@@ -36,8 +35,8 @@ class Admin extends Controller
      */
     public function articleAction()
     {
-        $repository = new Repository(Article::class);
-        $article = $repository->findBy();
+        $repository = Repository::getInstance();
+        $article = $repository->findBy(Article::class);
         $view = new View('admin/article');
         $view->assign('article',$article);
         return $view;

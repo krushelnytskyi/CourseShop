@@ -27,9 +27,8 @@ class Pages extends Controller
         $view = new View('pages/home');
         
         $repository = Repository::getInstance();
-        $repository->useModel(Article::class);
         
-        $articles = $repository->findBy();
+        $articles = $repository->findBy(Article::class);
 
         $view->assign('articles',$articles);
 
@@ -49,15 +48,49 @@ class Pages extends Controller
 
     public function articleAddAction()
     {
-        return new View('pages/articleAdd');
+        $view = new View('pages/articleAdd');
+        if(Session::getInstance()->hasIdentity() === false){
+            $view->assign('error','User not register');
+        }
+
+        if (empty($_POST)) {
+            return $view;
+        }
+
+        $form = new Form(
+            $_POST,
+            [
+                'title' => [],
+                'body' => [],
+                'tags' => [],
+            ]
+        );
+
+        if ($form->execute() === false){
+            $view->assign('errors',$form->getErrors());
+        } else {
+            $repository = Repository::getInstance();
+
+            $article = new Article();
+            $article->setUser(Session::getInstance()->getIdentity());
+            $article->setTitle($form->getFieldValue('title'));
+            $article->setBody($form->getFieldValue('body'));
+            $article->setTags($form->getFieldValue('tags'));
+            $article->setRating(0);
+            $repository->save($article);
+            $this->forward('pages/home');
+        }
+
+        return $view;
+
     }
 
     public function articleById()
     {
         $url = trim($_SERVER['REQUEST_URI'], '/');
         list(,$id) = explode('/', $url);
-        $repo = new Repository(Article::class);
-        $article = $repo->findOneBy(['id' => $id]);
+        $repo = Repository::getInstance();
+        $article = $repo->findOneBy(Article::class,['id' => $id]);
 
         if ($article === null){
             return new View('errors/404');

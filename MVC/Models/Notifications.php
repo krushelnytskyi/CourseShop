@@ -8,7 +8,6 @@ use \System\ORM\Model;
  * Class Notifications
  * @package MVC\Models
  * @table(notifications)
- * this model is very raw and needs to be improved!
  */
 class Notifications extends Model
 {
@@ -33,6 +32,7 @@ class Notifications extends Model
     /**
      * Is read?
      *
+     * @columnName(is_read)
      * @columnType(TINYINT(1) UNSIGNED NOT NULL)
      * @var boolean
      */
