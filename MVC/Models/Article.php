@@ -24,7 +24,7 @@ class Article extends Model
      * Unique key for article author
      *
      * @columnType(INT(11) NOT NULL)
-     * @foreignModel(MVC\Models\User)
+     * @foreignModel(\MVC\Models\User)
      * @foreignField(id)
      * @var User
      */
@@ -118,7 +118,7 @@ class Article extends Model
     /**
      * Date of last update
      *
-     * @columnType(TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
+     * @columnType(TIMESTAMP)
      * @var \DateTime
      */
     private $updated;

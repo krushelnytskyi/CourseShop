@@ -26,12 +26,11 @@ class Pages extends Controller
     {
         $view = new View('pages/home');
         
-        $repository = Repository::getInstance();
-        
-        $articles = $repository->findBy(Article::class);
+        $articles = Repository::getInstance()
+            ->findBy(Article::class);
 
-        $view->assign('articles',$articles);
-
+        $view = new View('pages/home');
+        $view->assign('articles', $articles);
         return $view;
     }
 
@@ -41,9 +40,18 @@ class Pages extends Controller
 
     public function articleAction()
     {
-//        articles/1
+        $url = trim($_SERVER['REQUEST_URI'], '/');
+        list(,$id) = explode('/', $url);
+        $repo = Repository::getInstance();
+        $article = $repo->findOneBy(Article::class,['id' => $id]);
 
-        $this->view('pages/article');
+        if ($article === null){
+            return new View('errors/404');
+        } else {
+            $view = new View('pages/article');
+            $view->assign('article', $article);
+            return $view;
+        }
     }
 
     public function articleAddAction()
@@ -85,22 +93,6 @@ class Pages extends Controller
 
     }
 
-    public function articleById()
-    {
-        $url = trim($_SERVER['REQUEST_URI'], '/');
-        list(,$id) = explode('/', $url);
-        $repo = Repository::getInstance();
-        $article = $repo->findOneBy(Article::class,['id' => $id]);
-
-        if ($article === null){
-            return new View('errors/404');
-        } else {
-            $view = new View('pages/article');
-            $view->assign('article', $article);
-            return $view;
-        }
-    }
-
     public function communityCreateAction()
     {
         $view = new View('pages/communityCreate');
@@ -140,17 +132,14 @@ class Pages extends Controller
                 'messages' => $form->getErrors()
             ];
         } else {
-            $repository = Repository::getInstance();
-            $repository->useModel(Article::class);
-
             $article = new Article();
-            $article->setUser(Session::getInstance()->getIdentity());
+            $article->setUser(UserSession::getInstance()->getIdentity());
             $article->setTitle($form->getFieldValue('title'));
             $article->setBody($form->getFieldValue('body'));
             $article->setTags($form->getFieldValue('tags'));
             $article->setRating(0);
 
-            if ($repository->save($article) !== false) {
+            if (Repository::getInstance()->save($article) !== false) {
                 $result = [
                     'redirect' => '/'
                 ];

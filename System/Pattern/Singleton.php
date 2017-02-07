@@ -12,7 +12,7 @@ trait Singleton
     /**
      * @var null|object
      */
-    public static $instance;
+    private static $instance;
 
     /**
      * @return null|object
