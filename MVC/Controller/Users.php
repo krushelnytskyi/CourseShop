@@ -25,7 +25,20 @@ class Users extends Controller
      */
     public function loginAction()
     {
-        $view = new View('pages/home');
+        return new View('pages/home');
+    }
+
+    /**
+     * Register action
+     */
+    public function registerAction()
+    {
+        return new View('pages/home');
+    }
+
+    public function jsonLoginAction()
+    {
+        $result = [];
 
         $form = new Form(
             $_POST,
@@ -39,46 +52,44 @@ class Users extends Controller
             ]
         );
 
-        if ($form->execute() === false) {
-            $view->assign('errors', $form->getErrors());
-            return $view;
+        if (false === $form->execute()) {
+            $result = [
+                'messages' => $form->getErrors()
+            ];
+        } else {
+            $repository = Repository::getInstance();
+            $repository->useModel(User::class);
+
+            /** @var User $user */
+            $user = $repository->findOneBy(
+                [
+                    'email'    => $form->getFieldValue('email'),
+                    'password' => User::encodePassword($form->getFieldValue('password'))
+                ]
+            );
+
+
+
+                if ($user !== null) {
+                    UserSession::getInstance()->setIdentity($user->getId());
+
+                    $result = [
+                        'redirect' => '/'
+                    ];
+                } else {
+                    $result = [
+                        'message' => 'Something gone wrong'
+                    ];
+                }
         }
 
-        $repository = Repository::getInstance();
-        $repository->useModel(User::class);
-
-        /** @var User $user */
-        $user = $repository->findOneBy(
-            [
-                'email'    => $form->getFieldValue('email'),
-                'password' => User::encodePassword($form->getFieldValue('password'))
-            ]
-        );
-
-        if ($user !== null) {
-            UserSession::getInstance()->setIdentity($user->getId());
-            $this->forward('');
-        }
-        return $view;
+        $this->json($result);
     }
 
-    /**
-     * Register action
-     */
-    public function registerAction()
-    {
-        return new View('pages/home');
-    }
-
-    public function jsonLoginAction()
-    {
-
-    }
 
     public function jsonRegisterAction()
     {
         $result = [];
-
         $form = new Form(
             $_POST,
             [
@@ -96,7 +107,6 @@ class Users extends Controller
                 ],
             ]
         );
-
         if (false === $form->execute()) {
             $result = [
                 'messages' => $form->getErrors()
@@ -104,22 +114,18 @@ class Users extends Controller
         } else {
             $repository = Repository::getInstance();
             $repository->useModel(User::class);
-
             $user = $repository->findOneBy(
                 [
                     'email'    => $form->getFieldValue('email'),
                 ]
             );
-
             if ($user === null) {
                 $user = new User();
                 $user->setNickname($form->getFieldValue('username'));
                 $user->setEmail($form->getFieldValue('email'));
                 $user->setPassword(User::encodePassword($form->getFieldValue('password')));
-
                 if (($id = $repository->save($user)) !== false) {
                     UserSession::getInstance()->setIdentity($id);
-
                     $result = [
                         'redirect' => '/'
                     ];
@@ -134,7 +140,6 @@ class Users extends Controller
                 ];
             }
         }
-
         $this->json($result);
     }
 
