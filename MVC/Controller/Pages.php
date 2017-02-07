@@ -58,6 +58,9 @@ class Pages extends Controller
     public function articleAddAction()
     {
         $view = new View('pages/articleAdd');
+
+        $view->assign('communities', Repository::getInstance()->findBy(Community::class));
+
         if(Session::getInstance()->hasIdentity() === false){
             $view->assign('error','User not register');
         }
@@ -126,10 +129,8 @@ class Pages extends Controller
                 'messages' => $form->getErrors()
             ];
         } else {
-            $repository = Repository::getInstance();
-            $repository->useModel(Community::class);
-
-            $community = $repository->findOneBy(
+            $community = Repository::getInstance()->findOneBy(
+                Community::class,
                 [
                     'name'    => $form->getFieldValue('name'),
                 ]
@@ -138,11 +139,11 @@ class Pages extends Controller
             if ($community === null) {
                 $community = new Community();
                 $community->setName($form->getFieldValue('name'));
-                $community->setUser(Session::getInstance()->getIdentity());
+                $community->setUser(UserSession::getInstance()->getIdentity());
                 $community->setAbout(addslashes($form->getFieldValue('about')));
-                $community->setSecured($secured);
+                $community->setSecured((int)((bool)$secured));
 
-                if (($id = $repository->save($community)) !== false) {
+                if (($id = Repository::getInstance()->save($community)) !== false) {
                     $result = [
                         'redirect' => '/'
                     ];

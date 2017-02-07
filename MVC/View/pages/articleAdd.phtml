@@ -17,6 +17,18 @@
                 <input type="text" name="tags" class="form-control" placeholder="Enter tags">
                 <span class="error-messages"></span>
             </div>
+            <div class="form-group">
+                <label for="community">Community</label>
+
+                <select name="community" id="community">
+                    <?php foreach ($this->communities as $community): ?>
+                        <?php /** @var \MVC\Models\Community $community */ ?>
+                        <option value="<?= $community->getId() ?>"><?= $community->getName() ?></option>
+                    <?php endforeach; ?>
+                </select>
+
+                <span class="error-messages"></span>
+            </div>
             <button type="submit" class="btn btn-primary">Publish</button>
         </form>
     </div>
