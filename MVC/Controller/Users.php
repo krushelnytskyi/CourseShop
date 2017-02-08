@@ -36,6 +36,9 @@ class Users extends Controller
         return new View('pages/home');
     }
 
+    /**
+     * jsonLogin action
+     */
     public function jsonLoginAction()
     {
         $result = [];
@@ -67,9 +70,6 @@ class Users extends Controller
                     'password' => User::encodePassword($form->getFieldValue('password'))
                 ]
             );
-
-
-
                 if ($user !== null) {
                     UserSession::getInstance()->setIdentity($user->getId());
 
@@ -85,7 +85,6 @@ class Users extends Controller
 
         $this->json($result);
     }
-
 
     public function jsonRegisterAction()
     {
