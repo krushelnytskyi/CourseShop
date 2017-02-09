@@ -34,6 +34,10 @@ return [
             'controller' => \MVC\Controller\Pages::class,
             'action'     => 'communityCreate'
         ],
+        'pages/json-community-create' => [
+            'controller' => \MVC\Controller\Pages::class,
+            'action'     => 'jsonCommunityCreate'
+        ],
         'users/json-register' => [
             'controller' => \MVC\Controller\Users::class,
             'action'     => 'jsonRegister'
@@ -41,6 +45,10 @@ return [
         'users/json-login' => [
             'controller' => \MVC\Controller\Users::class,
             'action'     => 'jsonLogin'
+        ],
+        'pages/json-add' => [
+            'controller' => \MVC\Controller\Pages::class,
+            'action'     => 'jsonArticleAdd'
         ]
     ],
     'patterns' => [

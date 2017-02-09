@@ -3,6 +3,7 @@
 namespace MVC\Controller;
 
 use MVC\Models\Article;
+use MVC\Models\Notifications;
 use MVC\Models\Tag;
 use MVC\Models\User;
 use System\Auth\UserSession;
@@ -62,7 +63,27 @@ class Users extends Controller
         } else {
             $repository = Repository::getInstance();
             $repository->useModel(User::class);
+        if ($form->execute() === false) {
+            $view->assign('errors', $form->getErrors());
+            return $view;
+        }
 
+        $repository = Repository::getInstance();
+
+        /** @var User $user */
+        $user = $repository->findOneBy(User::class,
+            [
+                'email'    => $form->getFieldValue('email'),
+                'password' => User::encodePassword($form->getFieldValue('password'))
+            ]
+        );
+
+        if ($user !== null) {
+            UserSession::getInstance()->setIdentity($user->getId());
+            $this->forward('');
+        }
+        return $view;
+    }
             /** @var User $user */
             $user = $repository->findOneBy(
                 [
@@ -114,6 +135,8 @@ class Users extends Controller
             $repository = Repository::getInstance();
             $repository->useModel(User::class);
             $user = $repository->findOneBy(
+
+            $user = $repository->findOneBy(User::class,
                 [
                     'email'    => $form->getFieldValue('email'),
                 ]
@@ -166,8 +189,7 @@ class Users extends Controller
         $url = trim($_SERVER['REQUEST_URI'], '/');
         list(,$id) = explode('/', $url);
         $repo = Repository::getInstance();
-        $repo->useModel(User::class);
-        $user = $repo->findOneBy(['id' => $id]);
+        $user = $repo->findOneBy(User::class,['id' => $id]);
 
         if ($user === null) {
             return new View('errors/404');
@@ -180,9 +202,8 @@ class Users extends Controller
 
     public function testAction()
     {
-        $repo = Repository::getInstance();
-        $repo->useModel(Tag::class);
 
-        var_dump($repo->findBy([],2,2,'id'));
+
     }
+
 }

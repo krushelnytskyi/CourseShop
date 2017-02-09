@@ -1,10 +1,11 @@
 <!-- content arrticle -->
 <div class="col-lg-8 mw">
     <?php foreach ($this->articles as $article): ?>
-	<div class="article">
+        <?php /** @var \MVC\Models\Article $article */ ?>
+        <div class="article">
 		<h2><a href="#"><?php echo $article->getTitle()?></a></h2>
 		<div class="article-info">
-			<img class="ico" src="/assets/img/author.png"> <a href="#"><?php echo 'User'. $article->getUser();?> </a> <?php echo $article->getCreated() ?>
+			<img class="ico" src="/assets/img/author.png"> <a href="/users/<?= $article->getUser()->getId() ?>"><?php echo $article->getUser()->getNickname();?> </a> <?php echo $article->getCreated() ?>
 			<img class="ico" src="/assets/img/comment2.png"> <a href="#comments">10</a>
 			<img class="ico" src="/assets/img/tag.png"> <a href="#"><?php echo $article->getTags()?></a>
 		</div>
@@ -20,7 +21,7 @@
 				<input class="ico-like" type="image" name="dislike" src="/assets/img/dislike.png">
 			</form>
 		</div>
-		<a class="read-more"  href="#">Read more ...</a>
+		<a class="read-more"  href="/articles/<?= $article->getId(); ?>">Read more ...</a>
 	</div>
     <?php endforeach;?>
 </div>

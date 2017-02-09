@@ -3,6 +3,7 @@
 namespace MVC\Controller;
 
 use MVC\Models\Article;
+use MVC\Models\Community;
 use MVC\Models\User;
 use System\Auth\Session;
 use System\Auth\UserSession;
@@ -26,13 +27,11 @@ class Pages extends Controller
     {
         $view = new View('pages/home');
         
-        $repository = Repository::getInstance();
-        $repository->useModel(Article::class);
-        
-        $articles = $repository->findBy();
+        $articles = Repository::getInstance()
+            ->findBy(Article::class);
 
-        $view->assign('articles',$articles);
-
+        $view = new View('pages/home');
+        $view->assign('articles', $articles);
         return $view;
     }
 
@@ -42,14 +41,26 @@ class Pages extends Controller
 
     public function articleAction()
     {
-//        articles/1
+        $url = trim($_SERVER['REQUEST_URI'], '/');
+        list(,$id) = explode('/', $url);
+        $repo = Repository::getInstance();
+        $article = $repo->findOneBy(Article::class,['id' => $id]);
 
-        $this->view('pages/article');
+        if ($article === null){
+            return new View('errors/404');
+        } else {
+            $view = new View('pages/article');
+            $view->assign('article', $article);
+            return $view;
+        }
     }
 
     public function articleAddAction()
     {
         $view = new View('pages/articleAdd');
+
+        $view->assign('communities', Repository::getInstance()->findBy(Community::class));
+
         if(Session::getInstance()->hasIdentity() === false){
             $view->assign('error','User not register');
         }
@@ -71,7 +82,6 @@ class Pages extends Controller
             $view->assign('errors',$form->getErrors());
         } else {
             $repository = Repository::getInstance();
-            $repository->useModel(Article::class);
 
             $article = new Article();
             $article->setUser(Session::getInstance()->getIdentity());
@@ -87,26 +97,69 @@ class Pages extends Controller
 
     }
 
-    public function articleById()
-    {
-        $url = trim($_SERVER['REQUEST_URI'], '/');
-        list(,$id) = explode('/', $url);
-        $repo = new Repository(Article::class);
-        $article = $repo->findOneBy(['id' => $id]);
-
-        if ($article === null){
-            return new View('errors/404');
-        } else {
-            $view = new View('pages/article');
-            $view->assign('article', $article);
-            return $view;
-        }
-    }
-
     public function communityCreateAction()
     {
-        $view = new View('pages/communityCreate');
-        return $view;
+        if (Session::getInstance()->hasIdentity()) {
+            return new View('pages/communityCreate');
+        } else {
+            return new View('errors/undefined_user');
+        }
+
+    }
+
+    public function jsonCommunityCreateAction()
+    {
+        $result = [];
+
+        $form = new Form(
+            $_POST,
+            [
+                'name' => [
+                    new Strings(2,64),
+                ],
+                'about' => [
+                    new Strings(0,300),
+                ]
+            ]
+        );
+        $secured = isset($_POST['secured']) ? true : false;
+
+        if (false === $form->execute()) {
+            $result = [
+                'messages' => $form->getErrors()
+            ];
+        } else {
+            $community = Repository::getInstance()->findOneBy(
+                Community::class,
+                [
+                    'name'    => $form->getFieldValue('name'),
+                ]
+            );
+
+            if ($community === null) {
+                $community = new Community();
+                $community->setName($form->getFieldValue('name'));
+                $community->setUser(UserSession::getInstance()->getIdentity());
+                $community->setAbout(addslashes($form->getFieldValue('about')));
+                $community->setSecured((int)((bool)$secured));
+
+                if (($id = Repository::getInstance()->save($community)) !== false) {
+                    $result = [
+                        'redirect' => '/'
+                    ];
+                } else {
+                    $result = [
+                        'message' => 'Something gone wrong'
+                    ];
+                }
+            } else {
+                $result = [
+                    'message' => 'Community exists'
+                ];
+            }
+        }
+
+        $this->json($result);
     }
 
 }

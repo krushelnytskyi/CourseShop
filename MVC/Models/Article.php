@@ -24,7 +24,7 @@ class Article extends Model
      * Unique key for article author
      *
      * @columnType(INT(11) NOT NULL)
-     * @foreignModel(MVC\Models\User)
+     * @foreignModel(\MVC\Models\User)
      * @foreignField(id)
      * @var User
      */
@@ -78,7 +78,7 @@ class Article extends Model
      * Rating is ratio of likes, dislikes
      * and comments to the views and date of create.
      *
-     * @columnType(INT(7) NOT NULL)
+     * @columnType(INT(7) NOT NULL DEFAULT 0)
      * @var float
      */
     private $rating;
@@ -86,7 +86,7 @@ class Article extends Model
     /**
      * Count of likes
      *
-     * @columnType(INT(11) DEFAULT 0)
+     * @columnType(INT(11))
      * @var int
      */
     private $likes;
@@ -118,7 +118,7 @@ class Article extends Model
     /**
      * Date of last update
      *
-     * @columnType(TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
+     * @columnType(TIMESTAMP)
      * @var \DateTime
      */
     private $updated;

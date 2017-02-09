@@ -34,11 +34,16 @@ class ModelsInstaller
                     $columnType = [];
                     if (preg_match('/@columnType\((.*)\)/', $property->getDocComment(), $columnType)) {
                         if (isset($columnType[1])) {
-                            $query = $query . $property->getName() . ' ' . $columnType[1] . ',';
+                            if (preg_match('/@columnName\((.*)\)/', $property->getDocComment(), $matches)){
+                                $query = $query . $matches[1] . ' ' . $columnType[1] . ',';
+                            } else {
+                                $query = $query . $property->getName() . ' ' . $columnType[1] . ',';
+                            }
                         }
                     }
                 }
                 $query = trim($query, ',') . ');';
+                echo $query . PHP_EOL;
                 Connection::getInstance()->getLink()->prepare($query)->execute();
             } else {
                 echo $modelClass . ' does not match the the requirements of the model, information about table not found, and model not instaled.' . PHP_EOL;

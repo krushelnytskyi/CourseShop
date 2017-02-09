@@ -90,6 +90,7 @@ class User extends Model
      * Date when user grade will be returned to 0
      * if unset = forever ban or readonly
      *
+     * @columnName(unban_date)
      * @columnType(TIMESTAMP)
      * @var \DateTime
      */
@@ -114,6 +115,7 @@ class User extends Model
     /**
      * Last login
      *
+     * @columnName(last_login)
      * @columnType(TIMESTAMP)
      * @var \DateTime
      */

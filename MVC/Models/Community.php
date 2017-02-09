@@ -25,9 +25,8 @@ class Community extends Model
      * Creator id
      *
      * @columnType(INT(11) UNSIGNED NOT NULL)
-     * @foreignModel(MVC\Models\User)
      * @foreignField(id)
-     * @var User
+     * @var int
      */
     private $user;
 
@@ -58,10 +57,10 @@ class Community extends Model
     private $secured;
 
     /**
-     * @param User $user
+     * @param int $user
      * @return $this
      */
-    public function setUser(User $user)
+    public function setUser($user)
     {
         $this->user = $user;
         return $this;

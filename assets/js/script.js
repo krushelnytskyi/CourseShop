@@ -25,6 +25,23 @@ $(document).on('submit', 'form.ajax', function () {
 
                 $('span.error-messages').html('');
 
+                if (data.hasOwnProperty('redirect') == true) {
+                    swal({
+                        title: 'Article',
+                        text: 'Article added successful!',
+                        timer: 1200
+                    }).then(
+                        function () {
+                            window.location.href = data.redirect;
+                        },
+                        function (dismiss) {
+                            if (dismiss === 'timer') {
+                                window.location.href = data.redirect;
+                            }
+                        }
+                    )
+                }
+
                 if (data.hasOwnProperty('messages') == true) {
 
                     data = data.messages;
@@ -38,6 +55,10 @@ $(document).on('submit', 'form.ajax', function () {
                         });
 
                         $('input[name=' + name + ']')
+                            .parent()
+                            .find('span.error-messages')
+                            .html(messages);
+                        $('textarea[name=' + name + ']')
                             .parent()
                             .find('span.error-messages')
                             .html(messages);

@@ -4,9 +4,12 @@ namespace System\Auth;
 
 use MVC\Models\User;
 use System\ORM\Repository;
+use System\Pattern\Singleton;
 
 class UserSession extends Session
 {
+
+    use Singleton;
 
     public function getIdentity()
     {
@@ -14,8 +17,7 @@ class UserSession extends Session
             $id = parent::getIdentity();
 
             $repo = Repository::getInstance();
-            $repo->useModel(User::class);
-            return $repo->findOneBy(
+            return $repo->findOneBy(User::class,
                 [
                     'id' => $id
                 ]
