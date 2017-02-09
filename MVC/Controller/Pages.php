@@ -145,6 +145,8 @@ class Pages extends Controller
 
                 if (($id = Repository::getInstance()->save($community)) !== false) {
                     $result = [
+                        'title' => 'Article',
+                        'text' => 'Article add',
                         'redirect' => '/'
                     ];
                 } else {
