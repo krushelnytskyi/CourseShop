@@ -40,9 +40,13 @@ $(document).on('submit', 'form.ajax', function () {
                             }
                         }
                     )
+                } else if (data.hasOwnProperty('message') == true) {
+                    swal({
+                        text: data.message
 
-
+                    })
                 }
+
 
                 if (data.hasOwnProperty('messages') == true) {
 
@@ -56,11 +60,7 @@ $(document).on('submit', 'form.ajax', function () {
                             messages += '<span class="badge badge-danger">' + message + '</span>'
                         });
 
-                        $('input[name=' + name + ']')
-                            .parent()
-                            .find('span.error-messages')
-                            .html(messages);
-                        $('textarea[name=' + name + ']')
+                        $('input[name=' + name + '], textarea')
                             .parent()
                             .find('span.error-messages')
                             .html(messages);
