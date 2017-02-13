@@ -8,13 +8,14 @@ use \System\ORM\Model;
  * Class Subscriptions
  * @package MVC\Models
  * @table(subscription_on_user)
+ * @updateBy(id)
  */
 class SubscriptionUser extends Model
 {
 
     /**
      * @var int
-     * @columnType(INT(11) NOT NULL AUTO_INCREMENT)
+     * @columnType(INT(11) NOT NULL AUTO_INCREMENT KEY)
      */
     private $id;
 

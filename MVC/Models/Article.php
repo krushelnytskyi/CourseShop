@@ -8,6 +8,7 @@ use System\ORM\Model;
  * Class Article
  * @package MVC\Models
  * @table(articles)
+ * @updateBy(id)
  */
 class Article extends Model
 {

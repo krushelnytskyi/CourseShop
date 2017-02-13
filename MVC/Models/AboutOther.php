@@ -8,6 +8,7 @@ use \System\ORM\Model;
  * Class Comment
  * @package MVC\Models
  * @table(about_other)
+ * @updateBy(user,targetUser)
  * record anonymous records about other users
  */
 class AboutOther extends Model

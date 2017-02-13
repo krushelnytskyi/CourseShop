@@ -8,9 +8,19 @@ use \System\ORM\Model;
  * Class Notifications
  * @package MVC\Models
  * @table(notifications)
+ * @updateBy(id)
  */
 class Notifications extends Model
 {
+
+    /**
+     * Unique key for Article
+     *
+     * @columnType(INT(11) UNSIGNED NOT NULL AUTO_INCREMENT KEY)
+     * @var int
+     */
+    private $id;
+
     /**
      * Key for user, who has saved private information about other user
      *
@@ -116,6 +126,22 @@ class Notifications extends Model
     public function getCreated(): \DateTime
     {
         return $this->created;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsRead()
+    {
+        return $this->isRead;
     }
 
 }

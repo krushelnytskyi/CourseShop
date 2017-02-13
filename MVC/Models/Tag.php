@@ -9,6 +9,7 @@ use \System\ORM\Model;
  * Class Tag
  * @package MVC\Models
  * @table(tags)
+ * @updateBy(id)
  */
 class Tag extends Model
 {
