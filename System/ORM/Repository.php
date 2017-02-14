@@ -79,20 +79,20 @@ class Repository
      */
     public function update(Model $model)
     {
+        $cachedModel = $this->getCashedModel(get_class($model));
         if (!isset($cachedModel['updateBy']) || $model->isNew()) {
             return -1;
         }
         $reflection = new \ReflectionClass(get_class($model));
-        $cachedModel = $this->getCashedModel(get_class($model));
         $statement = Connection::getInstance()->update()->from($cachedModel['tableName'])->limit(1);
-        $conditions = new Condition($statement);
-        foreach ($cachedModel['updateBy'] as $property) {
-            $propertyName = $property;
-            $property = $reflection->getProperty($property);
+        /** @var Condition $conditions */
+        $conditions = $statement->where();
+        foreach ($cachedModel['updateBy'] as $propertyName) {
+            $property = $reflection->getProperty($propertyName);
             $property->setAccessible(true);
             $value = $property->getValue($model);
-            if (isset($cachedModel['foreignFields'][$property])) {
-                $foreignField = $cachedModel['foreignFields'][$property];
+            if (isset($cachedModel['foreignFields'][$propertyName])) {
+                $foreignField = $cachedModel['foreignFields'][$propertyName];
                 $reflectForeign = new \ReflectionClass(get_class($value));
                 $propertyForeign = $reflectForeign->getProperty($foreignField);
                 $propertyForeign->setAccessible(true);
@@ -101,7 +101,7 @@ class Repository
             }
             $conditions->conditionAnd()->compare($cachedModel['colNames'][$propertyName], $value, '=');
         }
-        /** @var Update */
+        /** @var Update $statement */
         $statement = $conditions->closeCondition();
         $values = [];
         foreach ($cachedModel['colNames'] as $propName => $column) {
