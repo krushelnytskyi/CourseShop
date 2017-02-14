@@ -26,7 +26,20 @@ class Users extends Controller
      */
     public function loginAction()
     {
-        $view = new View('pages/home');
+        return new View('pages/home');
+    }
+
+    /**
+     * Register action
+     */
+    public function registerAction()
+    {
+        return new View('pages/home');
+    }
+
+    public function jsonLoginAction()
+    {
+        $result = [];
 
         $form = new Form(
             $_POST,
@@ -40,38 +53,34 @@ class Users extends Controller
             ]
         );
 
-        if ($form->execute() === false) {
-            $view->assign('errors', $form->getErrors());
-            return $view;
+        if (false === $form->execute()) {
+            $result = [
+                'messages' => $form->getErrors()
+            ];
+        } else {
+            $repository = Repository::getInstance();
+            $user = $repository->findOneBy(User::class,
+                [
+                    'email'    => $form->getFieldValue('email'),
+                    'password' => User::encodePassword($form->getFieldValue('password'))
+                ]
+            );
+
+            if ($user !== null) {
+                UserSession::getInstance()->setIdentity($user->getId());
+                $result = [
+                    'title' => 'login',
+                    'text' => 'Sign in',
+                    'redirect' => '/'
+                ];
+            } else {
+                $result = [
+                    'message' => 'Something gone wrong'
+                ];
+            }
         }
 
-        $repository = Repository::getInstance();
-
-        /** @var User $user */
-        $user = $repository->findOneBy(User::class,
-            [
-                'email'    => $form->getFieldValue('email'),
-                'password' => User::encodePassword($form->getFieldValue('password'))
-            ]
-        );
-
-        if ($user !== null) {
-            UserSession::getInstance()->setIdentity($user->getId());
-            $this->forward('');
-        }
-        return $view;
-    }
-
-    /**
-     * Register action
-     */
-    public function registerAction()
-    {
-        return new View('pages/home');
-    }
-
-    public function jsonLoginAction()
-    {
+        $this->json($result);
 
     }
 
@@ -103,7 +112,6 @@ class Users extends Controller
             ];
         } else {
             $repository = Repository::getInstance();
-
             $user = $repository->findOneBy(User::class,
                 [
                     'email'    => $form->getFieldValue('email'),
@@ -118,8 +126,10 @@ class Users extends Controller
 
                 if (($id = $repository->save($user)) !== false) {
                     UserSession::getInstance()->setIdentity($id);
-
                     $result = [
+
+                        'title' => 'register',
+                        'text' => 'Registration is completed',
                         'redirect' => '/'
                     ];
                 } else {
@@ -133,7 +143,6 @@ class Users extends Controller
                 ];
             }
         }
-
         $this->json($result);
     }
 
@@ -162,7 +171,6 @@ class Users extends Controller
         list(,$id) = explode('/', $url);
         $repo = Repository::getInstance();
         $user = $repo->findOneBy(User::class,['id' => $id]);
-
         if ($user === null) {
             return new View('errors/404');
         } else {
@@ -174,8 +182,5 @@ class Users extends Controller
 
     public function testAction()
     {
-
-
     }
-
 }

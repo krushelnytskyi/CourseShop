@@ -27,8 +27,8 @@ $(document).on('submit', 'form.ajax', function () {
 
                 if (data.hasOwnProperty('redirect') == true) {
                     swal({
-                        title: 'Article',
-                        text: 'Article added successful!',
+                        data: data.title,
+                        text: data.text,
                         timer: 1200
                     }).then(
                         function () {
@@ -40,7 +40,13 @@ $(document).on('submit', 'form.ajax', function () {
                             }
                         }
                     )
+                } else if (data.hasOwnProperty('message') == true) {
+                    swal({
+                        text: data.message
+
+                    })
                 }
+
 
                 if (data.hasOwnProperty('messages') == true) {
 
@@ -54,14 +60,11 @@ $(document).on('submit', 'form.ajax', function () {
                             messages += '<span class="badge badge-danger">' + message + '</span>'
                         });
 
-                        $('input[name=' + name + ']')
+                        $('input[name=' + name + '], textarea')
                             .parent()
                             .find('span.error-messages')
                             .html(messages);
-                        $('textarea[name=' + name + ']')
-                            .parent()
-                            .find('span.error-messages')
-                            .html(messages);
+
                     }
                 }
             }
