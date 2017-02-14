@@ -9,6 +9,7 @@ use \System\ORM\Model;
  * Class Community
  * @package MVC\Models
  * @table(communities)
+ * @updateBy(id)
  */
 class Community extends Model
 {

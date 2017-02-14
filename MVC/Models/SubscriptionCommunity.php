@@ -8,13 +8,14 @@ use \System\ORM\Model;
  * Class SubscriptionOnTag
  * @package MVC\Models
  * @table(subscription_on_community)
+ * @updateBy(id)
  */
 class SubscriptionCommunity extends Model
 {
 
     /**
      * @var int
-     * @columnType(INT(11) NOT NULL AUTO_INCREMENT)
+     * @columnType(INT(11) NOT NULL AUTO_INCREMENT KEY)
      */
     private $id;
 
