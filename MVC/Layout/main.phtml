@@ -30,6 +30,21 @@
 <div class="footer bg-primary">
     <p class="project-foter">© project name</p>
 </div>
+<script src='/tinymce/tinymce.min.js'></script>
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        theme: 'modern',
+        plugins: [
+            'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            'searchreplace wordcount visualblocks visualchars code fullscreen',
+            'insertdatetime media nonbreaking save table contextmenu directionality',
+            'emoticons paste textcolor colorpicker textpattern imagetools codesample toc'
+        ],
+        toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor backcolor emoticons | codesample',
+        image_advtab: true
+    });
+</script>
 <script src="/assets/js/bootstrap.min.js"></script>
 <script src="/assets/js/jquery.js"></script>
 <script src="/assets/js/jquery-ui.min.js"></script>
