@@ -50,7 +50,7 @@ class Insert extends Statement
 
         $this->values = array_map(
             function ($value) {
-                return '\'' . $value . '\'';
+                return '\'' . addcslashes($value, '\''). '\'';
             },
             $this->values
         );

@@ -1,10 +1,18 @@
 <div class="col-lg-8 mw">
     <div class="article">
         <h2>Add new article</h2>
-        <form action="/pages/json-add" method="post" class="ajax">
+        <form action="/article/new" method="post" class="ajax">
             <div class="form-group">
                 <label for="title">Title</label>
-                <input type="text" name="title" class="form-control" placeholder="Enter title" >
+                <input
+                        type="text"
+                        name="title"
+                        class="form-control"
+                        placeholder="Enter title"
+                        <?php if ($this->article !== null) : ?>
+                            value="<?= $this->article->getTitle() ?>"
+                        <?php endif; ?>
+                >
                 <span class="error-messages"></span>
             </div>
             <div class="form-group">

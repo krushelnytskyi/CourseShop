@@ -60,9 +60,13 @@ return [
             'controller' => \MVC\Controller\Users::class,
             'action'     => 'profile'
         ],
-        'articles\/[0-9]+' => [
-            'controller' => \MVC\Controller\Pages::class,
-            'action'     => 'article'
+        'article\/[0-9]+' => [
+            'controller' => \MVC\Controller\Article::class,
+            'action'     => 'show'
+        ],
+        'article\/[0-9]+\/edit' => [
+            'controller' => \MVC\Controller\Article::class,
+            'action'     => 'edit'
         ]
     ],
     'defaults' => [

@@ -1,1 +1,26 @@
 <h3><?= $this->user->getNickname(); ?></h3>
+
+<hr>
+
+<?php if ($this->subscribed === true) : ?>
+    <form action="/subscription/user" method="post" class="ajax">
+        <input type="hidden" name="user" value="<?= $this->user->getId() ?>">
+        <input type="hidden" name="positive" value="0">
+        <button class="btn btn-secondary">Unsubscribe</button>
+    </form>
+<?php else : ?>
+    <form action="/subscription/user" method="post" class="ajax">
+        <input type="hidden" name="user" value="<?= $this->user->getId() ?>">
+        <button class="btn btn-secondary">Subscribe</button>
+    </form>
+<?php endif; ?>
+
+<div class="col-md-8">
+    <div class="text-muted">Subscribers</div>
+    <?php foreach ($this->subscribers as $subscriber) : ?>
+
+        <?php /** @var \MVC\Models\User $subscriber */ ?>
+        <div class="badge badge-primary"><?= $subscriber->getNickname() ?></div>
+
+    <?php endforeach; ?>
+</div>

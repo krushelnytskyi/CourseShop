@@ -4,6 +4,7 @@ namespace MVC\Controller;
 
 use MVC\Models\Article;
 use MVC\Models\Notifications;
+use MVC\Models\SubscriptionUser;
 use MVC\Models\Tag;
 use MVC\Models\User;
 use System\Auth\UserSession;
@@ -75,7 +76,7 @@ class Users extends Controller
                 ];
             } else {
                 $result = [
-                    'message' => 'Something gone wrong'
+                    'message' => 'Email or password invalid'
                 ];
             }
         }
@@ -176,6 +177,32 @@ class Users extends Controller
         } else {
             $view = new View('users/profile');
             $view->assign('user', $user);
+            $view->assign('subscribed', false);
+
+            $subscriptions = Repository::getInstance()
+                ->findBy(
+                    SubscriptionUser::class,
+                    ['user' => $user->getId()]
+                );
+
+            $currentUser = UserSession::getInstance()
+                ->getIdentity();
+
+            $subscribers = array_map(
+                function ($subscription) use ($currentUser, $view) {
+
+                    if ($subscription->getSubscriber()->getId() === $currentUser->getId()) {
+                        $view->assign('subscribed', true);
+                    }
+
+                    return $subscription->getSubscriber();
+                },
+                $subscriptions
+            );
+
+            $view->assign('subscribers', $subscribers);
+
+
             return $view;
         }
     }

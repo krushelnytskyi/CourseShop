@@ -14,7 +14,7 @@ class SubscriptionUser extends Model
 
     /**
      * @var int
-     * @columnType(INT(11) NOT NULL AUTO_INCREMENT)
+     * @columnType(INT(11) NOT NULL AUTO_INCREMENT KEY)
      */
     private $id;
 
@@ -25,14 +25,22 @@ class SubscriptionUser extends Model
     private $positive;
 
     /**
-     * @var int
+     * Subscription subject
+     *
      * @columnType(INT(11) NOT NULL)
+     * @foreignModel(\MVC\Models\User)
+     * @foreignField(id)
+     * @var User
      */
     private $subscriber;
 
     /**
-     * @var int
+     * Subscription target
+     *
      * @columnType(INT(11) NOT NULL)
+     * @foreignModel(\MVC\Models\User)
+     * @foreignField(id)
+     * @var User
      */
     private $user;
 
@@ -53,7 +61,7 @@ class SubscriptionUser extends Model
     }
 
     /**
-     * @return int
+     * @return User
      */
     public function getSubscriber()
     {
@@ -61,7 +69,7 @@ class SubscriptionUser extends Model
     }
 
     /**
-     * @return int
+     * @return User
      */
     public function getUser()
     {
@@ -72,27 +80,27 @@ class SubscriptionUser extends Model
      * @param bool $positive
      * @return $this
      */
-    public function setPositive(bool $positive)
+    public function setPositive($positive)
     {
         $this->positive = $positive;
         return $this;
     }
 
     /**
-     * @param int $subscriber
+     * @param User $subscriber
      * @return $this
      */
-    public function setSubscriber(int $subscriber)
+    public function setSubscriber($subscriber)
     {
         $this->subscriber = $subscriber;
         return $this;
     }
 
     /**
-     * @param int $user
+     * @param User $user
      * @return $this
      */
-    public function setUser(int $user)
+    public function setUser($user)
     {
         $this->user = $user;
         return $this;
