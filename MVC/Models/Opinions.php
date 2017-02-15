@@ -8,6 +8,7 @@ use \System\ORM\Model;
  * Class Opinions
  * @package MVC\Models
  * @table(opinions)
+ * @updateBy(user,contentId)
  * This table for saving likes and dislikes
  */
 class Opinions extends Model

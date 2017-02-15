@@ -8,6 +8,7 @@ use \System\ORM\Model;
  * Class Subscriptions
  * @package MVC\Models
  * @table(subscription_on_user)
+ * @updateBy(id)
  */
 class SubscriptionUser extends Model
 {
@@ -57,7 +58,7 @@ class SubscriptionUser extends Model
      */
     public function isPositive()
     {
-        return $this->positive;
+        return (bool) $this->positive;
     }
 
     /**
@@ -82,7 +83,7 @@ class SubscriptionUser extends Model
      */
     public function setPositive($positive)
     {
-        $this->positive = $positive;
+        $this->positive = (int) $positive;
         return $this;
     }
 

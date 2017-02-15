@@ -8,13 +8,14 @@ use \System\ORM\Model;
  * Class SubscriptionOnTag
  * @package MVC\Models
  * @table(subscriptions_on_tag)
+ * @updateBy(id)
  */
 class SubscriptionTag extends Model
 {
 
     /**
      * @var int
-     * @columnType(INT(11) NOT NULL AUTO_INCREMENT)
+     * @columnType(INT(11) NOT NULL AUTO_INCREMENT KEY)
      */
     private $id;
 
@@ -53,7 +54,7 @@ class SubscriptionTag extends Model
      */
     public function isPositive()
     {
-        return $this->positive;
+        return (bool) $this->positive;
     }
 
     /**
@@ -78,7 +79,7 @@ class SubscriptionTag extends Model
      */
     public function setPositive(bool $positive)
     {
-        $this->positive = $positive;
+        $this->positive = (int) $positive;
         return $this;
     }
 

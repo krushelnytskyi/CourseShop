@@ -5,6 +5,7 @@ namespace System\ORM;
 use System\Database\Statement\Condition;
 use System\Database\Statement\IndpndtConditions;
 use System\Database\Connection;
+use System\Database\Statement\Update;
 use System\Pattern\Singleton;
 
 
@@ -38,6 +39,9 @@ class Repository
         if (preg_match('/@table\((.+)\)/', $reflection->getDocComment(), $matches)) {
             $model['tableName'] = $matches[1];
         }
+        if (preg_match('/@updateBy\((.+)\)/', $reflection->getDocComment(), $matches)) {
+            $model['updateBy'] = explode(',', $matches[1]);
+        }
         $colNames = []; $foreignModels = []; $foreignFields = []; $selectors = [];
         foreach ($reflection->getProperties() as $property) {
             if (preg_match('/@columnName\((.*)\)/', $property->getDocComment(), $matches)) {
@@ -64,6 +68,57 @@ class Repository
         $model['selectors'] = $selectors;
         $this->cache[$modelClass] = $model;
         return $model;
+    }
+
+    /**
+     * @param $model
+     * @return int
+     */
+    public function update(Model $model)
+    {
+        $cachedModel = $this->getCashedModel(get_class($model));
+        if (!isset($cachedModel['updateBy']) || $model->isNew()) {
+            return -1;
+        }
+        $reflection = new \ReflectionClass(get_class($model));
+        $statement = Connection::getInstance()->update()->from($cachedModel['tableName'])->limit(1);
+        /** @var Condition $conditions */
+        $conditions = $statement->where();
+        foreach ($cachedModel['updateBy'] as $propertyName) {
+            $property = $reflection->getProperty($propertyName);
+            $property->setAccessible(true);
+            $value = $property->getValue($model);
+            if (isset($cachedModel['foreignFields'][$propertyName])) {
+                $foreignField = $cachedModel['foreignFields'][$propertyName];
+                $reflectForeign = new \ReflectionClass(get_class($value));
+                $propertyForeign = $reflectForeign->getProperty($foreignField);
+                $propertyForeign->setAccessible(true);
+                $value = $propertyForeign->getValue($value);
+                $propertyForeign->setAccessible(false);
+            }
+            $conditions->conditionAnd()->compare($cachedModel['colNames'][$propertyName], $value, '=');
+        }
+        /** @var Update $statement */
+        $statement = $conditions->closeCondition();
+        $values = [];
+        foreach ($cachedModel['colNames'] as $propName => $column) {
+            $property = $reflection->getProperty($propName);
+            $property->setAccessible(true);
+            $value = $property->getValue($model);
+            if ($value !== null) {
+                if (isset($cachedModel['foreignFields'][$propName])) {
+                    $foreignField = $cachedModel['foreignFields'][$propName];
+                    $reflectForeign = new \ReflectionClass(get_class($value));
+                    $propertyForeign = $reflectForeign->getProperty($foreignField);
+                    $propertyForeign->setAccessible(true);
+                    $value = $propertyForeign->getValue($value);
+                    $propertyForeign->setAccessible(false);
+                }
+                $values[$column] = $value;
+            }
+            $property->setAccessible(false);
+        }
+        return $statement->setValues($values)->execute();
     }
 
     /**
@@ -147,12 +202,16 @@ class Repository
         if ($order !== null) {
             $statement->orderBy($order);
         }
-        if (empty($criteria) === false) {
-            $condition = new Condition($statement);
-            foreach ($criteria as $field => $value) {
-                $condition->conditionAnd()->compare($field, $value, '=');
+        if (is_array($criteria)) {
+            if (empty($criteria) === false) {
+                $condition = new Condition($statement);
+                foreach ($criteria as $field => $value) {
+                    $condition->conditionAnd()->compare($field, $value, '=');
+                }
+                $statement = $condition->closeCondition();
             }
-            $statement = $condition->closeCondition();
+        } else {
+            $statement->setCondition($criteria);
         }
         $rows = $statement->execute();
         foreach ($rows as $row) {
@@ -185,7 +244,7 @@ class Repository
      * @param array $criteria
      * @return object|null
      */
-    public function findOneBy($model, array $criteria = [])
+    public function findOneBy($model, $criteria = [])
     {
         $models = $this->findBy($model, $criteria, 1);
         return (isset($models[0]) === true) ? $models[0] : null;

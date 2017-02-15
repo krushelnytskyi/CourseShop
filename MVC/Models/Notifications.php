@@ -70,9 +70,9 @@ class Notifications extends Model
      * @param bool $isRead
      * @return $this
      */
-    public function setIsRead(bool $isRead)
+    public function setRead(bool $isRead)
     {
-        $this->isRead = $isRead;
+        $this->isRead = (int) $isRead;
         return $this;
     }
 
@@ -107,7 +107,7 @@ class Notifications extends Model
      */
     public function isIsRead(): bool
     {
-        return $this->isRead;
+        return (bool) $this->isRead;
     }
 
     /**

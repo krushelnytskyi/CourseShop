@@ -9,6 +9,7 @@ use \System\ORM\Model;
  * Class CommunityInsiders
  * @package MVC\Models
  * @table(community_insiders)
+ * @updateBy(id,user)
  * In this table save only users with custom permissions!
  */
 class CommunityInsiders extends Model

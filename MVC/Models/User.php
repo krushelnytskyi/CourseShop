@@ -8,6 +8,7 @@ use System\ORM\Model;
  * Class User
  * @package MVC\Models
  * @table(users)
+ * @updateBy(id)
  */
 class User extends Model
 {
