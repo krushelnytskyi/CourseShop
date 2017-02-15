@@ -26,12 +26,16 @@ class SubscriptionTag extends Model
 
     /**
      * @var int
+     * @foreignModel(\MVC\Models\User)
+     * @foreignField(id)
      * @columnType(INT(11) NOT NULL)
      */
     private $subscriber;
 
     /**
      * @var int
+     * @foreignModel(\MVC\Models\Tag)
+     * @foreignField(id)
      * @columnType(INT(11) NOT NULL)
      */
     private $tag;

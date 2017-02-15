@@ -81,7 +81,7 @@ class Repository
             $property->setAccessible(true);
             $value = $property->getValue($model);
             if ($value !== null) {
-                if(isset($cachedModel['foreignFields'][$propName])){
+                if(isset($cachedModel['foreignFields'][$propName]) && is_object($value)){
                     $foreignField = $cachedModel['foreignFields'][$propName];
                     $reflectForeign = new \ReflectionClass(get_class($value));
                     $propertyForeign = $reflectForeign->getProperty($foreignField);

@@ -25,15 +25,16 @@ class Community extends Model
      * Creator id
      *
      * @columnType(INT(11) UNSIGNED NOT NULL)
+     * @foreignModel(\MVC\Models\User)
      * @foreignField(id)
-     * @var int
+     * @var User
      */
     private $user;
 
     /**
      * Name of community
      *
-     * @columnType(VARCHAR(400))
+     * @columnType(VARCHAR(400) UNIQUE)
      * @var String
      */
     private $name;
@@ -51,13 +52,13 @@ class Community extends Model
      * moderation publications
      * before attachment to the community
      *
-     * @columnType(TINYINT(1))
+     * @columnType(TINYINT(1) UNSIGNED NOT NULL DEFAULT 0)
      * @var boolean
      */
     private $secured;
 
     /**
-     * @param int $user
+     * @param User|int $user
      * @return $this
      */
     public function setUser($user)
@@ -132,7 +133,7 @@ class Community extends Model
      */
     public function setSecured(bool $secured)
     {
-        $this->secured = $secured;
+        $this->secured = (int) $secured;
         return $this;
     }
 

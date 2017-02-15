@@ -26,12 +26,16 @@ class SubscriptionCommunity extends Model
 
     /**
      * @var int
+     * @foreignModel(\MVC\Models\User)
+     * @foreignField(id)
      * @columnType(INT(11) NOT NULL)
      */
     private $subscriber;
 
     /**
      * @var int
+     * @foreignModel(\MVC\Models\Community)
+     * @foreignField(id)
      * @columnType(INT(11) NOT NULL)
      */
     private $community;

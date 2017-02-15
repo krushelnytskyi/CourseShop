@@ -71,20 +71,20 @@ class CommunityInsiders extends Model
     }
 
     /**
-     * @param Community $id
+     * @param Community|int $id
      * @return $this
      */
-    public function setId(Community $id)
+    public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @param User $user
+     * @param User|int $user
      * @return $this
      */
-    public function setUser(User $user)
+    public function setUser($user)
     {
         $this->user = $user;
         return $this;
