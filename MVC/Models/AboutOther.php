@@ -49,6 +49,7 @@ class AboutOther extends Model
      */
     public function setUser(User $user)
     {
+        $this->setNew(true);
         $this->user = $user;
         return $this;
     }
@@ -59,6 +60,7 @@ class AboutOther extends Model
      */
     public function setTargetUser(User $targetUser)
     {
+        $this->setNew(true);
         $this->targetUser = $targetUser;
         return $this;
     }

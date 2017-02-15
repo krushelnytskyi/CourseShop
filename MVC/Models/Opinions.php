@@ -72,6 +72,7 @@ class Opinions extends Model
      */
     public function setUser(User $user)
     {
+        $this->setNew(true);
         $this->user = $user;
         return $this;
     }
@@ -92,6 +93,7 @@ class Opinions extends Model
      */
     public function setContentId($contentId)
     {
+        $this->setNew(true);
         $this->contentId = $contentId;
         return $this;
     }

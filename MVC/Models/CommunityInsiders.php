@@ -77,6 +77,7 @@ class CommunityInsiders extends Model
      */
     public function setId($id)
     {
+        $this->setNew(true);
         $this->id = $id;
         return $this;
     }
@@ -87,6 +88,7 @@ class CommunityInsiders extends Model
      */
     public function setUser($user)
     {
+        $this->setNew(true);
         $this->user = $user;
         return $this;
     }
