@@ -14,14 +14,6 @@ return [
             'controller' => 'MVC\Controller\Pages',
             'action'     => 'home'
         ],
-        'article' => [
-            'controller' => 'MVC\Controller\Pages',
-            'action'     => 'article'
-        ],
-        'article-add' => [
-            'controller' => 'MVC\Controller\Pages',
-            'action'     => 'articleAdd'
-        ],
         'admin/users' => [
             'controller' => 'MVC\Controller\Admin',
             'action'     => 'users'
@@ -30,14 +22,6 @@ return [
             'controller' => 'MVC\Controller\Admin',
             'action'     => 'article'
         ],
-        'community-create' => [
-            'controller' => \MVC\Controller\Pages::class,
-            'action'     => 'communityCreate'
-        ],
-        'pages/json-community-create' => [
-            'controller' => \MVC\Controller\Pages::class,
-            'action'     => 'jsonCommunityCreate'
-        ],
         'users/json-register' => [
             'controller' => \MVC\Controller\Users::class,
             'action'     => 'jsonRegister'
@@ -45,10 +29,6 @@ return [
         'users/json-login' => [
             'controller' => \MVC\Controller\Users::class,
             'action'     => 'jsonLogin'
-        ],
-        'pages/json-add' => [
-            'controller' => \MVC\Controller\Pages::class,
-            'action'     => 'jsonArticleAdd'
         ]
     ],
     'patterns' => [
@@ -67,7 +47,12 @@ return [
         'article\/[0-9]+\/edit' => [
             'controller' => \MVC\Controller\Article::class,
             'action'     => 'edit'
+        ],
+        'community\/[0-9]+' => [
+            'controller' => \MVC\Controller\Community::class,
+            'action'     => 'show'
         ]
+
     ],
     'defaults' => [
         'not_found' => 'errors/404'

@@ -1,8 +1,8 @@
-<div class="col-lg-8 mw">
+<div>
     <div class="article">
-        <h2><a href="#"><?= $this->article->getTitle() ?></a></h2>
+        <h2><?= $this->article->getTitle() ?></h2>
         <div class="article-info">
-            <img class="ico" src="/assets/img/author.png"> <a href="#">admin </a>  15.01.2017
+            <img class="ico" src="/assets/img/author.png"> <a href="/users/<?= $this->article->getUser()->getId() ?>"><?php echo $this->article->getUser()->getNickname();?> </a>  <?php echo $this->article->getCreated() ?>
             <img class="ico" src="/assets/img/comment2.png"> <a href="#comments">10</a>
             <img class="ico" src="/assets/img/tag.png"> <a href="#">tags</a>
         </div>
