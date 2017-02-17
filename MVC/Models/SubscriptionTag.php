@@ -14,7 +14,7 @@ class SubscriptionTag extends Model
 
     /**
      * @var int
-     * @columnType(INT(11) NOT NULL AUTO_INCREMENT)
+     * @columnType(INT(11) NOT NULL AUTO_INCREMENT KEY)
      */
     private $id;
 

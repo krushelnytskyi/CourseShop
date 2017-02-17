@@ -26,7 +26,7 @@ class Subscription extends Controller
                 $_POST,
                 [
                     'user' => [
-                        new Regular('/[0-9]+/')
+                        new Regular('[0-9]+')
                     ]
                 ]
             );
