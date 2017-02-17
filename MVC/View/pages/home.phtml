@@ -1,9 +1,9 @@
 <!-- content arrticle -->
-<div class="col-lg-8 mw">
+<div>
     <?php foreach ($this->articles as $article): ?>
         <?php /** @var \MVC\Models\Article $article */ ?>
         <div class="article">
-		<h2><a href="#"><?php echo $article->getTitle()?></a></h2>
+		<h2><a href="/article/<?= $article->getId(); ?>"><?php echo $article->getTitle()?></a></h2>
 		<div class="article-info">
 			<img class="ico" src="/assets/img/author.png"> <a href="/users/<?= $article->getUser()->getId() ?>"><?php echo $article->getUser()->getNickname();?> </a> <?php echo $article->getCreated() ?>
 			<img class="ico" src="/assets/img/comment2.png"> <a href="#comments">10</a>
