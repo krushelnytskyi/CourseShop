@@ -3,6 +3,7 @@
 namespace MVC\Controller;
 
 use MVC\Models\Community;
+use MVC\Models\User;
 use System\Auth\Session;
 use System\Auth\UserSession;
 use System\Form;
@@ -38,10 +39,38 @@ class Article extends Controller
         list(,,$id) = explode('/', $_SERVER['REQUEST_URI']);
 
         if (($article = Repository::getInstance()->findOneBy(\MVC\Models\Article::class, ['id' => $id]))) {
+
             $view->assign('article', $article);
         }
 
         return $view;
+    }
+
+    /**
+     * Article json delete action
+     */
+    public function deleteAction()
+    {
+        $result = [];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $grade = UserSession::getInstance()->getIdentity();
+            if ($grade !== null) {
+                $role = $grade->getGrade();
+                if ($role === User::USER_GRADE_MODERATOR && User::USER_GRADE_ADMIN) {
+                    $delete = Repository::getInstance()->findOneBy(\MVC\Models\Article::class);
+                    if (Repository::getInstance()->delete($delete) !== false) {
+                        $result['title'] = 'Delete';
+                        $result['text'] = 'Article delete';
+                        $result['redirect'] = '/';
+                    } else {
+                        $result['message'] = 'Somethasdaing gone wrong';
+                    }
+                } else {
+                        $result['message'] = 'No permission';
+                }
+            }
+        }
+        $this->json($result);
     }
 
     /**
@@ -82,13 +111,14 @@ class Article extends Controller
 
                 $article->setRating(0);
                 if (Repository::getInstance()->save($article) !== false) {
+                    $result['title'] = 'Article';
+                    $result['text'] = 'Article add';
                     $result['redirect'] = '/';
                 } else {
-                    $result['messages'] = 'Something gone wrong';
+                    $result['message'] = 'Something gone wrong';
                 }
             }
         }
-
         $this->json($result);
     }
 

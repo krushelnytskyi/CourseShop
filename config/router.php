@@ -19,8 +19,8 @@ return [
             'action'     => 'article'
         ],
         'article-add' => [
-            'controller' => 'MVC\Controller\Pages',
-            'action'     => 'articleAdd'
+            'controller' => \MVC\Controller\Article::class,
+            'action'     => 'create'
         ],
         'admin/users' => [
             'controller' => 'MVC\Controller\Admin',

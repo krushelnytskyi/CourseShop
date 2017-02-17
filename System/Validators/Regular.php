@@ -29,7 +29,7 @@ class Regular extends Validator
      */
     public function isValid($value)
     {
-        if (preg_match($this->pattern, $value) !== 1 ) {
+        if (preg_match("/$this->pattern/", $value) !== 1 ) {
         $this->message = 'Incorrect values';
         return false;
         }

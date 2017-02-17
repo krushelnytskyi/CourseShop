@@ -5,6 +5,10 @@
             <img class="ico" src="/assets/img/author.png"> <a href="#">admin </a>  15.01.2017
             <img class="ico" src="/assets/img/comment2.png"> <a href="#comments">10</a>
             <img class="ico" src="/assets/img/tag.png"> <a href="#">tags</a>
+            <form action="/article/delete" method="post" class="ajax">
+                <input type="hidden" name="delete">
+                <button class="btn btn-info">delete</button>
+            </form>
         </div>
         <p><?= $this->article->getBody(); ?></p>
         <div class="article-info">
@@ -15,9 +19,9 @@
             <form class="form-like">
                 <input class="ico-like" type="image" name="dislike" src="/assets/img/dislike.png">
             </form>
-        </div>
+         </div>
         <div class="comments">
-            <form action="" method="POST">
+                <form action="" method="POST">
                 <p class="user-comment"><img class="ico" src="/assets/img/user.png"><?= $this->article->getUser()->getNickname() ?></p>
                 <div class="form-group">
                     <label for="exampleTextarea">Your comment</label>
