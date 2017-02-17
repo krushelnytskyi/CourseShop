@@ -1,0 +1,17 @@
+<form action="/api/comments/new" method="POST" class="create-comment">
+    <input type="hidden" name="article" value="<?= $this->article->getId(); ?>">
+
+    <p class="user-comment"><img class="ico" src="/assets/img/user.png">
+        <?= $this->article->getUser()->getNickname() ?></p>
+    <div class="form-group">
+        <label for="exampleTextarea">Your comment</label>
+        <textarea class="form-control" rows="3" name="body"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Сomment</button>
+</form>
+<?php foreach ($this->comments as $comment) : ?>
+    <div class="comments-text">
+        <p class="user-comment"><img class="ico" src="/assets/img/user.png"> admin</p>
+        <p><?= $comment->getBody() ?></p>
+    </div>
+<?php endforeach; ?>

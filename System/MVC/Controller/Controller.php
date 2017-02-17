@@ -2,6 +2,7 @@
 
 namespace System\MVC\Controller;
 use System\Dispatcher;
+use System\View;
 
 /**
  * Class Controller
@@ -43,6 +44,23 @@ abstract class Controller
     {
         Dispatcher::getInstance()->dispatch($url);
         exit(0);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAjax()
+    {
+        return true === isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+            && 'xmlhttprequest' === strtolower($_SERVER['HTTP_X_REQUESTED_WITH']);
+    }
+
+    /**
+     * @return View
+     */
+    public function notFoundAction()
+    {
+        return new View('errors/404');
     }
 
 }

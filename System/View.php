@@ -33,12 +33,14 @@ class View
     }
 
 
-    public function layout($name)
+    public function layout($name = null)
     {
-        $layout = Config::get('app', 'default_layout');
+        $layout = $name === null ? Config::get('app', 'default_layout') : $name;
 
         if ($layout !== null) {
-            return include APP_ROOT . 'MVC/Layout/' . $layout . '.phtml';
+            ob_start();
+            include APP_ROOT . 'MVC/Layout/' . $layout . '.phtml';
+            return ob_get_clean();
         }
     }
 
@@ -66,6 +68,11 @@ class View
     public function assign($variable, $value)
     {
         $this->variables[$variable] = $value;
+    }
+
+    public function assignArray(array $array)
+    {
+        $this->variables = array_merge_recursive($this->variables, $array);
     }
 
     public function __get($name)

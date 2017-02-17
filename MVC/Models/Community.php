@@ -132,7 +132,7 @@ class Community extends Model
      * @param bool $secured
      * @return $this
      */
-    public function setSecured(bool $secured)
+    public function setSecured($secured)
     {
         $this->secured = (int) $secured;
         return $this;

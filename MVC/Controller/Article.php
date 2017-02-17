@@ -2,6 +2,7 @@
 
 namespace MVC\Controller;
 
+use MVC\Models\Comment;
 use MVC\Models\Community;
 use MVC\Models\User;
 use MVC\Models\CommunityInsiders;
@@ -81,9 +82,9 @@ class Article extends Controller
      */
     public function newAction()
     {
-        $articleId = [];
+        $result = [];
         if (Session::getInstance()->hasIdentity() == false) {
-            $articleId = [
+            $result = [
                 'messages' => 'User not register'
             ];
         } else {
@@ -102,7 +103,7 @@ class Article extends Controller
                 ]
             );
             if ($form->execute() === false) {
-                $articleId['messages'] = $form->getErrors();
+                $result['messages'] = $form->getErrors();
             } else {
                 $repository = Repository::getInstance();
                 /** @var User $user */
@@ -126,8 +127,8 @@ class Article extends Controller
                         $article->setIsModerated(true);
                     }
                 }
-                $articleId = $repository->save($article);
-                if ($articleId !== false) {
+                $result = $repository->save($article);
+                if ($result !== false) {
                     $tags = explode(' ', $form->getFieldValue('tags'));
                     foreach ($tags as $value) {
                         /** @var Tag $tag */
@@ -140,16 +141,16 @@ class Article extends Controller
                             $tagId = $tag->getId();
                         }
                         $tagInArticle = new TagsInArticle();
-                        $tagInArticle->setTag($tagId)->setArticle($articleId);
+                        $tagInArticle->setTag($tagId)->setArticle($result);
                         $repository->save($tagInArticle);
                     }
-                    $articleId['redirect'] = '/';
+                    $result['redirect'] = '/';
                 } else {
-                    $articleId['messages'] = 'Something gone wrong';
+                    $result['messages'] = 'Something gone wrong';
                 }
             }
         }
-        $this->json($articleId);
+        $this->json($result);
     }
 
     /**
@@ -165,10 +166,15 @@ class Article extends Controller
         $article = $repo->findOneBy(\MVC\Models\Article::class, ['id' => $id]);
 
         if ($article === null) {
-            return new View('errors/404');
+            return $this->notFoundAction();
         } else {
             $view = new View('article/show');
             $view->assign('article', $article);
+            $view->assign('comments', Repository::getInstance()
+                ->findBy(Comment::class, [
+                    'parent' => $article->getId()
+                ])
+            );
             return $view;
         }
     }

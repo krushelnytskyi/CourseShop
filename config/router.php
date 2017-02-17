@@ -37,13 +37,13 @@ return [
         'users/json-login' => [
             'controller' => \MVC\Controller\Users::class,
             'action'     => 'jsonLogin'
+        ],
+        'api/comments/new' => [
+            'controller' => \MVC\Controller\Api\Comments::class,
+            'action'     => 'new'
         ]
     ],
     'patterns' => [
-        '^api\/.+\/(.+)' => [
-            'controller' => 'MVC\Controller\Api\Users',
-            'action'     => '$1'
-        ],
         'users\/[0-9]+' => [
             'controller' => \MVC\Controller\Users::class,
             'action'     => 'profile'
@@ -59,7 +59,7 @@ return [
         'community\/[0-9]+' => [
             'controller' => \MVC\Controller\Community::class,
             'action'     => 'show'
-        ]
+        ],
 
     ],
     'defaults' => [

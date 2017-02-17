@@ -56,7 +56,7 @@ class Community extends Controller
                 $community = new \MVC\Models\Community();
                 $community->setName($form->getFieldValue('name'));
                 $community->setUser(UserSession::getInstance()->getIdentity());
-                $community->setAbout(addslashes($form->getFieldValue('about')));
+                $community->setAbout($form->getFieldValue('about'));
                 $community->setSecured((int)((bool)$secured));
 
                 if (($id = Repository::getInstance()->save($community)) !== false) {

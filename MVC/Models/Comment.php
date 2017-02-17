@@ -71,8 +71,7 @@ class Comment extends Model
      * or something else...
      *
      * @columnType(INT(11) UNSIGNED NOT NULL)
-     * @selector(parent_type)
-     * @foreignModel(MVC\Models\Article,MVC\Models\Comment)
+     * @foreignModel(MVC\Models\Article)
      * @foreignField(id)
      * @var Article|Comment
      */
@@ -86,16 +85,6 @@ class Comment extends Model
      * @var int
      */
     private $parentType;
-
-    /**
-     * @param Article $article
-     * @return $this
-     */
-    public function setArticle(Article $article)
-    {
-        $this->article = $article;
-        return $this;
-    }
 
     /**
      * @param User $user
@@ -234,7 +223,5 @@ class Comment extends Model
     {
         return $this->parentType;
     }
-
-
 
 }

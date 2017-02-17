@@ -20,19 +20,8 @@
                 <input class="ico-like" type="image" name="dislike" src="/assets/img/dislike.png">
             </form>
          </div>
-        <div class="comments">
-                <form action="" method="POST">
-                <p class="user-comment"><img class="ico" src="/assets/img/user.png"><?= $this->article->getUser()->getNickname() ?></p>
-                <div class="form-group">
-                    <label for="exampleTextarea">Your comment</label>
-                    <textarea class="form-control" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Сomment</button>
-            </form>
-            <div class="comments-text">
-                <p class="user-comment"><img class="ico" src="/assets/img/user.png"> admin</p>
-                <p>This is my first coment!!!</p>
-            </div>
+        <div id="comments-list">
+           <?= $this->layout('partial/comments-list') ?>
         </div>
     </div>
 </div>

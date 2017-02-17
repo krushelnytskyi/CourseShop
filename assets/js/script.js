@@ -74,3 +74,26 @@ $(document).on('submit', 'form.ajax', function () {
     return false;
 });
 
+$(document).on('submit', 'form.create-comment', function (event) {
+   event.isDefaultPrevented = true;
+
+   var form = jQuery(this);
+
+   $.ajax (
+       {
+           url: form.attr('action'),
+           data: form.serializeArray(),
+           success: function (data) {
+               if (data.hasOwnProperty('html')) {
+                   $('#comments-list').html(data.html);
+               }
+
+               console.log(data);
+           },
+           method: 'post'
+       }
+   );
+
+   return false;
+});
+
