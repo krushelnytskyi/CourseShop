@@ -4,6 +4,10 @@ namespace MVC\Controller;
 
 use MVC\Models\Community;
 use MVC\Models\User;
+use MVC\Models\CommunityInsiders;
+use MVC\Models\Tag;
+use MVC\Models\TagsInArticle;
+use MVC\Models\User;
 use System\Auth\Session;
 use System\Auth\UserSession;
 use System\Form;
@@ -36,7 +40,7 @@ class Article extends Controller
     {
         $view = $this->createAction();
 
-        list(,,$id) = explode('/', $_SERVER['REQUEST_URI']);
+        list(, , $id) = explode('/', $_SERVER['REQUEST_URI']);
 
         if (($article = Repository::getInstance()->findOneBy(\MVC\Models\Article::class, ['id' => $id]))) {
 
@@ -78,9 +82,9 @@ class Article extends Controller
      */
     public function newAction()
     {
-        $result = [];
-        if(Session::getInstance()->hasIdentity() == false){
-            $result = [
+        $articleId = [];
+        if (Session::getInstance()->hasIdentity() == false) {
+            $articleId = [
                 'messages' => 'User not register'
             ];
         } else {
@@ -88,21 +92,24 @@ class Article extends Controller
                 $_POST,
                 [
                     'title' => [
-                        new Strings(3,255),
+                        new Strings(3, 255),
                     ],
                     'body' => [
-                        new Strings(3,1000),
+                        new Strings(3, 1000),
                     ],
                     'tags' => [
-                        new Strings(3,255),
+                        new Strings(3, 255),
                     ],
                 ]
             );
-            if ($form->execute() === false){
-                $result['messages'] = $form->getErrors();
+            if ($form->execute() === false) {
+                $articleId['messages'] = $form->getErrors();
             } else {
+                $repository = Repository::getInstance();
+                /** @var User $user */
+                $user = UserSession::getInstance()->getIdentity();
                 $article = new \MVC\Models\Article();
-                $article->setUser(UserSession::getInstance()->getIdentity());
+                $article->setUser($user);
                 $article->setTitle($form->getFieldValue('title'));
                 $article->setBody($form->getFieldValue('body'));
                 $article->setTags($form->getFieldValue('tags'));
@@ -110,16 +117,40 @@ class Article extends Controller
                 // todo $article->setCommunity
 
                 $article->setRating(0);
-                if (Repository::getInstance()->save($article) !== false) {
-                    $result['title'] = 'Article';
-                    $result['text'] = 'Article add';
-                    $result['redirect'] = '/';
+                /** @var Community $community */
+                $community = $repository->findOneBy(Community::class, ['id' => $form->getFieldValue('community')]);
+                if ($community !== null) {
+                    $article->setCommunity($community);
+                    if (null == $repository->findOneBy(CommunityInsiders::class, ['id' => $community->getId(), 'user' => $user->getId()])) {
+                        $article->setIsModerated(!((bool)$community->isSecured()));
+                    } else {
+                        $article->setIsModerated(true);
+                    }
+                }
+                $articleId = $repository->save($article);
+                if ($articleId !== false) {
+                    $tags = explode(' ', $form->getFieldValue('tags'));
+                    foreach ($tags as $value) {
+                        /** @var Tag $tag */
+                        $tag = $repository->findOneBy(Tag::class, ['value' => $value]);
+                        if ($tag === null) {
+                            $tag = new Tag();
+                            $tag->setValue($value);
+                            $tagId = $repository->save($tag);
+                        } else {
+                            $tagId = $tag->getId();
+                        }
+                        $tagInArticle = new TagsInArticle();
+                        $tagInArticle->setTag($tagId)->setArticle($articleId);
+                        $repository->save($tagInArticle);
+                    }
+                    $articleId['redirect'] = '/';
                 } else {
-                    $result['message'] = 'Something gone wrong';
+                    $articleId['messages'] = 'Something gone wrong';
                 }
             }
         }
-        $this->json($result);
+        $this->json($articleId);
     }
 
     /**
@@ -130,11 +161,11 @@ class Article extends Controller
     public function showAction()
     {
         $url = trim($_SERVER['REQUEST_URI'], '/');
-        list(,$id) = explode('/', $url);
+        list(, $id) = explode('/', $url);
         $repo = Repository::getInstance();
-        $article = $repo->findOneBy(\MVC\Models\Article::class,['id' => $id]);
+        $article = $repo->findOneBy(\MVC\Models\Article::class, ['id' => $id]);
 
-        if ($article === null){
+        if ($article === null) {
             return new View('errors/404');
         } else {
             $view = new View('article/show');
@@ -142,5 +173,5 @@ class Article extends Controller
             return $view;
         }
     }
-    
+
 }

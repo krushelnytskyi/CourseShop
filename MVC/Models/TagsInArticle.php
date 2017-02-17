@@ -31,6 +31,26 @@ class TagsInArticle extends Model
      */
     private $tag;
 
+    /**
+     * @param Article|int $article
+     * @return $this
+     */
+    public function setArticle($article)
+    {
+        $this->article = $article;
+        return $this;
+    }
+
+    /**
+     * @param Tag|int $tag
+     * @return $this
+     */
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
+        return $this;
+    }
+
 
     /**
      * @return Article

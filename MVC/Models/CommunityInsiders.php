@@ -9,6 +9,7 @@ use \System\ORM\Model;
  * Class CommunityInsiders
  * @package MVC\Models
  * @table(community_insiders)
+ * @updateBy(id,user)
  * In this table save only users with custom permissions!
  */
 class CommunityInsiders extends Model
@@ -71,21 +72,23 @@ class CommunityInsiders extends Model
     }
 
     /**
-     * @param Community $id
+     * @param Community|int $id
      * @return $this
      */
-    public function setId(Community $id)
+    public function setId($id)
     {
+        $this->setNew(true);
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @param User $user
+     * @param User|int $user
      * @return $this
      */
-    public function setUser(User $user)
+    public function setUser($user)
     {
+        $this->setNew(true);
         $this->user = $user;
         return $this;
     }

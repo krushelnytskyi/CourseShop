@@ -8,6 +8,7 @@ use \System\ORM\Model;
  * Class Comment
  * @package MVC\Models
  * @table(about_other)
+ * @updateBy(user,targetUser)
  * record anonymous records about other users
  */
 class AboutOther extends Model
@@ -48,6 +49,7 @@ class AboutOther extends Model
      */
     public function setUser(User $user)
     {
+        $this->setNew(true);
         $this->user = $user;
         return $this;
     }
@@ -58,6 +60,7 @@ class AboutOther extends Model
      */
     public function setTargetUser(User $targetUser)
     {
+        $this->setNew(true);
         $this->targetUser = $targetUser;
         return $this;
     }

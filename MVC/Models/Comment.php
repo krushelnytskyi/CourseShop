@@ -9,6 +9,7 @@ use \System\ORM\Model;
  * Class Comment
  * @package MVC\Models
  * @table(comments)
+ * @updateBy(id)
  */
 class Comment extends Model
 {

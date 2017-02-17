@@ -8,6 +8,7 @@ use \System\ORM\Model;
  * Class SubscriptionOnTag
  * @package MVC\Models
  * @table(subscription_on_community)
+ * @updateBy(id)
  */
 class SubscriptionCommunity extends Model
 {
@@ -26,12 +27,16 @@ class SubscriptionCommunity extends Model
 
     /**
      * @var int
+     * @foreignModel(\MVC\Models\User)
+     * @foreignField(id)
      * @columnType(INT(11) NOT NULL)
      */
     private $subscriber;
 
     /**
      * @var int
+     * @foreignModel(\MVC\Models\Community)
+     * @foreignField(id)
      * @columnType(INT(11) NOT NULL)
      */
     private $community;
@@ -49,7 +54,7 @@ class SubscriptionCommunity extends Model
      */
     public function isPositive()
     {
-        return $this->positive;
+        return (bool) $this->positive;
     }
 
     /**
@@ -74,7 +79,7 @@ class SubscriptionCommunity extends Model
      */
     public function setPositive(bool $positive)
     {
-        $this->positive = $positive;
+        $this->positive = (int) $positive;
         return $this;
     }
 

@@ -8,6 +8,7 @@ use System\ORM\Model;
  * Class Article
  * @package MVC\Models
  * @table(articles)
+ * @updateBy(id)
  */
 class Article extends Model
 {
@@ -71,7 +72,7 @@ class Article extends Model
      * @columnType(VARCHAR(1023))
      * @var String
      */
-    private $tags = [];
+    private $tags;
 
     /**
      * Article rating.
@@ -124,7 +125,7 @@ class Article extends Model
     private $updated;
 
     /**
-     * @param User $user
+     * @param User|int $user
      * @return $this
      */
     public function setUser($user)
@@ -134,7 +135,7 @@ class Article extends Model
     }
 
     /**
-     * @param int $community
+     * @param Community|int $community
      * @return $this
      */
     public function setCommunity($community)
@@ -147,9 +148,9 @@ class Article extends Model
      * @param bool $isModerated
      * @return $this
      */
-    public function setIsModerated($isModerated)
+    public function setIsModerated(bool $isModerated)
     {
-        $this->isModerated = $isModerated;
+        $this->isModerated = (int) $isModerated;
         return $this;
     }
 
