@@ -72,7 +72,7 @@ class Comments extends Controller
                     );
                     $result['html'] = $view->layout('partial/comments-list');
                 } else {
-                    $result['messaage'] = 'Something gone wrong';
+                    $result['message'] = 'Something gone wrong';
                 }
             }
 
