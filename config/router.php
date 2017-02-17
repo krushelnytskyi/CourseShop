@@ -14,6 +14,14 @@ return [
             'controller' => 'MVC\Controller\Pages',
             'action'     => 'home'
         ],
+        'article' => [
+            'controller' => 'MVC\Controller\Pages',
+            'action'     => 'article'
+        ],
+        'article-add' => [
+            'controller' => 'MVC\Controller\Pages',
+            'action'     => 'articleAdd'
+        ],
         'admin/users' => [
             'controller' => 'MVC\Controller\Admin',
             'action'     => 'users'
