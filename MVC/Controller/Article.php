@@ -7,7 +7,6 @@ use MVC\Models\User;
 use MVC\Models\CommunityInsiders;
 use MVC\Models\Tag;
 use MVC\Models\TagsInArticle;
-use MVC\Models\User;
 use System\Auth\Session;
 use System\Auth\UserSession;
 use System\Form;
