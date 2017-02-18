@@ -25,6 +25,8 @@ class Dispatcher
     {
         session_start();
 
+
+
         if ($url === false) {
             $url = trim($_SERVER['REQUEST_URI'], '/');
         }
@@ -32,7 +34,10 @@ class Dispatcher
         $urlParts = explode('/', $url);
 
         $controller = 'MVC\Controller\\' . ucfirst($urlParts[0]);
-        $action = $urlParts[1];
+        $action = '';
+        if (isset($urlParts[1])) {
+            $action = $urlParts[1];
+        }
 
         foreach (Config::get('router', 'urls') as $currentUrl => $rule) {
             if ($url === $currentUrl) {
@@ -45,9 +50,9 @@ class Dispatcher
             if (preg_match("/$patterns/", $url)) {
                 $controller = preg_replace("/$patterns/", $rule['controller'], $url);
                 $action = preg_replace("/$patterns/", $rule['action'], $url);
-                }
-
             }
+
+        }
 
         $action = $action . 'Action';
 

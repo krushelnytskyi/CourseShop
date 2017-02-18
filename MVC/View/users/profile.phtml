@@ -5,7 +5,6 @@
 <?php if ($this->subscribed === true) : ?>
     <form action="/subscription/user" method="post" class="ajax">
         <input type="hidden" name="user" value="<?= $this->user->getId() ?>">
-        <input type="hidden" name="positive" value="0">
         <button class="btn btn-secondary">Unsubscribe</button>
     </form>
 <?php else : ?>
@@ -20,7 +19,7 @@
     <?php foreach ($this->subscribers as $subscriber) : ?>
 
         <?php /** @var \MVC\Models\User $subscriber */ ?>
-        <div class="badge badge-primary"><?= $subscriber->getNickname() ?></div>
+        <a href="/users/<?php echo $subscriber->getId() ?>"><div class="badge badge-primary"><?= $subscriber->getNickname() ?></div>
 
     <?php endforeach; ?>
 </div>

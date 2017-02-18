@@ -3,6 +3,7 @@
 
 namespace MVC\Models;
 
+use MVC\Controller\Article;
 use \System\ORM\Model;
 
 /**
@@ -19,10 +20,17 @@ class Comment extends Model
     /**
      * Unique key for comment
      *
-     * @columnType(INT(11) NOT NULL)
+     * @columnType(INT(11) UNSIGNED NOT NULL AUTO_INCREMENT KEY)
      * @var int
      */
     private $id;
+
+    /**
+     *
+     * @columnType(INT(11) UNSIGNED NOT NULL)
+     * @var int
+     */
+    private $article;
 
     /**
      * Unique key for User
@@ -37,7 +45,7 @@ class Comment extends Model
     /**
      * Count of likes
      *
-     * @columnType(INT(11) UNSIGNED)
+     * @columnType(INT(11) UNSIGNED NOT NULL DEFAULT 0)
      * @var int
      */
     private $likes;
@@ -45,7 +53,7 @@ class Comment extends Model
     /**
      * Count of dislikes
      *
-     * @columnType(INT(11) UNSIGNED)
+     * @columnType(INT(11) UNSIGNED NOT NULL DEFAULT 0)
      * @var int
      */
     private $dislikes;
@@ -223,5 +231,22 @@ class Comment extends Model
     {
         return $this->parentType;
     }
+
+    /**
+     * @return Article
+     */
+    public function getArticle()
+    {
+        return $this->article;
+    }
+
+    /**
+     * @param Article|int $article
+     */
+    public function setArticle($article)
+    {
+        $this->article = $article;
+    }
+
 
 }

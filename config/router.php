@@ -56,6 +56,10 @@ return [
             'controller' => \MVC\Controller\Article::class,
             'action'     => 'edit'
         ],
+        'tags\/.*' => [
+            'controller' => \MVC\Controller\Pages::class,
+            'action'     => 'tagSearch'
+        ],
         'community\/[0-9]+' => [
             'controller' => \MVC\Controller\Community::class,
             'action'     => 'show'

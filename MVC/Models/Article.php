@@ -87,7 +87,7 @@ class Article extends Model
     /**
      * Count of likes
      *
-     * @columnType(INT(11))
+     * @columnType(INT(11) UNSIGNED NOT NULL DEFAULT 0)
      * @var int
      */
     private $likes;
@@ -95,15 +95,23 @@ class Article extends Model
     /**
      * Count of dislikes
      *
-     * @columnType(INT(11))
+     * @columnType(INT(11) UNSIGNED NOT NULL DEFAULT 0)
      * @var int
      */
     private $dislikes;
 
     /**
+     * Count of comments
+     *
+     * @columnType(INT(11) UNSIGNED NOT NULL DEFAULT 0)
+     * @var int
+     */
+    private $comments;
+
+    /**
      * Count of views
      *
-     * @columnType(INT(11))
+     * @columnType(INT(11) UNSIGNED NOT NULL DEFAULT 0)
      * @var int
      */
     private $views;
@@ -148,7 +156,7 @@ class Article extends Model
      * @param bool $isModerated
      * @return $this
      */
-    public function setIsModerated(bool $isModerated)
+    public function setModerated(bool $isModerated)
     {
         $this->isModerated = (int) $isModerated;
         return $this;
@@ -346,6 +354,31 @@ class Article extends Model
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCommentsCount(): int
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param int $comments
+     */
+    public function setCommentsCount(int $comments)
+    {
+        $this->comments = $comments;
+    }
+
+    public function recalculateRating(){
+        $this->rating=(($this->likes - $this->dislikes*1.5) * ($this->comments+1)*1.5)/($this->views/10+1);
+        if ($this->rating < 0){
+            $this->rating=pow(abs($this->rating),1/3)*-1;
+        } else {
+            $this->rating=pow($this->rating,1/3);
+        }
     }
 
 }

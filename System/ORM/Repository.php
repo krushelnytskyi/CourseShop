@@ -88,7 +88,7 @@ class Repository
             $property = $reflection->getProperty($propertyName);
             $property->setAccessible(true);
             $value = $property->getValue($model);
-            if (isset($cachedModel['foreignFields'][$propertyName])) {
+            if (isset($cachedModel['foreignFields'][$propertyName]) && is_object($value)) {
                 $foreignField = $cachedModel['foreignFields'][$propertyName];
                 $reflectForeign = new \ReflectionClass(get_class($value));
                 $propertyForeign = $reflectForeign->getProperty($foreignField);
@@ -106,7 +106,7 @@ class Repository
             $property->setAccessible(true);
             $value = $property->getValue($model);
             if ($value !== null) {
-                if (isset($cachedModel['foreignFields'][$propName])) {
+                if (isset($cachedModel['foreignFields'][$propName]) && is_object($value)) {
                     $foreignField = $cachedModel['foreignFields'][$propName];
                     $reflectForeign = new \ReflectionClass(get_class($value));
                     $propertyForeign = $reflectForeign->getProperty($foreignField);
@@ -166,7 +166,7 @@ class Repository
             $property->setAccessible(true);
             $value = $property->getValue($model);
             if ($value !== null) {
-                if(isset($cachedModel['foreignFields'][$propName])){
+                if(isset($cachedModel['foreignFields'][$propName]) && is_object($value)){
                     $foreignField = $cachedModel['foreignFields'][$propName];
                     $reflectForeign = new \ReflectionClass($value);
                     $propertyForeign = $reflectForeign->getProperty($foreignField);

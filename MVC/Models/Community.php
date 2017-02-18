@@ -105,7 +105,7 @@ class Community extends Model
      */
     public function isSecured(): bool
     {
-        return $this->secured;
+        return (bool) $this->secured;
     }
 
     /**

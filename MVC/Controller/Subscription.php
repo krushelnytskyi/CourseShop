@@ -34,22 +34,23 @@ class Subscription extends Controller
             if (false === $form->execute()) {
                 $result['messages'] = $form->getErrors();
             } else {
-
-                $subscription = new SubscriptionUser();
-                $user = Repository::getInstance()
-                    ->findOneBy(
-                        User::class, ['id' => $form->getFieldValue('user')]
-                    );
-
-                $subscription->setUser($user);
-                $subscription->setSubscriber(UserSession::getInstance()->getIdentity());
-
-                if (false !== Repository::getInstance()->save($subscription)) {
-                    $result['message'] = 'Subscribed';
-                } else {
-                    $result['message'] = 'Can not subscribe user';
+                $repo = Repository::getInstance();
+                if (null === $repo->findOneBy(User::class,['id' => $form->getFieldValue('user')])){
+                    $result['message'] = 'Something gone wrong!';
+                    $this->json($result);
                 }
-
+                /** @var SubscriptionUser $subscription */
+                $subscription = $repo->findOneBy(SubscriptionUser::class,['user' => $form->getFieldValue('user'),'subscriber' => UserSession::getInstance()->getIdentity()->getId()]);
+                if ($subscription === null){
+                    $subscription = new SubscriptionUser();
+                    $subscription->setUser($form->getFieldValue('user'));
+                    $subscription->setSubscriber(UserSession::getInstance()->getIdentity()->getId());
+                    $repo->save($subscription);
+                    $result['message'] = 'Subscribed!';
+                } else {
+                    $repo->delete($subscription);
+                    $result['message'] = 'Unubscribed!';
+                }
             }
 
             $this->json($result);
