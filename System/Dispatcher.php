@@ -25,8 +25,6 @@ class Dispatcher
     {
         session_start();
 
-
-
         if ($url === false) {
             $url = trim($_SERVER['REQUEST_URI'], '/');
         }
@@ -34,10 +32,7 @@ class Dispatcher
         $urlParts = explode('/', $url);
 
         $controller = 'MVC\Controller\\' . ucfirst($urlParts[0]);
-        $action = '';
-        if (isset($urlParts[1])) {
-            $action = $urlParts[1];
-        }
+        $action = $urlParts[1];
 
         foreach (Config::get('router', 'urls') as $currentUrl => $rule) {
             if ($url === $currentUrl) {
