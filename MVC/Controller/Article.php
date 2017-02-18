@@ -13,6 +13,7 @@ use System\Auth\UserSession;
 use System\Form;
 use System\MVC\Controller\Controller;
 use System\ORM\Repository;
+use System\Validators\Regular;
 use System\Validators\Strings;
 use System\View;
 
@@ -57,35 +58,49 @@ class Article extends Controller
     {
         $result = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            /** @var User $user */
-            $user = UserSession::getInstance()->getIdentity();
-            if ($user !== null) {
-                $grade = $user->getGrade();
-                if ($grade === User::USER_GRADE_MODERATOR || $grade === User::USER_GRADE_ADMIN) {
-                    $repo = Repository::getInstance();
-                    $articleId = $_POST['delete']; //Form...pffff
-                    $article = Repository::getInstance()->findOneBy(\MVC\Models\Article::class, ['id' => $articleId]);
-                    if ($article !== null){
-                        $tagsInArticle = $repo->findBy(TagsInArticle::class,['article' => $articleId]);
-                        $comments = $repo->findBy(Comment::class,['article' => $articleId]);
-                        foreach ($tagsInArticle as $tagInArticle){
-                            $repo->delete($tagInArticle);
+            $form = new Form(
+                $_POST,
+                [
+                    'delete' => [
+                        new Regular('[0-9]+')
+                    ]
+                ]
+            );
+            if (false !== $form->execute()) {
+                /** @var User $user */
+                $user = UserSession::getInstance()->getIdentity();
+                if ($user !== null) {
+                    $grade = $user->getGrade();
+                    if ($grade === User::USER_GRADE_MODERATOR || $grade === User::USER_GRADE_ADMIN) {
+                        $repo = Repository::getInstance();
+                        $articleId = $form->getFieldValue('delete');
+                        $article = Repository::getInstance()->findOneBy(\MVC\Models\Article::class, ['id' => $articleId]);
+                        if ($article !== null) {
+                            $tagsInArticle = $repo->findBy(TagsInArticle::class, ['article' => $articleId]);
+                            $comments = $repo->findBy(Comment::class, ['article' => $articleId]);
+                            foreach ($tagsInArticle as $tagInArticle) {
+                                $repo->delete($tagInArticle);
+                            }
+                            foreach ($comments as $comment) {
+                                $repo->delete($comment);
+                            }
+                            $repo->delete($article);
+                            $result['title'] = 'Success.';
+                            $result['text'] = 'Article has been deleted!';
+                            $result['redirect'] = '/';
+                        } else {
+                            $result['title'] = 'Delete error.';
+                            $result['text'] = 'Article with id ' . $articleId . ' not found in database';
+                            $result['redirect'] = '/';
                         }
-                        foreach ($comments as $comment){
-                            $repo->delete($comment);
-                        }
-                        $repo->delete($article);
-                        $result['title'] = 'Delete';
-                        $result['text'] = 'Article has been deleted!';
-                        $result['redirect'] = '/';
                     } else {
-                        $result['title'] = 'Delete error';
-                        $result['text'] = 'Article with id '.$articleId.' not found in database';
-                        $result['redirect'] = '/';
+                        $result['message'] = 'No permission';
                     }
-                } else {
+                }else {
                     $result['message'] = 'No permission';
                 }
+            } else {
+                $result['messages'] = $form->getErrors();
             }
         }
         $this->json($result);
@@ -114,6 +129,9 @@ class Article extends Controller
                     'tags' => [
                         new Strings(3, 255),
                     ],
+                    'community' => [
+                        new Regular('-?[0-9]+')
+                    ]
                 ]
             );
             if ($form->execute() === false) {
@@ -140,7 +158,7 @@ class Article extends Controller
                     }
                 }
                 $tags = array_unique(explode(' ', $form->getFieldValue('tags')));
-                $article->setTags(implode(' ',$tags));
+                $article->setTags(implode(' ', $tags));
                 $articleId = $repository->save($article);
                 if ($articleId !== false) {
                     $tags = array_unique(explode(' ', $form->getFieldValue('tags')));
@@ -160,7 +178,7 @@ class Article extends Controller
                     }
                     $result['title'] = 'Success!';
                     $result['text'] = 'Article has been created!';
-                    $result['redirect'] = '/';
+                    $result['redirect'] = '/article/'.$articleId;
                 } else {
                     $result['messages'] = 'Something gone wrong';
                 }
