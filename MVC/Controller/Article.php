@@ -112,7 +112,7 @@ class Article extends Controller
     public function newAction()
     {
         $result = [];
-        if (Session::getInstance()->hasIdentity() == false) {
+        if (!Session::getInstance()->hasIdentity()) {
             $result = [
                 'messages' => 'User not register'
             ];
