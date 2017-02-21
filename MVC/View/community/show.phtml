@@ -1,5 +1,6 @@
 <!--test page-->
 <div class="community">
+    <h2><?= $this->community->getName() ?></h2>
     <?php foreach ($this->articles as $article): ?>
         <?php /** @var \MVC\Models\Article $article */ ?>
         <div class="article">

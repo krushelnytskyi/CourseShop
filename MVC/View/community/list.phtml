@@ -1,0 +1,8 @@
+<div class="community">
+    <?php foreach ($this->communities as $community): ?>
+        <?php /** @var \MVC\Models\Community $community */ ?>
+        <div class="community">
+            <h2><a href="/community/<?= $community->getId(); ?>"><?php echo $community->getName()?></a></h2>
+        </div>
+    <?php endforeach;?>
+</div>
