@@ -208,7 +208,7 @@ class Article extends Controller
             $view->assign('article', $article);
             $view->assign('comments', Repository::getInstance()
                 ->findBy(Comment::class, [
-                    'parent' => $article->getId()
+                    'parentId' => $article->getId()
                 ])
             );
             return $view;

@@ -66,7 +66,7 @@ class Comments extends Controller
                             'article' => $article,
                             'comments' => Repository::getInstance()
                                 ->findBy(Comment::class, [
-                                    'parent' => $article->getId()
+                                    'parentId' => $article->getId()
                                 ])
                         ]
                     );
