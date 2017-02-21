@@ -372,6 +372,42 @@ class Article extends Model
         $this->comments = $comments;
     }
 
+    /**
+     * @param int $i
+     * @return $this
+     */
+    public function addLikes(int $i = 1){
+        $this->likes += $i;
+        return $this;
+    }
+
+    /**
+     * @param int $i
+     * @return $this
+     */
+    public function addDisLikes(int $i = 1){
+        $this->dislikes += $i;
+        return $this;
+    }
+
+    /**
+     * @param int $i
+     * @return $this
+     */
+    public function addComments(int $i = 1){
+        $this->comments += $i;
+        return $this;
+    }
+
+    /**
+     * @param int $i
+     * @return $this
+     */
+    public function addViews(int $i = 1){
+        $this->views += $i;
+        return $this;
+    }
+
     public function recalculateRating(){
         $this->rating=(($this->likes - $this->dislikes*1.5) * ($this->comments+1)*1.5)/($this->views/10+1);
         if ($this->rating < 0){

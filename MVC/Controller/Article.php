@@ -84,6 +84,8 @@ class Article extends Controller
                             foreach ($comments as $comment) {
                                 $repo->delete($comment);
                             }
+                            /** TODO:  DELETE ALL OPINIONS WHICH RELATE TO
+                             *  TODO:  ARTICLE OR COMMENTS IN CURRENT ARTICLE */
                             $repo->delete($article);
                             $result['title'] = 'Success.';
                             $result['text'] = 'Article has been deleted!';
@@ -114,7 +116,7 @@ class Article extends Controller
         $result = [];
         if (!Session::getInstance()->hasIdentity()) {
             $result = [
-                'messages' => 'User not register'
+                'message' => 'You must log-in for this action!'
             ];
         } else {
             $form = new Form(
@@ -180,7 +182,7 @@ class Article extends Controller
                     $result['text'] = 'Article has been created!';
                     $result['redirect'] = '/article/'.$articleId;
                 } else {
-                    $result['messages'] = 'Something gone wrong';
+                    $result['message'] = 'Something gone wrong';
                 }
             }
         }

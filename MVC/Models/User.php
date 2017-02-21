@@ -336,7 +336,8 @@ class User extends Model
         return $hash;
     }
 
-
-
+    public function addRating(int $i = 1){
+        $this->rating += $i;
+    }
 
 }

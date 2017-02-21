@@ -79,11 +79,9 @@ class Comment extends Model
      * or something else...
      *
      * @columnType(INT(11) UNSIGNED NOT NULL)
-     * @foreignModel(MVC\Models\Article)
-     * @foreignField(id)
-     * @var Article|Comment
+     * @var int
      */
-    private $parent;
+    private $parentId;
 
     /**
      * Type of parent
@@ -145,12 +143,12 @@ class Comment extends Model
     }
 
     /**
-     * @param Article|Comment $parent
+     * @param int $parentId
      * @return $this
      */
-    public function setParent($parent)
+    public function setParentId($parentId)
     {
-        $this->parent = $parent;
+        $this->parentId = $parentId;
         return $this;
     }
 
@@ -213,15 +211,11 @@ class Comment extends Model
     }
 
     /**
-     * @return Article|Comment
+     * @return int
      */
-    public function getParent()
+    public function getParentId()
     {
-        if ($this->getParentType() === static::PARENT_TYPE_ARTICLE) {
-            return new Article();
-        } else {
-            return new Comment();
-        }
+        return $this->parentId;
     }
 
     /**
@@ -233,7 +227,7 @@ class Comment extends Model
     }
 
     /**
-     * @return Article
+     * @return int
      */
     public function getArticle()
     {
@@ -246,6 +240,24 @@ class Comment extends Model
     public function setArticle($article)
     {
         $this->article = $article;
+    }
+
+    /**
+     * @param int $i
+     * @return $this
+     */
+    public function addLikes(int $i = 1){
+        $this->likes += $i;
+        return $this;
+    }
+
+    /**
+     * @param int $i
+     * @return $this
+     */
+    public function addDisLikes(int $i = 1){
+        $this->dislikes += $i;
+        return $this;
     }
 
 

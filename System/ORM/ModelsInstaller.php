@@ -43,7 +43,7 @@ class ModelsInstaller
                     }
                 }
                 $query = trim($query, ',') . ');';
-                echo $query . PHP_EOL;
+                //echo $query . PHP_EOL;
                 Connection::getInstance()->getLink()->prepare($query)->execute();
             } else {
                 echo $modelClass . ' does not match the the requirements of the model, information about table not found, and model not instaled.' . PHP_EOL;

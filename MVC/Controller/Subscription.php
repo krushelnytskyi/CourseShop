@@ -17,11 +17,8 @@ class Subscription extends Controller
 
     public function userAction()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST'
-            && true === Session::getInstance()->hasIdentity()
-        ) {
+        if (Session::getInstance()->hasIdentity()) {
             $result = [];
-
             $form = new Form(
                 $_POST,
                 [
@@ -52,12 +49,7 @@ class Subscription extends Controller
                     $result['message'] = 'Unubscribed!';
                 }
             }
-
             $this->json($result);
-        } else {
-            return new View('errors/404');
         }
-
     }
-
 }

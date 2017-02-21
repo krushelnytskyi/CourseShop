@@ -224,7 +224,7 @@ class Repository
                 if(isset($cachedModel['foreignModels'][$propName])){
                     if(isset($cachedModel['selectors'][$propName])){
                         $selectorValue = $row[$cachedModel['selectors'][$propName]];
-                        $foreignModel = explode(',', $cachedModel['selectors'][$propName])[$selectorValue];
+                        $foreignModel = explode(',', $cachedModel['foreignModels'][$propName])[$selectorValue];
                     } else {
                         $foreignModel = $cachedModel['foreignModels'][$propName];
                     }
