@@ -13,6 +13,19 @@ use System\View;
 
 class Community extends Controller
 {
+    public function communitiesAction()
+    {
+        $repo = Repository::getInstance();
+        $community = $repo->findBy(\MVC\Models\Community::class);
+
+        if ($community === null){
+            return new View('errors/404');
+        } else {
+            $view = new View('community/list');
+            $view->assign('communities' , $community);
+            return $view;
+        }
+    }
 
     public function createAction()
     {
@@ -85,6 +98,7 @@ class Community extends Controller
         } else {
             $view = new View('community/show');
             $view->assign('articles' , $article);
+            $view->assign('community' , $community);
             return $view;
         }
     }

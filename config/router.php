@@ -18,6 +18,10 @@ return [
             'controller' => 'MVC\Controller\Pages',
             'action'     => 'article'
         ],
+        'community' => [
+            'controller' => \MVC\Controller\Community::class,
+            'action'     => 'communities'
+        ],
         'article-add' => [
             'controller' => \MVC\Controller\Article::class,
             'action'     => 'create'
