@@ -45,9 +45,9 @@ class Dispatcher
             if (preg_match("/$patterns/", $url)) {
                 $controller = preg_replace("/$patterns/", $rule['controller'], $url);
                 $action = preg_replace("/$patterns/", $rule['action'], $url);
-                }
-
             }
+
+        }
 
         $action = $action . 'Action';
 

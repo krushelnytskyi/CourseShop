@@ -54,7 +54,7 @@ class Comments extends Controller
 
                 $comment = new Comment();
                 $comment->setBody($form->getFieldValue('body'))
-                    ->setParent($article)
+                    ->setParentId($article->getId())
                     ->setParentType(Comment::PARENT_TYPE_ARTICLE)
                     ->setUser(UserSession::getInstance()->getIdentity());
 

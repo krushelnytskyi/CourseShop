@@ -29,6 +29,7 @@
                 <label for="community">Community</label>
 
                 <select name="community" id="community">
+                    <option value="-1">None</option>
                     <?php foreach ($this->communities as $community): ?>
                         <?php /** @var \MVC\Models\Community $community */ ?>
                         <option value="<?= $community->getId() ?>"><?= $community->getName() ?></option>

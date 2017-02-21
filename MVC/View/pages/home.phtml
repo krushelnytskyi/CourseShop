@@ -7,7 +7,7 @@
 		<div class="article-info">
 			<img class="ico" src="/assets/img/author.png"> <a href="/users/<?= $article->getUser()->getId() ?>"><?php echo $article->getUser()->getNickname();?> </a> <?php echo $article->getCreated() ?>
 			<img class="ico" src="/assets/img/comment2.png"> <a href="#comments">10</a>
-			<img class="ico" src="/assets/img/tag.png"> <a href="#"><?php echo $article->getTags()?></a>
+            <img class="ico" src="/assets/img/tag.png"> <?php foreach (explode(' ', $article->getTags()) as $tagValue): ?><a href="/tags/<?php echo $tagValue?>"><div class="badge badge-default"><?php echo $tagValue?></div></a> <?php endforeach;?>
 		</div>
 		<p>
             <?php echo $article->getBody()?>

@@ -44,10 +44,10 @@ class AboutOther extends Model
     private $value;
 
     /**
-     * @param User $user
+     * @param User|int $user
      * @return $this
      */
-    public function setUser(User $user)
+    public function setUser($user)
     {
         $this->setNew(true);
         $this->user = $user;
@@ -55,10 +55,10 @@ class AboutOther extends Model
     }
 
     /**
-     * @param User $targetUser
+     * @param User|int $targetUser
      * @return $this
      */
-    public function setTargetUser(User $targetUser)
+    public function setTargetUser($targetUser)
     {
         $this->setNew(true);
         $this->targetUser = $targetUser;

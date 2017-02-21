@@ -38,7 +38,7 @@ class Strings extends Validator
         $string = mb_strlen($value);
 
         if ($string < $this->min || $string > $this->max) {
-            $this->message = 'Incorrect length of characters';
+            $this->message = 'Incorrect length of characters! Min: ' . $this->min . '. Max: ' . $this->max.'.';
             return false;
         }
 

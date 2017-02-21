@@ -1,11 +1,17 @@
 <h3><?= $this->user->getNickname(); ?></h3>
 
 <hr>
-
+<?php if (\System\Auth\Session::getInstance()->hasIdentity()) : ?>
+<form action="/users/saveAboutOther" method="post" class="ajax">
+    <p>You can save information about <?= $this->user->getNickname(); ?>, this information can be read only by you!</p>
+    <input title="You can save information about <?= $this->user->getNickname(); ?>, this information can be read only by you!" size="70" type="text" name="value" value="<?= $this->aboutOtherValue; ?>">
+    <input type="hidden" name="user" value="<?= $this->user->getId() ?>">
+    <button class="btn btn-secondary">Save</button>
+</form>
+<hr>
 <?php if ($this->subscribed === true) : ?>
     <form action="/subscription/user" method="post" class="ajax">
         <input type="hidden" name="user" value="<?= $this->user->getId() ?>">
-        <input type="hidden" name="positive" value="0">
         <button class="btn btn-secondary">Unsubscribe</button>
     </form>
 <?php else : ?>
@@ -14,13 +20,19 @@
         <button class="btn btn-secondary">Subscribe</button>
     </form>
 <?php endif; ?>
+    <br>
+<?php endif; ?>
 
 <div class="col-md-8">
-    <div class="text-muted">Subscribers</div>
+    <div class="text-muted">Subscribers:</div>
     <?php foreach ($this->subscribers as $subscriber) : ?>
-
         <?php /** @var \MVC\Models\User $subscriber */ ?>
-        <div class="badge badge-primary"><?= $subscriber->getNickname() ?></div>
-
+        <a href="/users/<?php echo $subscriber->getId() ?>"><div class="badge badge-primary"><?= $subscriber->getNickname() ?></div></a>
     <?php endforeach; ?>
+</div>
+<hr>
+
+<div>
+    <h3><p>User's articles:</p></h3>
+    <?php include APP_ROOT . 'MVC/View/pages/home.phtml' ?>
 </div>

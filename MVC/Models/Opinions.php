@@ -8,7 +8,7 @@ use \System\ORM\Model;
  * Class Opinions
  * @package MVC\Models
  * @table(opinions)
- * @updateBy(user,contentId)
+ * @updateBy(id)
  * This table for saving likes and dislikes
  */
 class Opinions extends Model
@@ -18,6 +18,14 @@ class Opinions extends Model
 
     const LIKE    = 1;
     const DISLIKE = 0;
+
+    /**
+     * Unique key for opinion
+     *
+     * @columnType(INT(11) UNSIGNED NOT NULL AUTO_INCREMENT KEY)
+     * @var int
+     */
+    private $id;
 
     /**
      * Key for user, who have opinion about something (like or dislike)
@@ -30,23 +38,25 @@ class Opinions extends Model
     private $user;
 
     /**
-     * Date
-     *
-     * @columnType(TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
-     * @var \DateTime
+     * @return int
      */
-    private $date;
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     /**
      * Id of article, or comment,
      * or something else...
      *
+     * @columnName(content_id)
      * @columnType(INT(11) UNSIGNED NOT NULL)
+     * @selector(content_type)
      * @foreignModel(MVC\Models\Article,MVC\Models\Comment)
      * @foreignField(id)
      * @var Article|Comment
      */
-    private $contentId;
+    private $content;
 
     /**
      * Type of content
@@ -61,16 +71,16 @@ class Opinions extends Model
     /**
      * Like or dislike
      *
-     * @columnType(TINYINT(1) UNSIGNED NOT NULL)
+     * @columnType(TINYINT(1) UNSIGNED NOT NULL DEFAULT 0)
      * @var int
      */
     private $opinion;
 
     /**
-     * @param User $user
+     * @param User|int $user
      * @return $this
      */
-    public function setUser(User $user)
+    public function setUser($user)
     {
         $this->setNew(true);
         $this->user = $user;
@@ -78,23 +88,13 @@ class Opinions extends Model
     }
 
     /**
-     * @param \DateTime $date
+     * @param Article|Comment|int $content
      * @return $this
      */
-    public function setDate(\DateTime $date)
-    {
-        $this->date = $date;
-        return $this;
-    }
-
-    /**
-     * @param Article|Comment $contentId
-     * @return $this
-     */
-    public function setContentId($contentId)
+    public function setContent($content)
     {
         $this->setNew(true);
-        $this->contentId = $contentId;
+        $this->content = $content;
         return $this;
     }
 
@@ -127,19 +127,11 @@ class Opinions extends Model
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getDate(): \DateTime
-    {
-        return $this->date;
-    }
-
-    /**
      * @return Article|Comment
      */
-    public function getContentId()
+    public function getContent()
     {
-        return $this->contentId;
+        return $this->content;
     }
 
     /**

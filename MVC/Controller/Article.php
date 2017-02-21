@@ -13,6 +13,7 @@ use System\Auth\UserSession;
 use System\Form;
 use System\MVC\Controller\Controller;
 use System\ORM\Repository;
+use System\Validators\Regular;
 use System\Validators\Strings;
 use System\View;
 
@@ -57,21 +58,51 @@ class Article extends Controller
     {
         $result = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $grade = UserSession::getInstance()->getIdentity();
-            if ($grade !== null) {
-                $role = $grade->getGrade();
-                if ($role === User::USER_GRADE_MODERATOR && User::USER_GRADE_ADMIN) {
-                    $delete = Repository::getInstance()->findOneBy(\MVC\Models\Article::class);
-                    if (Repository::getInstance()->delete($delete) !== false) {
-                        $result['title'] = 'Delete';
-                        $result['text'] = 'Article delete';
-                        $result['redirect'] = '/';
+            $form = new Form(
+                $_POST,
+                [
+                    'delete' => [
+                        new Regular('[0-9]+')
+                    ]
+                ]
+            );
+            if (false !== $form->execute()) {
+                /** @var User $user */
+                $user = UserSession::getInstance()->getIdentity();
+                if ($user !== null) {
+                    $grade = $user->getGrade();
+                    if ($grade === User::USER_GRADE_MODERATOR || $grade === User::USER_GRADE_ADMIN) {
+                        $repo = Repository::getInstance();
+                        $articleId = $form->getFieldValue('delete');
+                        $article = Repository::getInstance()->findOneBy(\MVC\Models\Article::class, ['id' => $articleId]);
+                        if ($article !== null) {
+                            $tagsInArticle = $repo->findBy(TagsInArticle::class, ['article' => $articleId]);
+                            $comments = $repo->findBy(Comment::class, ['article' => $articleId]);
+                            foreach ($tagsInArticle as $tagInArticle) {
+                                $repo->delete($tagInArticle);
+                            }
+                            foreach ($comments as $comment) {
+                                $repo->delete($comment);
+                            }
+                            /** TODO:  DELETE ALL OPINIONS WHICH RELATE TO
+                             *  TODO:  ARTICLE OR COMMENTS IN CURRENT ARTICLE */
+                            $repo->delete($article);
+                            $result['title'] = 'Success.';
+                            $result['text'] = 'Article has been deleted!';
+                            $result['redirect'] = '/';
+                        } else {
+                            $result['title'] = 'Delete error.';
+                            $result['text'] = 'Article with id ' . $articleId . ' not found in database';
+                            $result['redirect'] = '/';
+                        }
                     } else {
-                        $result['message'] = 'Somethasdaing gone wrong';
-                    }
-                } else {
                         $result['message'] = 'No permission';
+                    }
+                }else {
+                    $result['message'] = 'No permission';
                 }
+            } else {
+                $result['messages'] = $form->getErrors();
             }
         }
         $this->json($result);
@@ -83,9 +114,9 @@ class Article extends Controller
     public function newAction()
     {
         $result = [];
-        if (Session::getInstance()->hasIdentity() == false) {
+        if (!Session::getInstance()->hasIdentity()) {
             $result = [
-                'messages' => 'User not register'
+                'message' => 'You must log-in for this action!'
             ];
         } else {
             $form = new Form(
@@ -100,6 +131,9 @@ class Article extends Controller
                     'tags' => [
                         new Strings(3, 255),
                     ],
+                    'community' => [
+                        new Regular('-?[0-9]+')
+                    ]
                 ]
             );
             if ($form->execute() === false) {
@@ -112,24 +146,24 @@ class Article extends Controller
                 $article->setUser($user);
                 $article->setTitle($form->getFieldValue('title'));
                 $article->setBody($form->getFieldValue('body'));
-                $article->setTags($form->getFieldValue('tags'));
-
-                // todo $article->setCommunity
-
                 $article->setRating(0);
                 /** @var Community $community */
                 $community = $repository->findOneBy(Community::class, ['id' => $form->getFieldValue('community')]);
                 if ($community !== null) {
                     $article->setCommunity($community);
-                    if (null == $repository->findOneBy(CommunityInsiders::class, ['id' => $community->getId(), 'user' => $user->getId()])) {
-                        $article->setIsModerated(!((bool)$community->isSecured()));
+                    if ($community->isSecured()) {
+                        if (null == $repository->findOneBy(CommunityInsiders::class, ['id' => $community->getId(), 'user' => $user->getId()]) || $user->getId() === $community->getUser()->getId()) {
+                            $article->setModerated(!$community->isSecured());
+                        } else $article->setModerated(true);
                     } else {
-                        $article->setIsModerated(true);
+                        $article->setModerated(true);
                     }
                 }
-                $result = $repository->save($article);
-                if ($result !== false) {
-                    $tags = explode(' ', $form->getFieldValue('tags'));
+                $tags = array_unique(explode(' ', $form->getFieldValue('tags')));
+                $article->setTags(implode(' ', $tags));
+                $articleId = $repository->save($article);
+                if ($articleId !== false) {
+                    $tags = array_unique(explode(' ', $form->getFieldValue('tags')));
                     foreach ($tags as $value) {
                         /** @var Tag $tag */
                         $tag = $repository->findOneBy(Tag::class, ['value' => $value]);
@@ -141,12 +175,14 @@ class Article extends Controller
                             $tagId = $tag->getId();
                         }
                         $tagInArticle = new TagsInArticle();
-                        $tagInArticle->setTag($tagId)->setArticle($result);
+                        $tagInArticle->setTag($tagId)->setArticle($articleId);
                         $repository->save($tagInArticle);
                     }
-                    $result['redirect'] = '/';
+                    $result['title'] = 'Success!';
+                    $result['text'] = 'Article has been created!';
+                    $result['redirect'] = '/article/'.$articleId;
                 } else {
-                    $result['messages'] = 'Something gone wrong';
+                    $result['message'] = 'Something gone wrong';
                 }
             }
         }
