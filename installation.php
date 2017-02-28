@@ -2,6 +2,7 @@
 
 // Allow execute this file only from command line
 // Example: > php installation.php
+// Changes from vk_tutorial
 if (php_sapi_name() === 'cli') {
     include 'System/autoloader.php';
     $installer = new Install;
